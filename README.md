@@ -10,6 +10,8 @@ DesiBox runs a home kitchen's business so the cook can cook. It was built at a K
 - See the whole week's menu (veg and non-veg platters, Monday to Friday)
 - Pick a main, rice or chapati, extras, or swap starters with the other platter
 - Pay upfront and track each order from Cooking to Delivered
+- See estimated nutrition (calories, protein, carbs, fat, fiber) and allergens for every dish, and filter for high-protein or lighter meals
+- Rate each dish after delivery, with tags and a comment
 
 **For the kitchen**
 - Orders dashboard with payment status and one-tap batch updates
@@ -17,6 +19,8 @@ DesiBox runs a home kitchen's business so the cook can cook. It was built at a K
 - AI weekly menu planner: drafts next week's menu from what sells and what it costs
 - Inventory autopilot: turns orders into ingredients and drafts the weekly grocery order under a spending cap
 - Off-menu items for selling extra dishes
+- Feedback: ratings by dish, most common complaints, and recent reviews. Ratings feed the demand forecast and the menu planner.
+- Nutrition figures are estimates computed from each dish's recipe
 
 Use the **Student / Kitchen** switch at the top right to move between the two sides.
 
