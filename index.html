@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>DesiBox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{--bg:#F6F5F9;--surface:#FFFFFF;--surface-2:#ECE9F2;--ink:#1D1830;--ink-2:#4B4560;--ink-3:#7A7490;--line:#DDD8E7;--accent:#4E2A84;--accent-ink:#FFFFFF;--accent-soft:#EDE6F7;--accent-text:#4E2A84;--band:#4E2A84;--band-ink:#FFFFFF;--veg:#2C7A4B;--nonveg:#A8321F;--ok:#2C7A4B;--ok-soft:#DDEFE3;--info:#2C5E8A;--info-soft:#DCE8F3;--warn:#8A5A00;--warn-soft:#FBEFD2;--danger:#B3261E;--shadow:0 10px 30px rgba(29,24,48,.14);
+--display:"Bricolage Grotesque","Figtree",system-ui,sans-serif;--body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#121019;--surface:#1B1824;--surface-2:#26222F;--ink:#ECEAF3;--ink-2:#B7B1C6;--ink-3:#8A849B;--line:#343042;--accent:#8C6FC9;--accent-ink:#FFFFFF;--accent-soft:#2B2340;--accent-text:#C4B3EE;--band:#34275A;--band-ink:#FFFFFF;--veg:#5BBE86;--nonveg:#F07A66;--ok:#5BBE86;--ok-soft:#173222;--info:#86B7E4;--info-soft:#172838;--warn:#F4C25C;--warn-soft:#3A2C0C;--danger:#F28B82;--shadow:0 10px 30px rgba(0,0,0,.5)}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#121019;--surface:#1B1824;--surface-2:#26222F;--ink:#ECEAF3;--ink-2:#B7B1C6;--ink-3:#8A849B;--line:#343042;--accent:#8C6FC9;--accent-ink:#FFFFFF;--accent-soft:#2B2340;--accent-text:#C4B3EE;--band:#34275A;--band-ink:#FFFFFF;--veg:#5BBE86;--nonveg:#F07A66;--ok:#5BBE86;--ok-soft:#173222;--info:#86B7E4;--info-soft:#172838;--warn:#F4C25C;--warn-soft:#3A2C0C;--danger:#F28B82;--shadow:0 10px 30px rgba(0,0,0,.5)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 110px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.1}
+h2{font-size:20px}
+h3{font-size:16px;font-family:var(--body);font-weight:600;letter-spacing:0}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-size:.92em}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--ink-3)}
+.small{font-size:13px}
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:36px;height:36px;border-radius:50%;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink);font-family:var(--display);font-weight:700;font-size:18px}
+.brand b{font-family:var(--display);font-size:19px;display:block;line-height:1.1}
+.brand span{font-size:12px;color:var(--ink-3)}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;padding:7px 14px;border-radius:999px;font-weight:600;font-size:13px;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--ink-3)}
+.live.on i{background:var(--ok);box-shadow:0 0 0 3px var(--ok-soft)}
+.top-r{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+/* generic */
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:10px;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--ink-3)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.pri:hover{filter:brightness(1.05)}
+.btn.dark{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.btn.ghost{background:transparent;border-color:transparent}
+.btn.sm{padding:5px 10px;font-size:13px;border-radius:8px}
+.btn.danger{color:var(--danger)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.chip .n{font-family:var(--mono);font-size:11px;opacity:.75;margin-left:4px}
+.pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill.received{background:var(--surface-2);color:var(--ink-2)}
+.pill.cooking{background:var(--warn-soft);color:var(--warn)}
+.pill.out{background:var(--info-soft);color:var(--info)}
+.pill.delivered,.pill.paid{background:var(--ok-soft);color:var(--ok)}
+.pill.sample{background:transparent;border:1px dashed var(--line);color:var(--ink-3);font-weight:500}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text);font-weight:700}
+.banner{border:1px dashed var(--line);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--ink-2);margin-bottom:16px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+/* veg mark (FSSAI style) */
+.vm{width:14px;height:14px;border:1.5px solid var(--veg);border-radius:2px;display:inline-grid;place-items:center;flex:none}
+.vm::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--veg)}
+.vm.nv{border-color:var(--nonveg)}
+.vm.nv::after{border-radius:0;width:0;height:0;background:none;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid var(--nonveg)}
+/* student */
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-block:8px 18px}
+.hero p.lede{color:var(--ink-2);margin-top:6px;max-width:52ch}
+.deals{background:var(--band);color:var(--band-ink);border-radius:16px;padding:16px;margin-bottom:22px}
+.deals-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.deals-h h2{font-size:18px}
+.deals-h span{font-size:13px;opacity:.7}
+.deal-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.deal{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.deal .top-line{display:flex;gap:8px;align-items:center}
+.deal .vm{background:#fff}
+.deal .meta{font-size:12px;opacity:.75}
+.deal .buy{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.deal s{opacity:.55;margin-left:6px;font-size:13px}
+.deals .btn.pri{background:#fff;border-color:#fff;color:#4E2A84}
+.left{white-space:nowrap;font-family:var(--mono);font-size:12px;background:#fff;color:#4E2A84;border-radius:6px;padding:1px 6px;margin-left:auto}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;scrollbar-width:thin}
+.day{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 14px;text-align:left;min-width:86px}
+.day b{display:block;font-family:var(--display);font-size:17px}
+.day span{font-size:12px;color:var(--ink-3)}
+.day[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.day[aria-pressed="true"] span{color:var(--accent-ink);opacity:.8}
+.day .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ink);margin-left:6px;vertical-align:middle}
+.cutoff{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2);margin-bottom:20px;flex-wrap:wrap}
+.cutoff .clock{font-family:var(--mono);font-size:12px;background:var(--surface-2);border-radius:6px;padding:2px 7px}
+.cutoff.closed{color:var(--danger)}
+.cat{margin-bottom:26px}
+.cat-h{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.cat-h span{font-size:13px;color:var(--ink-3)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.dish{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.dish-h{display:flex;align-items:center;gap:8px}
+.dish-h h3{flex:1}
+.price{font-family:var(--mono);font-size:14px}
+.desc{color:var(--ink-2);font-size:14px}
+.inc{font-size:13px;color:var(--ink-3)}
+.dish-f{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px;gap:8px}
+.incart{font-size:12px;font-weight:600;color:var(--accent-text)}
+.dish.sold{opacity:.6}
+.opts{display:flex;flex-direction:column;gap:2px;margin-block:4px}
+.opts .main{font-weight:600;font-size:15px}
+.opts .or{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+.dish .flabel{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:700}
+/* orders (student) */
+.olist{display:flex;flex-direction:column;gap:12px}
+.ocard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.ocard-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.track{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.track div{font-size:12px;color:var(--ink-3)}
+.track div::before{content:"";display:block;height:4px;border-radius:2px;background:var(--surface-2);margin-bottom:6px}
+.track div.done{color:var(--ink)}
+.track div.done::before{background:var(--accent)}
+.track div.now{font-weight:700}
+.lines{display:flex;flex-direction:column;gap:4px;font-size:14px}
+.line{display:flex;justify-content:space-between;gap:10px}
+.line .sub{font-size:12px;color:var(--ink-3)}
+.ofoot{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:10px;flex-wrap:wrap}
+.empty{text-align:center;padding:40px 16px;color:var(--ink-3);border:1px dashed var(--line);border-radius:14px}
+/* cart bar */
+#cartbar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;pointer-events:none;z-index:20}
+.cbar{pointer-events:auto;background:var(--ink);color:var(--bg);border-radius:14px;padding:10px 10px 10px 18px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow);width:min(560px,100%);justify-content:space-between}
+.cbar b{font-family:var(--mono)}
+/* sheet */
+#sheet{position:fixed;inset:0;z-index:30;display:flex;justify-content:flex-end;background:rgba(10,16,12,.45)}
+.panel{background:var(--bg);width:min(480px,100%);height:100%;overflow-y:auto;padding:20px 20px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:18px;box-shadow:var(--shadow)}
+@media (max-width:600px){#sheet{align-items:flex-end}.panel{height:auto;max-height:92%;border-radius:18px 18px 0 0}}
+.panel-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.x{border:0;background:var(--surface-2);width:32px;height:32px;border-radius:50%;font-size:18px;line-height:1;flex:none}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label,.flabel{font-size:13px;font-weight:600;color:var(--ink-2)}
+.field input,.field select,.field textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 11px;width:100%}
+.field textarea{resize:vertical;min-height:60px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.err{color:var(--danger);font-size:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.step button{border:0;background:transparent;width:32px;height:32px;font-size:17px}
+.step button:hover{background:var(--surface-2)}
+.step span{min-width:26px;text-align:center;font-family:var(--mono);font-size:14px}
+.addon{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.opt{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px}
+.opt button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 10px;font-weight:600;font-size:13px;text-align:left}
+.opt button small{display:block;font-weight:400;color:var(--ink-3);font-size:12px}
+.opt button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.totals{display:flex;flex-direction:column;gap:4px;font-size:14px}
+.totals .line b{font-family:var(--mono)}
+.totals .grand{font-size:17px;font-weight:700;border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
+.note{font-size:12px;color:var(--ink-3)}
+.success{text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;padding-top:20px}
+.tick{width:56px;height:56px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;font-size:28px}
+/* kitchen */
+.k-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-block:8px 16px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:18px;overflow-x:auto}
+.tabs button{border:0;background:transparent;padding:10px 14px;font-weight:600;color:var(--ink-3);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+@media (max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.stat span{font-size:12px;color:var(--ink-3);display:block}
+.stat b{font-family:var(--display);font-size:26px;font-variant-numeric:tabular-nums}
+.slot-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 10px;flex-wrap:wrap}
+.krow{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:minmax(140px,1.1fr) minmax(180px,2fr) minmax(150px,1fr) auto;gap:14px;align-items:start;margin-bottom:8px}
+@media (max-width:820px){.krow{grid-template-columns:1fr 1fr}.krow .kact{grid-column:1/-1}}
+@media (max-width:480px){.krow{grid-template-columns:1fr}}
+.krow .who b{display:block}
+.krow .who .mono{color:var(--accent-text)}
+.kitems{font-size:14px;display:flex;flex-direction:column;gap:2px}
+.kitems .sub{font-size:12px;color:var(--ink-3)}
+.kact{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+@media (max-width:820px){.kact{flex-direction:row;justify-content:space-between;align-items:center}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.card h2{margin-bottom:4px}
+.card>.muted{margin-bottom:12px}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:var(--ink-3);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:13px}
+tr:last-child td{border-bottom:0}
+.sides{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:14px}
+.side{background:var(--accent-soft);border-radius:10px;padding:10px 12px}
+.side b{font-family:var(--display);font-size:24px;display:block;color:var(--accent-text)}
+.side span{font-size:12px;color:var(--ink-2)}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:130px 1fr 72px;gap:10px;align-items:center;font-size:13px}
+.bar .track2{position:relative;height:16px;background:var(--surface-2);border-radius:4px}
+.bar .fill{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:4px}
+.bar .fc{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.bar .v{text-align:right;font-family:var(--mono);font-size:12px}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--ink-3);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--accent);margin-right:5px;vertical-align:-1px}
+.legend i.l{width:2px;height:12px;background:var(--ink);border-radius:0}
+.grid-f th.n{text-align:center}
+.grid-f td.cell{text-align:center;font-family:var(--mono);font-size:13px;white-space:nowrap}
+.grid-f td.cell small{display:block;font-size:11px;color:var(--ink-3)}
+.grid-f td.off{color:var(--ink-3);opacity:.5}
+.mrow{display:grid;grid-template-columns:minmax(160px,1.6fr) 70px auto auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+@media (max-width:760px){.mrow{grid-template-columns:1fr auto;}.mrow .dchips{grid-column:1/-1}}
+.mrow .nm{display:flex;gap:8px;align-items:center}
+.mrow .nm small{display:block;color:var(--ink-3);font-size:12px}
+.dchips{display:flex;gap:4px}
+.dchip{border:1px solid var(--line);background:var(--surface);border-radius:6px;width:30px;height:28px;font-size:11px;font-weight:700;color:var(--ink-3)}
+.dchip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.switch{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-2);border:0;background:transparent;padding:0}
+.switch i{width:32px;height:18px;border-radius:9px;background:var(--line);position:relative;transition:background .15s}
+.switch i::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--surface);transition:transform .15s}
+.switch[aria-pressed="true"] i{background:var(--danger)}
+.switch[aria-pressed="true"] i::after{transform:translateX(14px)}
+/* planner */
+.plan-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.big{font-size:26px}
+.plan-act{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.agent{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px 16px;margin-bottom:18px;display:flex;flex-direction:column;gap:10px}
+.agent.on{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.agent-h{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.agent-btns{display:flex;gap:8px;flex-wrap:wrap}
+.steps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.steps li{display:flex;gap:8px;align-items:baseline}
+.steps li::before{content:"✓";color:var(--ok);font-weight:700;width:14px;flex:none}
+.steps li.now{color:var(--accent-text);font-weight:600}
+.steps li.now::before{content:"";width:10px;height:10px;border-radius:50%;border:2px solid var(--accent);border-top-color:transparent;align-self:center;margin-right:4px}
+@media (prefers-reduced-motion:no-preference){.steps li.now::before{animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}}
+.agent-text{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:13px;color:var(--ink-2);background:var(--surface-2);border-radius:8px;padding:10px;max-height:160px;overflow:auto}
+.agent-text:empty{display:none}
+.stat em{display:block;font-style:normal;font-size:12px;color:var(--ink-3)}
+.stat em.up{color:var(--ok)}.stat em.down{color:var(--danger)}
+.note-card{margin-bottom:16px}.note-card p{max-width:75ch}
+.plan-days{display:flex;flex-direction:column;gap:12px}
+.pday h3{font-family:var(--display);font-size:18px;margin-bottom:8px}
+.pday-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:760px){.pday-row{grid-template-columns:1fr}}
+.pbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.pbox-h{display:flex;align-items:center;gap:8px}
+.pbox-h b{flex:1}
+.fc-n{font-family:var(--mono);font-size:13px;background:var(--accent-soft);color:var(--accent-text);border-radius:6px;padding:1px 7px}
+.pmains{display:flex;flex-direction:column;gap:2px}
+.pm{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-weight:600}
+.pm .mono{margin-left:auto;font-weight:400}
+.pmains .or{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+.tag{font-size:11px;font-weight:600;border-radius:999px;padding:1px 7px;background:var(--surface-2);color:var(--ink-2)}
+.tag.fav{background:var(--ok-soft);color:var(--ok)}.tag.new{background:var(--accent-soft);color:var(--accent-text)}
+.why{font-size:13px;color:var(--ink-2);border-left:2px solid var(--line);padding-left:8px;border-radius:0}
+.pbox-f{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto}
+.good{color:var(--ok)}.bad{color:var(--danger)}
+/* inventory */
+.po{margin-bottom:16px}
+.sup-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:12px}
+.banner.warn{border-style:solid;border-color:var(--warn);background:var(--warn-soft);color:var(--ink)}
+.stock .cat-row td{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);padding-top:14px}
+.meter{height:4px;background:var(--surface-2);border-radius:2px;margin-top:5px;max-width:180px}
+.meter i{display:block;height:100%;border-radius:2px;background:var(--ok)}
+.meter i.low{background:var(--warn)}.meter i.out{background:var(--danger)}
+.pill.danger{background:#FBE3E1;color:var(--danger)}
+:root[data-theme="dark"] .pill.danger{background:#3A1A18}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pill.danger{background:#3A1A18}}
+.switch[aria-pressed="true"] i.on-sw{background:var(--ok)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;z-index:40;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+@media (prefers-reduced-motion:no-preference){.panel{animation:slide .2s ease-out}@keyframes slide{from{transform:translateX(24px);opacity:.6}}}
+</style>
+
+<div class="wrap">
+  <header class="top" id="top"></header>
+  <main id="main"></main>
+</div>
+<div id="cartbar"></div>
+<div id="sheet" hidden></div>
+<div id="toast" hidden></div>
+
+<script>
+const SEED = {"menu": [{"date": "2026-09-28", "id": "veg_mon", "name": "Veg platter", "cat": "meals", "price": 7, "veg": true, "choices": ["Tomato dal", "Palak paneer"], "sides": ["Aloo matar subji", "Masala idli fry"], "baseChoice": true, "desc": "", "days": ["mon"], "addons": ["chapati", "rice", "curry"], "swapFee": 0.5, "spice": false, "soldOut": false, "order": 1}, {"date": "2026-09-28", "id": "nv_mon", "name": "Non-veg platter", "cat": "meals", "price": 7, "veg": false, "choices": ["Lamb kabob dry", "Patiala chicken masala"], "sides": ["Paneer bhuji", "Suji ka halwa"], "baseChoice": true, "desc": "", "days": ["mon"], "addons": ["chapati", "rice", "curry"], "swapFee": 0.5, "spice": false, "soldOut": false, "order": 2}, {"date": "2026-09-29", "id": "veg_tue", "name": "Veg platter", "cat": "meals", "price": 7, "veg": true, "choices": ["Chinese veg fried rice", "Dal tadka"], "sides": ["Honey gobi stir fry", "Paneer masala"], "baseChoice": true, "desc": "", "days": ["tue"], "addons": ["chapati", "rice", "curry"], "swapFee": 0.5, "spice": false, "soldOut": false, "order": 3}, {"date": "2026-09-29", "id": "nv_tue", "name": "Non-veg platter", "cat": "meals", "price": 7, "veg": false, "choices": ["Chicken kofta curry", "Roasted chicken"], "sides": ["Palak corn", "Veg Kolhapuri"], "baseChoice": true, "desc": "", "days": ["tue"], "addons": ["chapati", "rice", "curry"], "swapFee": 0.5, "spice": false, "soldOut": false, "order": 4}, {"date": "2026-09-30", "id": "veg_wed", "name": "Veg platter", "cat": "meals", "price": 7, "veg": true, "choices": ["Toor dal fry", "Veg tawa pulao"], "sides": ["Lauki kadhai masala", "Mix veg pakora"], "baseChoice": true, "desc": "", "days": ["wed"], "addons": ["chapati", "rice", "curry"], "swapFee": 0.5, "spice": false, "soldOut": false, "order": 5}, {"date": "2026-09-30", "id": "nv_wed", "name": "Non-veg platter", "cat": "meals", "price": 7, "veg": false, "choices": ["Honey garlic chicken breast (1 pc)", "Chicken korma"], "sides": ["Mushroom black pepper", "Mix veg roasted"], "baseChoice": true, "desc": "", "days": ["wed"], "addons": ["chapati", "rice", "curry"], "swapFee": 0.5, "spice": false, "soldOut": false, "order": 6}, {"date": "2026-10-01", "id": "veg_thu", "name": "Veg platter", "cat": "meals", "price": 7, "veg": true, "choices": ["Paneer changezi", "Chana dal fry"], "sides": ["Honey chilli potato", "Khaman dhokla"], "baseChoice": true, "desc": "", "days": ["thu"], "addons": ["chapati", "rice", "curry"], "swapFee": 0.5, "spice": false, "soldOut": false, "order": 7}, {"date": "2026-10-01", "id": "nv_thu", "name": "Non-veg platter", "cat": "meals", "price": 7, "veg": false, "choices": ["Kerala-style chicken", "Smoked chicken keema"], "sides": ["Navratan korma", "Rice kheer"], "baseChoice": true, "desc": "", "days": ["thu"], "addons": ["chapati", "rice", "curry"], "swapFee": 0.5, "spice": false, "soldOut": false, "order": 8}, {"date": "2026-10-02", "id": "veg_fri", "name": "Veg platter", "cat": "meals", "price": 7, "veg": true, "choices": ["Cauliflower kofta curry", "Veg dal"], "sides": ["Kung pao paneer", "Creamy pasta"], "baseChoice": true, "desc": "", "days": ["fri"], "addons": ["chapati", "rice", "curry"], "swapFee": 0.5, "spice": false, "soldOut": false, "order": 9}, {"date": "2026-10-02", "id": "nv_fri", "name": "Non-veg platter", "cat": "meals", "price": 7, "veg": false, "choices": ["Fish curry", "Chicken Mongolian"], "sides": ["Chicken lollipops", "Veg soya keema"], "baseChoice": true, "desc": "", "days": ["fri"], "addons": ["chapati", "rice", "curry"], "swapFee": 0.5, "spice": false, "soldOut": false, "order": 10}], "history": {"weeks": ["Aug 31", "Sep 7", "Sep 14", "Sep 21"], "byDay": {"mon": {"veg_mon": [17, 16, 18, 17], "nv_mon": [20, 24, 23, 21]}, "tue": {"veg_tue": [18, 14, 18, 16], "nv_tue": [20, 22, 25, 24]}, "wed": {"veg_wed": [16, 14, 17, 19], "nv_wed": [23, 25, 19, 30]}, "thu": {"veg_thu": [15, 16, 19, 18], "nv_thu": [18, 22, 24, 22]}, "fri": {"veg_fri": [20, 20, 20, 20], "nv_fri": [30, 26, 30, 29]}}}, "orders": [{"id": "seed01", "code": "MK-4762", "customerId": "sample", "name": "Aarav M.", "phone": "(847) 555-0175", "date": "2026-09-28", "slot": "lunch", "where": "address", "address": "1800 Sherman Ave, Evanston", "items": [{"menuId": "nv_mon", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Patiala chicken masala", "base": "rice", "sides": ["Paneer bhuji", "Suji ka halwa"], "swapFrom": "", "addons": [], "spice": "", "note": "Less oil please", "baseChapati": 0, "baseRice": 1, "lineTotal": 7}], "subtotal": 7, "fee": 3, "total": 10, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_13993234", "paidAt": "2026-09-25T19:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T16:16:00", "sample": true}, {"id": "seed02", "code": "MK-4252", "customerId": "sample", "name": "Priya S.", "phone": "(847) 555-0196", "date": "2026-09-28", "slot": "lunch", "where": "hub", "address": "", "items": [{"menuId": "nv_mon", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Lamb kabob dry", "base": "rice", "sides": ["Paneer bhuji", "Suji ka halwa"], "swapFrom": "", "addons": [{"id": "chapati", "name": "Extra chapati", "qty": 2, "price": 1}], "spice": "", "note": "No onions", "baseChapati": 0, "baseRice": 1, "lineTotal": 9}], "subtotal": 9, "fee": 0, "total": 9, "payment": {"status": "paid", "method": "venmo", "label": "Venmo", "ref": "pay_46208666", "paidAt": "2026-09-26T11:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T15:10:00", "sample": true}, {"id": "seed03", "code": "MK-9337", "customerId": "sample", "name": "Hamza K.", "phone": "(847) 555-0134", "date": "2026-09-28", "slot": "dinner", "where": "hub", "address": "", "items": [{"menuId": "veg_mon", "name": "Veg platter", "veg": true, "qty": 1, "unit": 7, "choice": "Tomato dal", "base": "rice", "sides": ["Aloo matar subji", "Masala idli fry"], "swapFrom": "", "addons": [{"id": "curry", "name": "Extra curry", "qty": 1, "price": 3}], "spice": "", "note": "", "baseChapati": 0, "baseRice": 1, "lineTotal": 10}], "subtotal": 10, "fee": 0, "total": 10, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_27578104", "paidAt": "2026-09-26T16:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T16:36:00", "sample": true}, {"id": "seed04", "code": "MK-2643", "customerId": "sample", "name": "Emily R.", "phone": "(847) 555-0115", "date": "2026-09-28", "slot": "lunch", "where": "address", "address": "1630 Chicago Ave, Evanston", "items": [{"menuId": "veg_mon", "name": "Veg platter", "veg": true, "qty": 1, "unit": 7, "choice": "Palak paneer", "base": "chapati", "sides": ["Paneer bhuji", "Suji ka halwa"], "swapFrom": "Non-veg platter", "addons": [{"id": "swap", "name": "Starter swap", "qty": 1, "price": 0.5}], "spice": "", "note": "", "baseChapati": 3, "baseRice": 0, "lineTotal": 7.5}], "subtotal": 7.5, "fee": 3, "total": 10.5, "payment": {"status": "paid", "method": "venmo", "label": "Venmo", "ref": "pay_38621040", "paidAt": "2026-09-26T14:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T19:31:00", "sample": true}, {"id": "seed05", "code": "MK-8925", "customerId": "sample", "name": "Zain A.", "phone": "(847) 555-0183", "date": "2026-09-28", "slot": "dinner", "where": "hub", "address": "", "items": [{"menuId": "nv_mon", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Lamb kabob dry", "base": "rice", "sides": ["Paneer bhuji", "Suji ka halwa"], "swapFrom": "", "addons": [{"id": "chapati", "name": "Extra chapati", "qty": 1, "price": 1}], "spice": "", "note": "", "baseChapati": 0, "baseRice": 1, "lineTotal": 8}], "subtotal": 8, "fee": 0, "total": 8, "payment": {"status": "paid", "method": "venmo", "label": "Venmo", "ref": "pay_28218439", "paidAt": "2026-09-26T12:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T14:24:00", "sample": true}, {"id": "seed06", "code": "MK-2701", "customerId": "sample", "name": "Ananya P.", "phone": "(847) 555-0123", "date": "2026-09-28", "slot": "dinner", "where": "hub", "address": "", "items": [{"menuId": "veg_mon", "name": "Veg platter", "veg": true, "qty": 1, "unit": 7, "choice": "Tomato dal", "base": "rice", "sides": ["Aloo matar subji", "Masala idli fry"], "swapFrom": "", "addons": [], "spice": "", "note": "", "baseChapati": 0, "baseRice": 1, "lineTotal": 7}], "subtotal": 7, "fee": 0, "total": 7, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_15193752", "paidAt": "2026-09-26T13:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T14:36:00", "sample": true}, {"id": "seed07", "code": "MK-2214", "customerId": "sample", "name": "Daniel K.", "phone": "(847) 555-0145", "date": "2026-09-28", "slot": "lunch", "where": "hub", "address": "", "items": [{"menuId": "nv_mon", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Patiala chicken masala", "base": "chapati", "sides": ["Paneer bhuji", "Suji ka halwa"], "swapFrom": "", "addons": [], "spice": "", "note": "", "baseChapati": 3, "baseRice": 0, "lineTotal": 7}], "subtotal": 7, "fee": 0, "total": 7, "payment": {"status": "paid", "method": "venmo", "label": "Venmo", "ref": "pay_38507878", "paidAt": "2026-09-25T10:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T14:36:00", "sample": true}, {"id": "seed08", "code": "MK-6422", "customerId": "sample", "name": "Fatima N.", "phone": "(847) 555-0194", "date": "2026-09-28", "slot": "lunch", "where": "hub", "address": "", "items": [{"menuId": "veg_mon", "name": "Veg platter", "veg": true, "qty": 1, "unit": 7, "choice": "Tomato dal", "base": "rice", "sides": ["Aloo matar subji", "Masala idli fry"], "swapFrom": "", "addons": [], "spice": "", "note": "", "baseChapati": 0, "baseRice": 1, "lineTotal": 7}], "subtotal": 7, "fee": 0, "total": 7, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_80053462", "paidAt": "2026-09-25T19:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T10:40:00", "sample": true}, {"id": "seed09", "code": "MK-8423", "customerId": "sample", "name": "Rohan G.", "phone": "(847) 555-0179", "date": "2026-09-28", "slot": "lunch", "where": "address", "address": "1800 Sherman Ave, Evanston", "items": [{"menuId": "nv_mon", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Lamb kabob dry", "base": "rice", "sides": ["Paneer bhuji", "Suji ka halwa"], "swapFrom": "", "addons": [], "spice": "", "note": "", "baseChapati": 0, "baseRice": 1, "lineTotal": 7}], "subtotal": 7, "fee": 3, "total": 10, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_15967982", "paidAt": "2026-09-25T15:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T11:53:00", "sample": true}, {"id": "seed10", "code": "MK-2183", "customerId": "sample", "name": "Sara L.", "phone": "(847) 555-0120", "date": "2026-09-28", "slot": "lunch", "where": "hub", "address": "", "items": [{"menuId": "veg_mon", "name": "Veg platter", "veg": true, "qty": 2, "unit": 7, "choice": "Palak paneer", "base": "rice", "sides": ["Aloo matar subji", "Masala idli fry"], "swapFrom": "", "addons": [], "spice": "", "note": "", "baseChapati": 0, "baseRice": 1, "lineTotal": 14}], "subtotal": 14, "fee": 0, "total": 14, "payment": {"status": "paid", "method": "venmo", "label": "Venmo", "ref": "pay_22166626", "paidAt": "2026-09-25T14:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T15:34:00", "sample": true}, {"id": "seed11", "code": "MK-8879", "customerId": "sample", "name": "Omar F.", "phone": "(847) 555-0112", "date": "2026-09-28", "slot": "lunch", "where": "hub", "address": "", "items": [{"menuId": "nv_mon", "name": "Non-veg platter", "veg": false, "qty": 2, "unit": 7, "choice": "Patiala chicken masala", "base": "chapati", "sides": ["Aloo matar subji", "Masala idli fry"], "swapFrom": "Veg platter", "addons": [{"id": "swap", "name": "Starter swap", "qty": 2, "price": 0.5}], "spice": "", "note": "Less oil please", "baseChapati": 3, "baseRice": 0, "lineTotal": 15.0}], "subtotal": 15.0, "fee": 0, "total": 15.0, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_40899825", "paidAt": "2026-09-25T17:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T14:10:00", "sample": true}, {"id": "seed12", "code": "MK-7631", "customerId": "sample", "name": "Meera J.", "phone": "(847) 555-0195", "date": "2026-09-28", "slot": "lunch", "where": "address", "address": "1800 Sherman Ave, Evanston", "items": [{"menuId": "veg_mon", "name": "Veg platter", "veg": true, "qty": 1, "unit": 7, "choice": "Tomato dal", "base": "chapati", "sides": ["Aloo matar subji", "Masala idli fry"], "swapFrom": "", "addons": [], "spice": "", "note": "", "baseChapati": 3, "baseRice": 0, "lineTotal": 7}], "subtotal": 7, "fee": 3, "total": 10, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_36642994", "paidAt": "2026-09-26T13:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T16:24:00", "sample": true}, {"id": "seed13", "code": "MK-3771", "customerId": "sample", "name": "Kabir T.", "phone": "(847) 555-0124", "date": "2026-09-28", "slot": "dinner", "where": "hub", "address": "", "items": [{"menuId": "nv_mon", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Lamb kabob dry", "base": "rice", "sides": ["Paneer bhuji", "Suji ka halwa"], "swapFrom": "", "addons": [], "spice": "", "note": "", "baseChapati": 0, "baseRice": 1, "lineTotal": 7}], "subtotal": 7, "fee": 0, "total": 7, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_70485145", "paidAt": "2026-09-26T14:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T16:34:00", "sample": true}, {"id": "seed14", "code": "MK-6803", "customerId": "sample", "name": "Ayesha R.", "phone": "(847) 555-0149", "date": "2026-09-28", "slot": "dinner", "where": "address", "address": "1720 Maple Ave, Evanston", "items": [{"menuId": "nv_mon", "name": "Non-veg platter", "veg": false, "qty": 2, "unit": 7, "choice": "Patiala chicken masala", "base": "chapati", "sides": ["Paneer bhuji", "Suji ka halwa"], "swapFrom": "", "addons": [{"id": "chapati", "name": "Extra chapati", "qty": 2, "price": 1}], "spice": "", "note": "", "baseChapati": 3, "baseRice": 0, "lineTotal": 16}], "subtotal": 16, "fee": 3, "total": 19, "payment": {"status": "paid", "method": "venmo", "label": "Venmo", "ref": "pay_96031623", "paidAt": "2026-09-25T16:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T13:11:00", "sample": true}, {"id": "seed15", "code": "MK-7040", "customerId": "sample", "name": "Neil D.", "phone": "(847) 555-0119", "date": "2026-09-28", "slot": "dinner", "where": "hub", "address": "", "items": [{"menuId": "nv_mon", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Lamb kabob dry", "base": "rice", "sides": ["Aloo matar subji", "Masala idli fry"], "swapFrom": "Veg platter", "addons": [{"id": "swap", "name": "Starter swap", "qty": 1, "price": 0.5}], "spice": "", "note": "", "baseChapati": 0, "baseRice": 1, "lineTotal": 7.5}], "subtotal": 7.5, "fee": 0, "total": 7.5, "payment": {"status": "paid", "method": "venmo", "label": "Venmo", "ref": "pay_36581864", "paidAt": "2026-09-25T17:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T12:55:00", "sample": true}, {"id": "seed16", "code": "MK-7173", "customerId": "sample", "name": "Ishaan V.", "phone": "(847) 555-0180", "date": "2026-09-28", "slot": "lunch", "where": "hub", "address": "", "items": [{"menuId": "nv_mon", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Lamb kabob dry", "base": "rice", "sides": ["Paneer bhuji", "Suji ka halwa"], "swapFrom": "", "addons": [], "spice": "", "note": "Less oil please", "baseChapati": 0, "baseRice": 1, "lineTotal": 7}, {"menuId": "veg_mon", "name": "Veg platter", "veg": true, "qty": 1, "unit": 7, "choice": "Tomato dal", "base": "chapati", "sides": ["Paneer bhuji", "Suji ka halwa"], "swapFrom": "Non-veg platter", "addons": [{"id": "curry", "name": "Extra curry", "qty": 1, "price": 3}, {"id": "swap", "name": "Starter swap", "qty": 1, "price": 0.5}], "spice": "", "note": "", "baseChapati": 3, "baseRice": 0, "lineTotal": 10.5}], "subtotal": 17.5, "fee": 0, "total": 17.5, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_86344928", "paidAt": "2026-09-26T17:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T13:16:00", "sample": true}, {"id": "seed17", "code": "MK-5290", "customerId": "sample", "name": "Maryam Q.", "phone": "(847) 555-0112", "date": "2026-09-29", "slot": "dinner", "where": "address", "address": "1800 Sherman Ave, Evanston", "items": [{"menuId": "veg_tue", "name": "Veg platter", "veg": true, "qty": 1, "unit": 7, "choice": "Chinese veg fried rice", "base": "", "sides": ["Honey gobi stir fry", "Paneer masala"], "swapFrom": "", "addons": [], "spice": "", "note": "", "baseChapati": 0, "baseRice": 0, "lineTotal": 7}], "subtotal": 7, "fee": 3, "total": 10, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_77742271", "paidAt": "2026-09-25T10:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T15:45:00", "sample": true}, {"id": "seed18", "code": "MK-3301", "customerId": "sample", "name": "Aarav M.", "phone": "(847) 555-0170", "date": "2026-09-29", "slot": "lunch", "where": "hub", "address": "", "items": [{"menuId": "nv_tue", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Roasted chicken", "base": "rice", "sides": ["Honey gobi stir fry", "Paneer masala"], "swapFrom": "Veg platter", "addons": [{"id": "swap", "name": "Starter swap", "qty": 1, "price": 0.5}], "spice": "", "note": "", "baseChapati": 0, "baseRice": 1, "lineTotal": 7.5}], "subtotal": 7.5, "fee": 0, "total": 7.5, "payment": {"status": "paid", "method": "venmo", "label": "Venmo", "ref": "pay_29954894", "paidAt": "2026-09-26T17:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T13:38:00", "sample": true}, {"id": "seed19", "code": "MK-9924", "customerId": "sample", "name": "Priya S.", "phone": "(847) 555-0177", "date": "2026-09-29", "slot": "lunch", "where": "hub", "address": "", "items": [{"menuId": "nv_tue", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Chicken kofta curry", "base": "chapati", "sides": ["Palak corn", "Veg Kolhapuri"], "swapFrom": "", "addons": [{"id": "curry", "name": "Extra curry", "qty": 1, "price": 3}], "spice": "", "note": "Less oil please", "baseChapati": 3, "baseRice": 0, "lineTotal": 10}], "subtotal": 10, "fee": 0, "total": 10, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_46636394", "paidAt": "2026-09-26T13:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T18:17:00", "sample": true}, {"id": "seed20", "code": "MK-3732", "customerId": "sample", "name": "Hamza K.", "phone": "(847) 555-0118", "date": "2026-09-29", "slot": "lunch", "where": "hub", "address": "", "items": [{"menuId": "nv_tue", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Roasted chicken", "base": "rice", "sides": ["Palak corn", "Veg Kolhapuri"], "swapFrom": "", "addons": [], "spice": "", "note": "Less oil please", "baseChapati": 0, "baseRice": 1, "lineTotal": 7}], "subtotal": 7, "fee": 0, "total": 7, "payment": {"status": "paid", "method": "venmo", "label": "Venmo", "ref": "pay_82305162", "paidAt": "2026-09-26T16:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T14:25:00", "sample": true}, {"id": "seed21", "code": "MK-3121", "customerId": "sample", "name": "Emily R.", "phone": "(847) 555-0199", "date": "2026-09-29", "slot": "dinner", "where": "hub", "address": "", "items": [{"menuId": "veg_tue", "name": "Veg platter", "veg": true, "qty": 2, "unit": 7, "choice": "Dal tadka", "base": "chapati", "sides": ["Palak corn", "Veg Kolhapuri"], "swapFrom": "Non-veg platter", "addons": [{"id": "swap", "name": "Starter swap", "qty": 2, "price": 0.5}], "spice": "", "note": "", "baseChapati": 3, "baseRice": 0, "lineTotal": 15.0}], "subtotal": 15.0, "fee": 0, "total": 15.0, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_13058277", "paidAt": "2026-09-25T13:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T13:10:00", "sample": true}, {"id": "seed22", "code": "MK-7156", "customerId": "sample", "name": "Zain A.", "phone": "(847) 555-0191", "date": "2026-09-29", "slot": "dinner", "where": "address", "address": "909 Davis St, Evanston", "items": [{"menuId": "nv_tue", "name": "Non-veg platter", "veg": false, "qty": 2, "unit": 7, "choice": "Roasted chicken", "base": "rice", "sides": ["Palak corn", "Veg Kolhapuri"], "swapFrom": "", "addons": [{"id": "chapati", "name": "Extra chapati", "qty": 2, "price": 1}], "spice": "", "note": "No onions", "baseChapati": 0, "baseRice": 1, "lineTotal": 16}], "subtotal": 16, "fee": 3, "total": 19, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_81047845", "paidAt": "2026-09-25T18:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T18:50:00", "sample": true}, {"id": "seed23", "code": "MK-4189", "customerId": "sample", "name": "Ananya P.", "phone": "(847) 555-0137", "date": "2026-09-29", "slot": "lunch", "where": "hub", "address": "", "items": [{"menuId": "veg_tue", "name": "Veg platter", "veg": true, "qty": 1, "unit": 7, "choice": "Chinese veg fried rice", "base": "", "sides": ["Honey gobi stir fry", "Paneer masala"], "swapFrom": "", "addons": [], "spice": "", "note": "", "baseChapati": 0, "baseRice": 0, "lineTotal": 7}], "subtotal": 7, "fee": 0, "total": 7, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_36110977", "paidAt": "2026-09-25T12:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-25T12:56:00", "sample": true}, {"id": "seed24", "code": "MK-2155", "customerId": "sample", "name": "Daniel K.", "phone": "(847) 555-0171", "date": "2026-09-29", "slot": "dinner", "where": "address", "address": "1720 Maple Ave, Evanston", "items": [{"menuId": "nv_tue", "name": "Non-veg platter", "veg": false, "qty": 1, "unit": 7, "choice": "Roasted chicken", "base": "chapati", "sides": ["Palak corn", "Veg Kolhapuri"], "swapFrom": "", "addons": [{"id": "chapati", "name": "Extra chapati", "qty": 1, "price": 1}], "spice": "", "note": "No onions", "baseChapati": 3, "baseRice": 0, "lineTotal": 8}, {"menuId": "veg_tue", "name": "Veg platter", "veg": true, "qty": 1, "unit": 7, "choice": "Dal tadka", "base": "chapati", "sides": ["Honey gobi stir fry", "Paneer masala"], "swapFrom": "", "addons": [], "spice": "", "note": "", "baseChapati": 3, "baseRice": 0, "lineTotal": 7}], "subtotal": 15, "fee": 3, "total": 18, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_13262123", "paidAt": "2026-09-25T18:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T12:22:00", "sample": true}, {"id": "seed25", "code": "MK-8570", "customerId": "sample", "name": "Fatima N.", "phone": "(847) 555-0119", "date": "2026-09-29", "slot": "dinner", "where": "hub", "address": "", "items": [{"menuId": "veg_tue", "name": "Veg platter", "veg": true, "qty": 1, "unit": 7, "choice": "Chinese veg fried rice", "base": "", "sides": ["Honey gobi stir fry", "Paneer masala"], "swapFrom": "", "addons": [], "spice": "", "note": "", "baseChapati": 0, "baseRice": 0, "lineTotal": 7}], "subtotal": 7, "fee": 0, "total": 7, "payment": {"status": "paid", "method": "venmo", "label": "Venmo", "ref": "pay_22980727", "paidAt": "2026-09-26T16:00:00"}, "status": "received", "statusAt": {"received": "2026-09-26T10:00:00"}, "createdAt": "2026-09-26T16:42:00", "sample": true}, {"id": "seedd0", "code": "MK-6809", "customerId": "sample", "name": "Hamza K.", "phone": "(847) 555-0165", "date": "2026-09-26", "slot": "deal", "where": "hub", "address": "Global Hub lobby, 5:30–6:30 PM", "items": [{"specialId": "sp1", "name": "Creamy pasta (full box)", "veg": true, "qty": 1, "unit": 6, "choice": "", "base": "", "sides": [], "addons": [], "spice": "", "note": "", "baseChapati": 0, "baseRice": 0, "lineTotal": 6}], "subtotal": 6, "fee": 0, "total": 6, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_x", "paidAt": "2026-09-26T11:20:00"}, "status": "received", "statusAt": {"received": "2026-09-26T11:20:00"}, "createdAt": "2026-09-26T11:20:00", "sample": true}, {"id": "seedd1", "code": "MK-4442", "customerId": "sample", "name": "Ananya P.", "phone": "(847) 555-0186", "date": "2026-09-26", "slot": "deal", "where": "hub", "address": "Global Hub lobby, 5:30–6:30 PM", "items": [{"specialId": "sp2", "name": "Chicken 65 (8 pc)", "veg": false, "qty": 2, "unit": 5, "choice": "", "base": "", "sides": [], "addons": [], "spice": "", "note": "", "baseChapati": 0, "baseRice": 0, "lineTotal": 10}], "subtotal": 10, "fee": 0, "total": 10, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_x", "paidAt": "2026-09-26T11:20:00"}, "status": "received", "statusAt": {"received": "2026-09-26T11:20:00"}, "createdAt": "2026-09-26T11:20:00", "sample": true}, {"id": "seedd2", "code": "MK-7113", "customerId": "sample", "name": "Neil D.", "phone": "(847) 555-0111", "date": "2026-09-26", "slot": "deal", "where": "hub", "address": "Global Hub lobby, 5:30–6:30 PM", "items": [{"specialId": "sp2", "name": "Chicken 65 (8 pc)", "veg": false, "qty": 1, "unit": 5, "choice": "", "base": "", "sides": [], "addons": [], "spice": "", "note": "", "baseChapati": 0, "baseRice": 0, "lineTotal": 5}], "subtotal": 5, "fee": 0, "total": 5, "payment": {"status": "paid", "method": "card", "label": "Visa •4242", "ref": "pay_x", "paidAt": "2026-09-26T11:20:00"}, "status": "received", "statusAt": {"received": "2026-09-26T11:20:00"}, "createdAt": "2026-09-26T11:20:00", "sample": true}], "specials": [{"id": "sp1", "name": "Creamy pasta (full box)", "veg": true, "price": 6, "was": null, "qty": 6, "date": "2026-09-26", "pickup": "Global Hub lobby, 5:30–6:30 PM", "createdAt": "2026-09-26T11:00:00"}, {"id": "sp2", "name": "Chicken 65 (8 pc)", "veg": false, "price": 5, "was": null, "qty": 5, "date": "2026-09-26", "pickup": "Global Hub lobby, 5:30–6:30 PM", "createdAt": "2026-09-26T11:05:00"}], "dstats": {"updatedThrough": "2026-09-25", "dishes": {"Tomato dal": {"type": "main", "veg": true, "cost": 0.9, "served": 3, "lastServed": "2026-09-21", "cuisine": "North Indian", "riceDish": false, "lift": 0.95, "pickShare": 0.41, "avgPicked": 7.3}, "Palak paneer": {"type": "main", "veg": true, "cost": 1.9, "served": 4, "lastServed": "2026-09-21", "cuisine": "North Indian", "riceDish": false, "lift": 1.18, "pickShare": 0.63, "avgPicked": 11.2}, "Chinese veg fried rice": {"type": "main", "veg": true, "cost": 1.1, "served": 2, "lastServed": "2026-09-22", "cuisine": "Indo-Chinese", "riceDish": true, "lift": 0.9, "pickShare": 0.44, "avgPicked": 7.0}, "Dal tadka": {"type": "main", "veg": true, "cost": 0.9, "served": 3, "lastServed": "2026-09-22", "cuisine": "North Indian", "riceDish": false, "lift": 1.0, "pickShare": 0.52, "avgPicked": 9.0}, "Toor dal fry": {"type": "main", "veg": true, "cost": 0.9, "served": 4, "lastServed": "2026-09-23", "cuisine": "Gujarati", "riceDish": false, "lift": 0.95, "pickShare": 0.48, "avgPicked": 8.0}, "Veg tawa pulao": {"type": "main", "veg": true, "cost": 1.1, "served": 6, "lastServed": "2026-09-23", "cuisine": "Mumbai street", "riceDish": true, "lift": 1.05, "pickShare": 0.52, "avgPicked": 9.3}, "Paneer changezi": {"type": "main", "veg": true, "cost": 2.0, "served": 2, "lastServed": "2026-09-24", "cuisine": "Mughlai", "riceDish": false, "lift": 1.14, "pickShare": 0.58, "avgPicked": 10.5}, "Chana dal fry": {"type": "main", "veg": true, "cost": 0.9, "served": 4, "lastServed": "2026-09-24", "cuisine": "North Indian", "riceDish": false, "lift": 1.0, "pickShare": 0.45, "avgPicked": 7.5}, "Cauliflower kofta curry": {"type": "main", "veg": true, "cost": 1.4, "served": 2, "lastServed": "2026-09-25", "cuisine": "North Indian", "riceDish": false, "lift": 1.0, "pickShare": 0.54, "avgPicked": 10.0}, "Veg dal": {"type": "main", "veg": true, "cost": 0.8, "served": 5, "lastServed": "2026-09-25", "cuisine": "North Indian", "riceDish": false, "lift": 0.86, "pickShare": 0.36, "avgPicked": 5.8}, "Rajma masala": {"type": "main", "veg": true, "cost": 1.0, "served": 1, "lastServed": "2026-09-14", "cuisine": "Punjabi", "riceDish": false, "lift": 0.92, "pickShare": 0.33, "avgPicked": 6.0}, "Chole masala": {"type": "main", "veg": true, "cost": 1.0, "served": 1, "lastServed": "2026-08-18", "cuisine": "Punjabi", "riceDish": false, "lift": 0.98, "pickShare": 0.35, "avgPicked": 6.0}, "Paneer butter masala": {"type": "main", "veg": true, "cost": 2.0, "served": 3, "lastServed": "2026-09-14", "cuisine": "Punjabi", "riceDish": false, "lift": 1.2, "pickShare": 0.64, "avgPicked": 11.3}, "Kadhi pakora": {"type": "main", "veg": true, "cost": 1.0, "served": 1, "lastServed": "2026-08-24", "cuisine": "Punjabi", "riceDish": false, "lift": 0.9, "pickShare": 0.38, "avgPicked": 5.0}, "Baingan bharta": {"type": "main", "veg": true, "cost": 1.1, "served": 1, "lastServed": "2026-09-09", "cuisine": "Punjabi", "riceDish": false, "lift": 0.88, "pickShare": 0.43, "avgPicked": 6.0}, "Malai kofta": {"type": "main", "veg": true, "cost": 1.7, "served": 3, "lastServed": "2026-09-16", "cuisine": "Mughlai", "riceDish": false, "lift": 1.08, "pickShare": 0.59, "avgPicked": 9.7}, "Dal makhani": {"type": "main", "veg": true, "cost": 1.2, "served": 2, "lastServed": "2026-08-28", "cuisine": "Punjabi", "riceDish": false, "lift": 1.1, "pickShare": 0.57, "avgPicked": 10.0}, "Aloo gobi": {"type": "main", "veg": true, "cost": 0.9, "served": 3, "lastServed": "2026-09-18", "cuisine": "North Indian", "riceDish": false, "lift": 0.93, "pickShare": 0.43, "avgPicked": 7.3}, "Mushroom matar": {"type": "main", "veg": true, "cost": 1.5, "served": 3, "lastServed": "2026-09-07", "cuisine": "North Indian", "riceDish": false, "lift": 1.08, "pickShare": 0.54, "avgPicked": 8.7}, "Veg biryani": {"type": "main", "veg": true, "cost": 1.4, "served": 3, "lastServed": "2026-09-16", "cuisine": "Hyderabadi", "riceDish": true, "lift": 1.04, "pickShare": 0.49, "avgPicked": 8.3}, "Methi malai paneer": {"type": "main", "veg": true, "cost": 2.0, "served": 1, "lastServed": "2026-08-21", "cuisine": "Mughlai", "riceDish": false, "lift": 1.06, "pickShare": 0.53, "avgPicked": 9.0}, "Veg Kolhapuri curry": {"type": "main", "veg": true, "cost": 1.2, "served": 3, "lastServed": "2026-09-15", "cuisine": "Maharashtrian", "riceDish": false, "lift": 1.02, "pickShare": 0.52, "avgPicked": 8.3}, "Lamb kabob dry": {"type": "main", "veg": false, "cost": 3.2, "served": 3, "lastServed": "2026-09-21", "cuisine": "Pakistani", "riceDish": false, "lift": 0.95, "pickShare": 0.43, "avgPicked": 9.7}, "Patiala chicken masala": {"type": "main", "veg": false, "cost": 2.3, "served": 4, "lastServed": "2026-09-21", "cuisine": "Punjabi", "riceDish": false, "lift": 0.97, "pickShare": 0.48, "avgPicked": 10.8}, "Chicken kofta curry": {"type": "main", "veg": false, "cost": 2.2, "served": 4, "lastServed": "2026-09-22", "cuisine": "North Indian", "riceDish": false, "lift": 1.0, "pickShare": 0.49, "avgPicked": 11.0}, "Roasted chicken": {"type": "main", "veg": false, "cost": 2.4, "served": 5, "lastServed": "2026-09-22", "cuisine": "Western", "riceDish": false, "lift": 0.94, "pickShare": 0.44, "avgPicked": 9.4}, "Honey garlic chicken breast (1 pc)": {"type": "main", "veg": false, "cost": 2.5, "served": 3, "lastServed": "2026-09-23", "cuisine": "Indo-Chinese", "riceDish": false, "lift": 1.07, "pickShare": 0.49, "avgPicked": 12.3}, "Chicken korma": {"type": "main", "veg": false, "cost": 2.3, "served": 3, "lastServed": "2026-09-23", "cuisine": "Mughlai", "riceDish": false, "lift": 1.17, "pickShare": 0.56, "avgPicked": 15.3}, "Kerala-style chicken": {"type": "main", "veg": false, "cost": 2.3, "served": 5, "lastServed": "2026-09-24", "cuisine": "South Indian", "riceDish": false, "lift": 0.94, "pickShare": 0.48, "avgPicked": 9.8}, "Smoked chicken keema": {"type": "main", "veg": false, "cost": 2.2, "served": 2, "lastServed": "2026-09-24", "cuisine": "Pakistani", "riceDish": false, "lift": 1.05, "pickShare": 0.57, "avgPicked": 12.0}, "Fish curry": {"type": "main", "veg": false, "cost": 2.8, "served": 4, "lastServed": "2026-09-25", "cuisine": "Bengali", "riceDish": false, "lift": 0.8, "pickShare": 0.33, "avgPicked": 7.0}, "Chicken Mongolian": {"type": "main", "veg": false, "cost": 2.2, "served": 4, "lastServed": "2026-09-25", "cuisine": "Indo-Chinese", "riceDish": false, "lift": 1.12, "pickShare": 0.55, "avgPicked": 14.5}, "Butter chicken": {"type": "main", "veg": false, "cost": 2.4, "served": 5, "lastServed": "2026-09-15", "cuisine": "Punjabi", "riceDish": false, "lift": 1.22, "pickShare": 0.6, "avgPicked": 15.8}, "Chicken biryani": {"type": "main", "veg": false, "cost": 2.3, "served": 4, "lastServed": "2026-09-18", "cuisine": "Hyderabadi", "riceDish": true, "lift": 1.19, "pickShare": 0.6, "avgPicked": 16.2}, "Chicken karahi": {"type": "main", "veg": false, "cost": 2.4, "served": 2, "lastServed": "2026-09-17", "cuisine": "Pakistani", "riceDish": false, "lift": 0.97, "pickShare": 0.48, "avgPicked": 12.0}, "Egg curry": {"type": "main", "veg": false, "cost": 1.3, "served": 0, "lastServed": null, "cuisine": "North Indian", "riceDish": false}, "Mutton rogan josh": {"type": "main", "veg": false, "cost": 3.6, "served": 1, "lastServed": "2026-09-04", "cuisine": "Kashmiri", "riceDish": false, "lift": 1.05, "pickShare": 0.4, "avgPicked": 12.0}, "Chilli chicken": {"type": "main", "veg": false, "cost": 2.1, "served": 2, "lastServed": "2026-09-02", "cuisine": "Indo-Chinese", "riceDish": false, "lift": 1.1, "pickShare": 0.62, "avgPicked": 14.0}, "Goan fish curry": {"type": "main", "veg": false, "cost": 2.9, "served": 0, "lastServed": null, "cuisine": "Goan", "riceDish": false}, "Keema matar": {"type": "main", "veg": false, "cost": 2.5, "served": 3, "lastServed": "2026-09-17", "cuisine": "Pakistani", "riceDish": false, "lift": 0.96, "pickShare": 0.47, "avgPicked": 11.0}, "Chicken tikka masala": {"type": "main", "veg": false, "cost": 2.4, "served": 2, "lastServed": "2026-09-18", "cuisine": "Punjabi", "riceDish": false, "lift": 1.04, "pickShare": 0.46, "avgPicked": 13.0}, "Andhra chicken": {"type": "main", "veg": false, "cost": 2.2, "served": 4, "lastServed": "2026-09-07", "cuisine": "South Indian", "riceDish": false, "lift": 0.95, "pickShare": 0.45, "avgPicked": 9.5}, "Aloo matar subji": {"type": "starter", "veg": true, "cost": 0.5, "served": 7, "lastServed": "2026-09-21", "swapAway": 0.13}, "Masala idli fry": {"type": "starter", "veg": true, "cost": 0.6, "served": 2, "lastServed": "2026-09-21", "swapAway": 0.08}, "Paneer bhuji": {"type": "starter", "veg": true, "cost": 1.0, "served": 5, "lastServed": "2026-09-21", "swapAway": 0.05}, "Suji ka halwa": {"type": "starter", "veg": true, "cost": 0.4, "served": 2, "lastServed": "2026-09-21", "swapAway": 0.08}, "Honey gobi stir fry": {"type": "starter", "veg": true, "cost": 0.6, "served": 6, "lastServed": "2026-09-22", "swapAway": 0.08}, "Paneer masala": {"type": "starter", "veg": true, "cost": 1.0, "served": 9, "lastServed": "2026-09-22", "swapAway": 0.08}, "Palak corn": {"type": "starter", "veg": true, "cost": 0.6, "served": 4, "lastServed": "2026-09-22", "swapAway": 0.24}, "Veg Kolhapuri": {"type": "starter", "veg": true, "cost": 0.6, "served": 2, "lastServed": "2026-09-22", "swapAway": 0.19}, "Lauki kadhai masala": {"type": "starter", "veg": true, "cost": 0.5, "served": 4, "lastServed": "2026-09-23", "swapAway": 0.31}, "Mix veg pakora": {"type": "starter", "veg": true, "cost": 0.5, "served": 4, "lastServed": "2026-09-23", "swapAway": 0.1}, "Mushroom black pepper": {"type": "starter", "veg": true, "cost": 0.8, "served": 2, "lastServed": "2026-09-23", "swapAway": 0.07}, "Mix veg roasted": {"type": "starter", "veg": true, "cost": 0.6, "served": 5, "lastServed": "2026-09-23", "swapAway": 0.07}, "Honey chilli potato": {"type": "starter", "veg": true, "cost": 0.5, "served": 10, "lastServed": "2026-09-24", "swapAway": 0.05}, "Khaman dhokla": {"type": "starter", "veg": true, "cost": 0.5, "served": 3, "lastServed": "2026-09-24", "swapAway": 0.16}, "Navratan korma": {"type": "starter", "veg": true, "cost": 0.8, "served": 5, "lastServed": "2026-09-24", "swapAway": 0.07}, "Rice kheer": {"type": "starter", "veg": true, "cost": 0.4, "served": 7, "lastServed": "2026-09-24", "swapAway": 0.05}, "Kung pao paneer": {"type": "starter", "veg": true, "cost": 1.0, "served": 5, "lastServed": "2026-09-25", "swapAway": 0.05}, "Creamy pasta": {"type": "starter", "veg": true, "cost": 0.6, "served": 6, "lastServed": "2026-09-25", "swapAway": 0.06}, "Chicken lollipops": {"type": "starter", "veg": false, "cost": 1.2, "served": 2, "lastServed": "2026-09-25", "swapAway": 0.03}, "Veg soya keema": {"type": "starter", "veg": true, "cost": 0.6, "served": 6, "lastServed": "2026-09-25", "swapAway": 0.07}, "Hara bhara kabab": {"type": "starter", "veg": true, "cost": 0.6, "served": 5, "lastServed": "2026-09-07", "swapAway": 0.07}, "Gajar halwa": {"type": "starter", "veg": true, "cost": 0.5, "served": 7, "lastServed": "2026-09-18", "swapAway": 0.07}, "Chicken 65": {"type": "starter", "veg": false, "cost": 1.1, "served": 2, "lastServed": "2026-09-16", "swapAway": 0.0}, "Aloo tikki": {"type": "starter", "veg": true, "cost": 0.4, "served": 3, "lastServed": "2026-09-17", "swapAway": 0.08}, "Gulab jamun": {"type": "starter", "veg": true, "cost": 0.4, "served": 3, "lastServed": "2026-09-16", "swapAway": 0.04}, "Masala papad": {"type": "starter", "veg": true, "cost": 0.2, "served": 4, "lastServed": "2026-09-11", "swapAway": 0.24}}}, "weeks": {"weeks": [{"start": "2026-08-17", "days": {"mon": {"veg": {"mains": ["Chana dal fry", "Mushroom matar"], "starters": ["Hara bhara kabab", "Mushroom black pepper"], "platters": 16}, "nv": {"mains": ["Andhra chicken", "Roasted chicken"], "starters": ["Paneer masala", "Gajar halwa"], "platters": 19}}, "tue": {"veg": {"mains": ["Paneer butter masala", "Chole masala"], "starters": ["Mix veg roasted", "Hara bhara kabab"], "platters": 17}, "nv": {"mains": ["Fish curry", "Honey garlic chicken breast (1 pc)"], "starters": ["Paneer masala", "Paneer bhuji"], "platters": 20}}, "wed": {"veg": {"mains": ["Veg tawa pulao", "Dal makhani"], "starters": ["Mix veg roasted", "Paneer masala"], "platters": 17}, "nv": {"mains": ["Butter chicken", "Chicken Mongolian"], "starters": ["Paneer masala", "Aloo tikki"], "platters": 26}}, "thu": {"veg": {"mains": ["Malai kofta", "Veg dal"], "starters": ["Kung pao paneer", "Honey chilli potato"], "platters": 15}, "nv": {"mains": ["Chicken korma", "Chicken kofta curry"], "starters": ["Creamy pasta", "Paneer bhuji"], "platters": 22}}, "fri": {"veg": {"mains": ["Cauliflower kofta curry", "Methi malai paneer"], "starters": ["Masala papad", "Rice kheer"], "platters": 17}, "nv": {"mains": ["Chicken biryani", "Lamb kabob dry"], "starters": ["Lauki kadhai masala", "Gajar halwa"], "platters": 26}}}, "revenue": 1365, "foodCost": 727.75}, {"start": "2026-08-24", "days": {"mon": {"veg": {"mains": ["Kadhi pakora", "Chana dal fry"], "starters": ["Paneer masala", "Honey chilli potato"], "platters": 13}, "nv": {"mains": ["Butter chicken", "Honey garlic chicken breast (1 pc)"], "starters": ["Honey gobi stir fry", "Aloo tikki"], "platters": 26}}, "tue": {"veg": {"mains": ["Palak paneer", "Veg dal"], "starters": ["Honey gobi stir fry", "Gajar halwa"], "platters": 15}, "nv": {"mains": ["Keema matar", "Lamb kabob dry"], "starters": ["Palak corn", "Mix veg roasted"], "platters": 21}}, "wed": {"veg": {"mains": ["Malai kofta", "Aloo gobi"], "starters": ["Rice kheer", "Veg soya keema"], "platters": 17}, "nv": {"mains": ["Andhra chicken", "Kerala-style chicken"], "starters": ["Honey gobi stir fry", "Creamy pasta"], "platters": 21}}, "thu": {"veg": {"mains": ["Veg tawa pulao", "Mushroom matar"], "starters": ["Masala papad", "Aloo matar subji"], "platters": 16}, "nv": {"mains": ["Roasted chicken", "Chilli chicken"], "starters": ["Aloo matar subji", "Lauki kadhai masala"], "platters": 22}}, "fri": {"veg": {"mains": ["Dal makhani", "Toor dal fry"], "starters": ["Veg soya keema", "Khaman dhokla"], "platters": 18}, "nv": {"mains": ["Chicken biryani", "Chicken korma"], "starters": ["Honey gobi stir fry", "Suji ka halwa"], "platters": 30}}}, "revenue": 1393, "foodCost": 670.36}, {"start": "2026-08-31", "days": {"mon": {"veg": {"mains": ["Veg tawa pulao", "Tomato dal"], "starters": ["Gajar halwa", "Navratan korma"], "platters": 17}, "nv": {"mains": ["Chicken kofta curry", "Roasted chicken"], "starters": ["Hara bhara kabab", "Mix veg pakora"], "platters": 20}}, "tue": {"veg": {"mains": ["Veg biryani", "Paneer butter masala"], "starters": ["Honey chilli potato", "Rice kheer"], "platters": 18}, "nv": {"mains": ["Smoked chicken keema", "Andhra chicken"], "starters": ["Paneer masala", "Honey chilli potato"], "platters": 20}}, "wed": {"veg": {"mains": ["Veg Kolhapuri curry", "Chinese veg fried rice"], "starters": ["Hara bhara kabab", "Gulab jamun"], "platters": 16}, "nv": {"mains": ["Patiala chicken masala", "Chilli chicken"], "starters": ["Aloo matar subji", "Honey chilli potato"], "platters": 23}}, "thu": {"veg": {"mains": ["Toor dal fry", "Veg dal"], "starters": ["Veg soya keema", "Paneer masala"], "platters": 15}, "nv": {"mains": ["Kerala-style chicken", "Fish curry"], "starters": ["Chicken 65", "Veg soya keema"], "platters": 18}}, "fri": {"veg": {"mains": ["Palak paneer", "Chana dal fry"], "starters": ["Honey chilli potato", "Honey gobi stir fry"], "platters": 20}, "nv": {"mains": ["Butter chicken", "Mutton rogan josh"], "starters": ["Masala papad", "Creamy pasta"], "platters": 30}}}, "revenue": 1379, "foodCost": 680.52}, {"start": "2026-09-07", "days": {"mon": {"veg": {"mains": ["Mushroom matar", "Dal tadka"], "starters": ["Creamy pasta", "Hara bhara kabab"], "platters": 16}, "nv": {"mains": ["Andhra chicken", "Butter chicken"], "starters": ["Kung pao paneer", "Mix veg pakora"], "platters": 24}}, "tue": {"veg": {"mains": ["Veg Kolhapuri curry", "Aloo gobi"], "starters": ["Creamy pasta", "Palak corn"], "platters": 14}, "nv": {"mains": ["Chicken biryani", "Kerala-style chicken"], "starters": ["Mix veg roasted", "Paneer bhuji"], "platters": 22}}, "wed": {"veg": {"mains": ["Baingan bharta", "Toor dal fry"], "starters": ["Paneer bhuji", "Gajar halwa"], "platters": 14}, "nv": {"mains": ["Keema matar", "Chicken Mongolian"], "starters": ["Veg soya keema", "Aloo matar subji"], "platters": 25}}, "thu": {"veg": {"mains": ["Veg biryani", "Veg dal"], "starters": ["Kung pao paneer", "Honey chilli potato"], "platters": 16}, "nv": {"mains": ["Patiala chicken masala", "Roasted chicken"], "starters": ["Aloo matar subji", "Masala idli fry"], "platters": 22}}, "fri": {"veg": {"mains": ["Tomato dal", "Veg tawa pulao"], "starters": ["Lauki kadhai masala", "Gulab jamun"], "platters": 20}, "nv": {"mains": ["Chicken karahi", "Chicken tikka masala"], "starters": ["Navratan korma", "Masala papad"], "platters": 26}}}, "revenue": 1393, "foodCost": 683.97}, {"start": "2026-09-14", "days": {"mon": {"veg": {"mains": ["Paneer butter masala", "Rajma masala"], "starters": ["Rice kheer", "Veg Kolhapuri"], "platters": 18}, "nv": {"mains": ["Chicken kofta curry", "Patiala chicken masala"], "starters": ["Rice kheer", "Paneer masala"], "platters": 23}}, "tue": {"veg": {"mains": ["Veg Kolhapuri curry", "Paneer changezi"], "starters": ["Navratan korma", "Gajar halwa"], "platters": 18}, "nv": {"mains": ["Butter chicken", "Chicken Mongolian"], "starters": ["Rice kheer", "Honey chilli potato"], "platters": 25}}, "wed": {"veg": {"mains": ["Malai kofta", "Veg biryani"], "starters": ["Gulab jamun", "Aloo matar subji"], "platters": 17}, "nv": {"mains": ["Fish curry", "Kerala-style chicken"], "starters": ["Honey chilli potato", "Chicken 65"], "platters": 19}}, "thu": {"veg": {"mains": ["Veg tawa pulao", "Palak paneer"], "starters": ["Kung pao paneer", "Mix veg pakora"], "platters": 19}, "nv": {"mains": ["Chicken karahi", "Keema matar"], "starters": ["Aloo tikki", "Navratan korma"], "platters": 24}}, "fri": {"veg": {"mains": ["Dal tadka", "Aloo gobi"], "starters": ["Khaman dhokla", "Palak corn"], "platters": 20}, "nv": {"mains": ["Chicken biryani", "Chicken tikka masala"], "starters": ["Chicken lollipops", "Gajar halwa"], "platters": 30}}}, "revenue": 1491, "foodCost": 767.18}, {"start": "2026-09-21", "days": {"mon": {"veg": {"mains": ["Tomato dal", "Palak paneer"], "starters": ["Aloo matar subji", "Masala idli fry"], "platters": 17}, "nv": {"mains": ["Lamb kabob dry", "Patiala chicken masala"], "starters": ["Paneer bhuji", "Suji ka halwa"], "platters": 21}}, "tue": {"veg": {"mains": ["Chinese veg fried rice", "Dal tadka"], "starters": ["Honey gobi stir fry", "Paneer masala"], "platters": 16}, "nv": {"mains": ["Chicken kofta curry", "Roasted chicken"], "starters": ["Palak corn", "Veg Kolhapuri"], "platters": 24}}, "wed": {"veg": {"mains": ["Toor dal fry", "Veg tawa pulao"], "starters": ["Lauki kadhai masala", "Mix veg pakora"], "platters": 19}, "nv": {"mains": ["Honey garlic chicken breast (1 pc)", "Chicken korma"], "starters": ["Mushroom black pepper", "Mix veg roasted"], "platters": 30}}, "thu": {"veg": {"mains": ["Paneer changezi", "Chana dal fry"], "starters": ["Honey chilli potato", "Khaman dhokla"], "platters": 18}, "nv": {"mains": ["Kerala-style chicken", "Smoked chicken keema"], "starters": ["Navratan korma", "Rice kheer"], "platters": 22}}, "fri": {"veg": {"mains": ["Cauliflower kofta curry", "Veg dal"], "starters": ["Kung pao paneer", "Creamy pasta"], "platters": 20}, "nv": {"mains": ["Fish curry", "Chicken Mongolian"], "starters": ["Chicken lollipops", "Veg soya keema"], "platters": 29}}}, "revenue": 1512, "foodCost": 782.36}]}, "plans": {"2026-10-05": {"weekStart": "2026-10-05", "status": "draft", "autoPublishAt": "2026-10-03T10:00:00", "source": "claude-weekly", "instruction": "", "summary": "Every platter pairs a proven seller with a rotation dish, and Friday gets your two strongest (paneer butter masala, chicken biryani). I dropped the starters students kept swapping away (lauki, palak corn, Kolhapuri) and put cheaper starters on non-veg platters. Veg platters average 43% food cost, but non-veg averages 60% at $7: a chicken portion alone costs about $2.30, and Friday's rogan josh is expensive. Pricing non-veg at $8 would bring it near 52%.", "generatedAt": "2026-09-26T12:25:00-05:00", "editedAt": null, "days": {"mon": {"veg": {"mains": ["Mushroom matar", "Chole masala"], "starters": ["Aloo tikki", "Gulab jamun"], "why": "Mushroom matar sold 8% above a normal day and hasn't been on for 4 weeks; chole is cheap and hasn't run in 7.", "forecast": 19, "split": [11, 8], "foodCost": 2.44, "foodCostPct": 35, "usual": 18, "tags": {"Mushroom matar": ["Back after 4 wks"], "Chole masala": ["Back after 7 wks"], "Aloo tikki": [], "Gulab jamun": []}}, "nv": {"mains": ["Butter chicken", "Goan fish curry"], "starters": ["Masala idli fry", "Aloo matar subji"], "why": "Goan fish curry is new. Fish has sold 20% below usual, so it sits next to butter chicken, your top non-veg seller.", "forecast": 26, "split": [18, 8], "foodCost": 4.01, "foodCostPct": 57, "usual": 24, "tags": {"Butter chicken": ["Favorite"], "Goan fish curry": ["New"], "Masala idli fry": [], "Aloo matar subji": []}}}, "tue": {"veg": {"mains": ["Dal makhani", "Veg biryani"], "starters": ["Hara bhara kabab", "Rice kheer"], "why": "Dal makhani is a strong seller at a low cost ($1.20) and hasn't been on for 5 weeks.", "forecast": 19, "split": [10, 9], "foodCost": 2.64, "foodCostPct": 38, "usual": 18, "tags": {"Dal makhani": ["Favorite", "Back after 5 wks"], "Veg biryani": [], "Hara bhara kabab": ["Back after 4 wks"], "Rice kheer": []}}, "nv": {"mains": ["Chicken tikka masala", "Egg curry"], "starters": ["Honey chilli potato", "Creamy pasta"], "why": "Egg curry is new and the cheapest non-veg main ($1.30); tikka masala is the safe pick.", "forecast": 25, "split": [14, 11], "foodCost": 3.37, "foodCostPct": 48, "usual": 25, "tags": {"Chicken tikka masala": [], "Egg curry": ["New"], "Honey chilli potato": [], "Creamy pasta": []}}}, "wed": {"veg": {"mains": ["Malai kofta", "Aloo gobi"], "starters": ["Kung pao paneer", "Suji ka halwa"], "why": "Malai kofta sells well; aloo gobi keeps the platter under 45% food cost.", "forecast": 18, "split": [11, 7], "foodCost": 3.14, "foodCostPct": 45, "usual": 18, "tags": {"Malai kofta": [], "Aloo gobi": [], "Kung pao paneer": [], "Suji ka halwa": []}}, "nv": {"mains": ["Chilli chicken", "Keema matar"], "starters": ["Chicken lollipops", "Mix veg roasted"], "why": "Chilli chicken sold 10% above usual and hasn't run in 5 weeks. It's the only Indo-Chinese main on Wednesday; chicken lollipops are the starter students almost never swap away.", "forecast": 27, "split": [16, 11], "foodCost": 4.41, "foodCostPct": 63, "usual": 26, "tags": {"Chilli chicken": ["Favorite", "Back after 5 wks"], "Keema matar": [], "Chicken lollipops": [], "Mix veg roasted": []}}}, "thu": {"veg": {"mains": ["Methi malai paneer", "Rajma masala"], "starters": ["Mushroom black pepper", "Gajar halwa"], "why": "Methi malai paneer hasn't been on for 6 weeks; rajma balances the paneer cost.", "forecast": 18, "split": [11, 7], "foodCost": 3.25, "foodCostPct": 46, "usual": 18, "tags": {"Methi malai paneer": ["Back after 6 wks"], "Rajma masala": [], "Mushroom black pepper": [], "Gajar halwa": []}}, "nv": {"mains": ["Chicken karahi", "Andhra chicken"], "starters": ["Veg soya keema", "Honey gobi stir fry"], "why": "Two mid-priced chicken curries from different regions, with low-cost starters to hold food cost down.", "forecast": 22, "split": [11, 11], "foodCost": 3.85, "foodCostPct": 55, "usual": 23, "tags": {"Chicken karahi": [], "Andhra chicken": ["Back after 4 wks"], "Veg soya keema": [], "Honey gobi stir fry": []}}}, "fri": {"veg": {"mains": ["Paneer butter masala", "Veg Kolhapuri curry"], "starters": ["Paneer masala", "Mix veg pakora"], "why": "Friday is your busiest day, so it gets your top veg seller (+20% vs usual).", "forecast": 24, "split": [15, 9], "foodCost": 3.55, "foodCostPct": 51, "usual": 22, "tags": {"Paneer butter masala": ["Favorite"], "Veg Kolhapuri curry": [], "Paneer masala": [], "Mix veg pakora": []}}, "nv": {"mains": ["Chicken biryani", "Mutton rogan josh"], "starters": ["Navratan korma", "Paneer bhuji"], "why": "Biryani drives Friday volume. Rogan josh is the only mutton dish left that wasn't on recently; most students will still pick biryani, which limits the cost hit.", "forecast": 35, "split": [21, 14], "foodCost": 4.98, "foodCostPct": 71, "usual": 31, "tags": {"Chicken biryani": ["Favorite"], "Mutton rogan josh": ["Back after 4 wks"], "Navratan korma": [], "Paneer bhuji": []}}}}, "totals": {"platters": 233, "revenue": 1631, "foodCostPct": 53}}}, "stock": {"items": {"rice": {"name": "Basmati rice", "unit": "g", "category": "Grains & flour", "supplier": "Indian grocer", "packSize": 9070, "packLabel": "20 lb bag", "packPrice": 24, "onHand": 21000}, "atta": {"name": "Atta (wheat flour)", "unit": "g", "category": "Grains & flour", "supplier": "Indian grocer", "packSize": 9070, "packLabel": "20 lb bag", "packPrice": 16, "onHand": 14000}, "besan": {"name": "Besan (gram flour)", "unit": "g", "category": "Grains & flour", "supplier": "Indian grocer", "packSize": 1810, "packLabel": "4 lb bag", "packPrice": 6, "onHand": 1500}, "sooji": {"name": "Sooji (semolina)", "unit": "g", "category": "Grains & flour", "supplier": "Indian grocer", "packSize": 1810, "packLabel": "4 lb bag", "packPrice": 5, "onHand": 1200}, "pasta": {"name": "Penne pasta", "unit": "g", "category": "Grains & flour", "supplier": "Wholesale club", "packSize": 2720, "packLabel": "6 lb pack", "packPrice": 8, "onHand": 1400}, "toor": {"name": "Toor dal", "unit": "g", "category": "Lentils & beans", "supplier": "Indian grocer", "packSize": 1810, "packLabel": "4 lb bag", "packPrice": 9, "onHand": 2600}, "chanadal": {"name": "Chana dal", "unit": "g", "category": "Lentils & beans", "supplier": "Indian grocer", "packSize": 1810, "packLabel": "4 lb bag", "packPrice": 7, "onHand": 1900}, "urad": {"name": "Whole urad dal", "unit": "g", "category": "Lentils & beans", "supplier": "Indian grocer", "packSize": 1810, "packLabel": "4 lb bag", "packPrice": 8, "onHand": 900}, "rajma": {"name": "Rajma (kidney beans)", "unit": "g", "category": "Lentils & beans", "supplier": "Indian grocer", "packSize": 1810, "packLabel": "4 lb bag", "packPrice": 8, "onHand": 1100}, "chickpeas": {"name": "Kabuli chana", "unit": "g", "category": "Lentils & beans", "supplier": "Indian grocer", "packSize": 1810, "packLabel": "4 lb bag", "packPrice": 7, "onHand": 1600}, "soya": {"name": "Soya chunks", "unit": "g", "category": "Lentils & beans", "supplier": "Indian grocer", "packSize": 900, "packLabel": "2 lb bag", "packPrice": 5, "onHand": 700}, "chicken": {"name": "Chicken thigh, boneless", "unit": "g", "category": "Meat & fish", "supplier": "Halal butcher", "packSize": 4540, "packLabel": "10 lb case", "packPrice": 42, "onHand": 6800}, "chwings": {"name": "Chicken wings/lollipops", "unit": "g", "category": "Meat & fish", "supplier": "Halal butcher", "packSize": 2270, "packLabel": "5 lb bag", "packPrice": 18, "onHand": 900}, "chmince": {"name": "Ground chicken", "unit": "g", "category": "Meat & fish", "supplier": "Halal butcher", "packSize": 2270, "packLabel": "5 lb pack", "packPrice": 22, "onHand": 1100}, "lamb": {"name": "Lamb/goat, bone-in", "unit": "g", "category": "Meat & fish", "supplier": "Halal butcher", "packSize": 2270, "packLabel": "5 lb pack", "packPrice": 48, "onHand": 800}, "fish": {"name": "Fish fillet (swai)", "unit": "g", "category": "Meat & fish", "supplier": "Halal butcher", "packSize": 2270, "packLabel": "5 lb bag", "packPrice": 26, "onHand": 600}, "eggs": {"name": "Eggs", "unit": "pc", "category": "Dairy & eggs", "supplier": "Wholesale club", "packSize": 60, "packLabel": "5 dozen", "packPrice": 13, "onHand": 40}, "paneer": {"name": "Paneer", "unit": "g", "category": "Dairy & eggs", "supplier": "Indian grocer", "packSize": 2270, "packLabel": "5 lb block", "packPrice": 24, "onHand": 1300}, "yogurt": {"name": "Yogurt, whole milk", "unit": "g", "category": "Dairy & eggs", "supplier": "Wholesale club", "packSize": 2270, "packLabel": "5 lb tub", "packPrice": 7, "onHand": 3100}, "cream": {"name": "Heavy cream", "unit": "ml", "category": "Dairy & eggs", "supplier": "Wholesale club", "packSize": 1890, "packLabel": "half gallon", "packPrice": 11, "onHand": 900}, "butter": {"name": "Butter", "unit": "g", "category": "Dairy & eggs", "supplier": "Wholesale club", "packSize": 1810, "packLabel": "4 lb", "packPrice": 14, "onHand": 1700}, "ghee": {"name": "Ghee", "unit": "ml", "category": "Dairy & eggs", "supplier": "Indian grocer", "packSize": 1600, "packLabel": "56 oz jar", "packPrice": 22, "onHand": 1400}, "milk": {"name": "Whole milk", "unit": "ml", "category": "Dairy & eggs", "supplier": "Wholesale club", "packSize": 3780, "packLabel": "1 gallon", "packPrice": 4.5, "onHand": 2500}, "onion": {"name": "Onions", "unit": "g", "category": "Produce", "supplier": "Wholesale club", "packSize": 11340, "packLabel": "25 lb sack", "packPrice": 15, "onHand": 7200}, "tomato": {"name": "Tomatoes", "unit": "g", "category": "Produce", "supplier": "Wholesale club", "packSize": 11340, "packLabel": "25 lb case", "packPrice": 28, "onHand": 6400}, "potato": {"name": "Potatoes", "unit": "g", "category": "Produce", "supplier": "Wholesale club", "packSize": 4540, "packLabel": "10 lb bag", "packPrice": 7, "onHand": 5200}, "cauli": {"name": "Cauliflower", "unit": "g", "category": "Produce", "supplier": "Wholesale club", "packSize": 2700, "packLabel": "3 heads", "packPrice": 8, "onHand": 1400}, "spinach": {"name": "Spinach", "unit": "g", "category": "Produce", "supplier": "Wholesale club", "packSize": 1130, "packLabel": "2.5 lb bag", "packPrice": 6, "onHand": 500}, "mushroom": {"name": "Mushrooms", "unit": "g", "category": "Produce", "supplier": "Wholesale club", "packSize": 1130, "packLabel": "2.5 lb pack", "packPrice": 7, "onHand": 300}, "greens": {"name": "Mixed vegetables, frozen", "unit": "g", "category": "Produce", "supplier": "Wholesale club", "packSize": 2270, "packLabel": "5 lb bag", "packPrice": 8, "onHand": 3000}, "peas": {"name": "Green peas, frozen", "unit": "g", "category": "Produce", "supplier": "Wholesale club", "packSize": 2270, "packLabel": "5 lb bag", "packPrice": 7, "onHand": 2100}, "carrot": {"name": "Carrots", "unit": "g", "category": "Produce", "supplier": "Wholesale club", "packSize": 4540, "packLabel": "10 lb bag", "packPrice": 8, "onHand": 2600}, "lauki": {"name": "Lauki (bottle gourd)", "unit": "g", "category": "Produce", "supplier": "Indian grocer", "packSize": 2000, "packLabel": "4 pieces", "packPrice": 8, "onHand": 0}, "eggplant": {"name": "Eggplant", "unit": "g", "category": "Produce", "supplier": "Indian grocer", "packSize": 1800, "packLabel": "4 pieces", "packPrice": 7, "onHand": 900}, "methi": {"name": "Kasuri methi", "unit": "g", "category": "Spices & pantry", "supplier": "Indian grocer", "packSize": 200, "packLabel": "200 g box", "packPrice": 4, "onHand": 120}, "gg": {"name": "Ginger-garlic paste", "unit": "g", "category": "Spices & pantry", "supplier": "Indian grocer", "packSize": 1000, "packLabel": "1 kg jar", "packPrice": 7, "onHand": 1500}, "spices": {"name": "Masala mix (garam, haldi, chilli)", "unit": "g", "category": "Spices & pantry", "supplier": "Indian grocer", "packSize": 1000, "packLabel": "1 kg assorted", "packPrice": 14, "onHand": 1600}, "oil": {"name": "Cooking oil", "unit": "ml", "category": "Spices & pantry", "supplier": "Wholesale club", "packSize": 16000, "packLabel": "35 lb jug", "packPrice": 38, "onHand": 11000}, "sugar": {"name": "Sugar", "unit": "g", "category": "Spices & pantry", "supplier": "Wholesale club", "packSize": 4540, "packLabel": "10 lb bag", "packPrice": 7, "onHand": 4000}, "cashew": {"name": "Cashews", "unit": "g", "category": "Spices & pantry", "supplier": "Wholesale club", "packSize": 1130, "packLabel": "2.5 lb bag", "packPrice": 19, "onHand": 600}, "soysauce": {"name": "Soy & chilli sauces", "unit": "ml", "category": "Spices & pantry", "supplier": "Indian grocer", "packSize": 1500, "packLabel": "3 bottles", "packPrice": 9, "onHand": 900}}, "recipes": {"Tomato dal": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "toor": 65}, "Palak paneer": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "paneer": 110, "spinach": 120}, "Chinese veg fried rice": {"oil": 12, "spices": 3, "gg": 4, "greens": 120, "rice": 90, "soysauce": 25, "sugar": 8}, "Dal tadka": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "toor": 65}, "Toor dal fry": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "toor": 65}, "Veg tawa pulao": {"oil": 12, "spices": 3, "gg": 4, "greens": 120, "rice": 90}, "Paneer changezi": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "paneer": 110, "cream": 30, "butter": 10, "cashew": 10}, "Chana dal fry": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chanadal": 65}, "Cauliflower kofta curry": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "cauli": 150, "greens": 120, "besan": 30}, "Veg dal": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "toor": 65, "greens": 120}, "Rajma masala": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "rajma": 65}, "Chole masala": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chickpeas": 60}, "Paneer butter masala": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "paneer": 110, "cream": 30, "butter": 10, "cashew": 10}, "Kadhi pakora": {"oil": 12, "spices": 3, "gg": 4, "greens": 120, "besan": 50, "yogurt": 80}, "Baingan bharta": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "eggplant": 200}, "Malai kofta": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "greens": 120, "cream": 30, "butter": 10, "cashew": 10, "besan": 30}, "Dal makhani": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "urad": 60, "cream": 50, "butter": 25, "cashew": 10}, "Aloo gobi": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "potato": 130, "cauli": 150}, "Mushroom matar": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "mushroom": 120, "peas": 60}, "Veg biryani": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "greens": 120, "rice": 90, "yogurt": 60}, "Methi malai paneer": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "paneer": 110, "cream": 30, "butter": 10, "cashew": 10, "methi": 4}, "Veg Kolhapuri curry": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "greens": 120}, "Lamb kabob dry": {"oil": 12, "spices": 3, "gg": 4, "lamb": 180}, "Patiala chicken masala": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170}, "Chicken kofta curry": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170, "greens": 120, "besan": 30}, "Roasted chicken": {"oil": 12, "spices": 3, "gg": 4, "chicken": 170}, "Honey garlic chicken breast (1 pc)": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170, "soysauce": 25, "sugar": 8}, "Chicken korma": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170, "cream": 30, "butter": 10, "cashew": 10, "yogurt": 60}, "Kerala-style chicken": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170}, "Smoked chicken keema": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chmince": 150}, "Fish curry": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "fish": 170}, "Chicken Mongolian": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170, "soysauce": 25, "sugar": 8}, "Butter chicken": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170, "cream": 30, "butter": 10, "cashew": 10}, "Chicken biryani": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170, "rice": 90, "yogurt": 60}, "Chicken karahi": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170}, "Egg curry": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "eggs": 2}, "Mutton rogan josh": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "lamb": 180}, "Chilli chicken": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170, "soysauce": 25, "sugar": 8}, "Goan fish curry": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "fish": 170}, "Keema matar": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chmince": 150, "peas": 60}, "Chicken tikka masala": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170, "cream": 30, "butter": 10, "cashew": 10}, "Andhra chicken": {"onion": 60, "tomato": 60, "oil": 15, "gg": 8, "spices": 5, "chicken": 170}, "Aloo matar subji": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "potato": 72, "peas": 33}, "Masala idli fry": {"oil": 7, "spices": 2, "gg": 2, "sooji": 44, "yogurt": 22}, "Paneer bhuji": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "paneer": 61}, "Suji ka halwa": {"oil": 7, "spices": 2, "gg": 2, "sooji": 28, "ghee": 14, "sugar": 22}, "Honey gobi stir fry": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "cauli": 82, "soysauce": 14, "sugar": 4}, "Paneer masala": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "paneer": 61}, "Palak corn": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "spinach": 66, "greens": 66}, "Veg Kolhapuri": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "greens": 66}, "Lauki kadhai masala": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "lauki": 99}, "Mix veg pakora": {"oil": 7, "spices": 2, "gg": 2, "greens": 66, "besan": 28}, "Mushroom black pepper": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "mushroom": 66}, "Mix veg roasted": {"oil": 7, "spices": 2, "gg": 2, "greens": 66}, "Honey chilli potato": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "potato": 72, "soysauce": 14, "sugar": 4}, "Khaman dhokla": {"oil": 7, "spices": 2, "gg": 2, "besan": 28}, "Navratan korma": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "greens": 66, "cream": 16, "butter": 6, "cashew": 6, "yogurt": 33}, "Rice kheer": {"oil": 7, "spices": 2, "gg": 2, "rice": 22, "milk": 110, "sugar": 16}, "Kung pao paneer": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "paneer": 61, "soysauce": 14, "sugar": 4}, "Creamy pasta": {"oil": 7, "spices": 2, "gg": 2, "pasta": 61, "cream": 22}, "Chicken lollipops": {"oil": 7, "spices": 2, "gg": 2, "chwings": 88}, "Veg soya keema": {"onion": 33, "tomato": 33, "oil": 8, "gg": 4, "spices": 3, "greens": 66, "soya": 28}, "Hara bhara kabab": {"oil": 7, "spices": 2, "gg": 2, "greens": 66}, "Gajar halwa": {"oil": 7, "spices": 2, "gg": 2, "carrot": 99, "milk": 66, "sugar": 19, "ghee": 8}, "Chicken 65": {"oil": 7, "spices": 2, "gg": 2, "chicken": 94}, "Aloo tikki": {"oil": 7, "spices": 2, "gg": 2, "chickpeas": 33, "potato": 72}, "Gulab jamun": {"oil": 7, "spices": 2, "gg": 2, "milk": 33, "sugar": 28}, "Masala papad": {"oil": 7, "spices": 5, "gg": 2}, "_base": {"rice": {"rice": 90}, "chapati": {"atta": 105}, "addon_chapati": {"atta": 35}, "addon_rice": {"rice": 90}}}, "settings": {"autopilot": true, "budget": 900, "sendDay": "sat", "sendTime": "18:00", "deliverDay": "sun", "safety": 1.15, "countedAt": "2026-09-26T09:00:00"}}, "purchases": {"po_2026-09-20": {"deliverOn": "2026-09-20", "sendAt": "2026-09-19T18:00:00", "status": "received", "auto": true, "createdAt": "2026-09-19T08:00:00", "sentAt": "2026-09-19T18:00:00", "receivedAt": "2026-09-20T14:00:00", "lines": [{"id": "chicken", "packs": 4, "cost": 168}, {"id": "onion", "packs": 2, "cost": 30}, {"id": "tomato", "packs": 2, "cost": 56}, {"id": "paneer", "packs": 3, "cost": 72}, {"id": "rice", "packs": 1, "cost": 24}, {"id": "yogurt", "packs": 2, "cost": 14}, {"id": "lamb", "packs": 2, "cost": 96}, {"id": "fish", "packs": 2, "cost": 52}], "total": 512, "note": "Week of Sep 21. Received in full."}}};
+const ADDONS={chapati:{name:'Extra chapati',price:1},rice:{name:'Extra rice',price:1.5},curry:{name:'Extra curry',price:3}};
+const CHAP_PER=3;
+const noBase=c=>/rice|pulao|biryani/i.test(c||'');
+const CATS=[['meals','Platters'],['starters','Starters'],['desserts','Desserts'],['drinks','Drinks']];
+const STATUSES=['received','cooking','out','delivered'];
+const SLABEL={received:'Received',cooking:'Cooking',out:'Out for delivery',delivered:'Delivered'};
+const NEXT={received:'Start cooking',cooking:'Send out',out:'Mark delivered'};
+const SLOTS={lunch:{t:'Lunch',s:'12:00–1:00 PM'},dinner:{t:'Dinner',s:'7:00–8:00 PM'},deal:{t:'Off-menu',s:'Same-day pickup'}};
+const HUB='Kellogg Global Hub, 2211 Campus Dr';
+const FEE=3;
+const WD=['sun','mon','tue','wed','thu','fri','sat'];
+const WDF={mon:'Monday',tue:'Tuesday',wed:'Wednesday',thu:'Thursday',fri:'Friday',sat:'Saturday',sun:'Sunday'};
+const WDL={sun:'Sun',mon:'Mon',tue:'Tue',wed:'Wed',thu:'Thu',fri:'Fri',sat:'Sat'};
+const OPEN=['mon','tue','wed','thu','fri'];
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>'$'+(Math.round((+n||0)*100)/100).toFixed(2);
+const rid=()=>Math.random().toString(36).slice(2,10);
+const clone=o=>JSON.parse(JSON.stringify(o));
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k));localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const pd=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const dow=s=>WD[pd(s).getDay()];
+const dlabel=s=>{const d=pd(s);return WDL[WD[d.getDay()]]+', '+MON[d.getMonth()]+' '+d.getDate()};
+const today=()=>ymd(new Date());
+function cutoff(s){const d=pd(s);d.setDate(d.getDate()-1);d.setHours(20,0,0,0);return d}
+const isOpen=s=>Date.now()<cutoff(s).getTime();
+function orderDays(){const out=[];const b=new Date();b.setHours(0,0,0,0);for(let i=1;out.length<5&&i<12;i++){const x=new Date(b);x.setDate(b.getDate()+i);if(x.getDay()!==0&&x.getDay()!==6)out.push(ymd(x))}return out}
+function rel(t){const m=Math.round((t-Date.now())/60000);if(m<60)return 'in '+m+' min';const h=Math.round(m/60);if(h<48)return 'in '+h+' hrs';return 'in '+Math.round(h/24)+' days'}
+function fmtTime(d){let h=d.getHours(),m=d.getMinutes();const ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+pad(m)+' '+ap}
+function deepMerge(t,p){for(const k in p){if(p[k]&&typeof p[k]==='object'&&!Array.isArray(p[k])){t[k]=t[k]||{};deepMerge(t[k],p[k])}else t[k]=p[k]}}
+
+let db=null;
+const S={stock:clone(SEED.stock||null),purchases:clone(SEED.purchases||{}),dstats:clone(SEED.dstats),weeks:clone(SEED.weeks),plans:clone(SEED.plans||{}),agent:{running:false,log:[],text:'',error:''},aiOff:false,live:false,loaded:{},menu:clone(SEED.menu),orders:clone(SEED.orders),specials:clone(SEED.specials),history:clone(SEED.history),
+  mode:location.hash==='#kitchen'?'kitchen':'student',sTab:'menu',day:null,cart:store('mk_cart')||[],
+  kTab:'orders',kDay:null,kFilter:'all',sheet:null,cid:null,confirmClear:false};
+const me=store('mk_me')||{};
+
+/* ---------- data writes ---------- */
+const W={
+  async addOrder(o){if(db){const r=db.collection('orders').doc();await r.set(o);return r.id}const id='o'+rid();S.orders.push({id,...o});renderMain();return id},
+  async patchOrder(id,p){if(db)return db.doc('orders/'+id).update(p);const o=S.orders.find(x=>x.id===id);if(o)deepMerge(o,p);renderMain()},
+  async delOrder(id){if(db)return db.doc('orders/'+id).delete();S.orders=S.orders.filter(x=>x.id!==id);renderMain()},
+  async saveItem(it){const{id,...rest}=it;if(db)return db.doc('menu/'+id).set(rest);const i=S.menu.findIndex(x=>x.id===id);if(i>=0)S.menu[i]=it;else S.menu.push(it);renderMain()},
+  async delItem(id){if(db)return db.doc('menu/'+id).delete();S.menu=S.menu.filter(x=>x.id!==id);renderMain()},
+  async saveSpecial(sp){const{id,...rest}=sp;if(db)return db.doc('specials/'+id).set(rest);const i=S.specials.findIndex(x=>x.id===id);if(i>=0)S.specials[i]=sp;else S.specials.push(sp);renderMain()},
+  async savePlan(pl){if(db)return db.doc('plans/'+pl.weekStart).set(pl);S.plans[pl.weekStart]=pl;renderMain()},
+  async patchPlan(ws,p){if(db)return db.doc('plans/'+ws).update(p);if(S.plans[ws])deepMerge(S.plans[ws],p);renderMain()},
+  async savePO(id,d){if(db)return db.doc('purchases/'+id).set(d);S.purchases[id]=d;renderMain()},
+  async patchPO(id,p){if(db)return db.doc('purchases/'+id).update(p);Object.assign(S.purchases[id],p);renderMain()},
+  async patchStock(doc,p){if(db)return db.doc('stock/'+doc).update(p);deepMerge(S.stock[doc],doc==='items'?p.items:p);renderMain()},
+  async patchSpecial(id,p){if(db)return db.doc('specials/'+id).update(p);const s=S.specials.find(x=>x.id===id);if(s)Object.assign(s,p);renderMain()},
+};
+async function safe(fn,okMsg){try{await fn();if(okMsg)toast(okMsg)}catch(e){toast('Could not save: '+(e&&e.message||'try again'))}}
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2600)}
+
+/* ---------- derived ---------- */
+const byId=id=>S.menu.find(m=>m.id===id)||(()=>{const i=id.indexOf('_');return planItems(id.slice(i+1)).find(m=>m.id===id)})();
+const menuFor=s=>{const dated=S.menu.filter(m=>m.date===s);const weekly=S.menu.filter(m=>!m.date&&(m.days||[]).includes(dow(s)));return [...dated,...(dated.length?[]:planItems(s)),...weekly].sort((a,b)=>(a.order||0)-(b.order||0))};
+const dealsToday=()=>S.specials.filter(s=>s.date===today()&&s.qty>0);
+const lineTotal=l=>l.qty*l.unit+(l.addons||[]).reduce((a,x)=>a+x.qty*x.price,0);
+const cartTotal=()=>S.cart.reduce((a,l)=>a+lineTotal(l),0);
+const cartCount=()=>S.cart.reduce((a,l)=>a+l.qty,0);
+function saveCart(){store('mk_cart',S.cart)}
+function forecast(wd,id){const a=S.history&&S.history.byDay&&S.history.byDay[wd]&&S.history.byDay[wd][id];if(!a||!a.length)return null;return Math.round(a.reduce((x,y)=>x+y,0)/a.length)}
+function portions(date){const r={};S.orders.filter(o=>o.date===date).forEach(o=>o.items.forEach(l=>{if(l.menuId)r[l.menuId]=(r[l.menuId]||0)+l.qty}));return r}
+
+/* ---------- render ---------- */
+function renderAll(){renderTop();renderMain();renderCartBar()}
+function renderTop(){
+  $('#top').innerHTML=`<div class="brand"><div class="logo" aria-hidden="true">M</div><div><b>Manna's Kitchen</b><span>Home-style food for Kellogg · powered by DesiBox</span></div></div>
+  <div class="top-r"><span class="live ${S.live?'on':''}" title="${S.live?'Orders sync live between students and the kitchen':'Demo: changes stay in this browser tab'}"><i></i>${S.live?'Live':'Demo'}</span>
+  <div class="seg" role="group" aria-label="View"><button data-act="mode" data-v="student" aria-pressed="${S.mode==='student'}">Student</button><button data-act="mode" data-v="kitchen" aria-pressed="${S.mode==='kitchen'}">Kitchen</button></div></div>`;
+}
+function renderMain(){
+  if(!S.day||!orderDays().includes(S.day))S.day=orderDays()[0];
+  const kd=kitchenDays();if(!S.kDay||!kd.includes(S.kDay))S.kDay=kd.find(d=>S.orders.some(o=>o.date===d))||kd[0];
+  $('#main').innerHTML=S.mode==='student'?studentView():kitchenView();
+}
+function renderCartBar(){
+  const n=cartCount();
+  $('#cartbar').innerHTML=(S.mode==='student'&&n&&!S.sheet)?`<div class="cbar"><span>${n} item${n>1?'s':''} · <b>${money(cartTotal())}</b></span><button class="btn pri" data-act="checkout">Review and pay</button></div>`:'';
+}
+
+/* ----- student ----- */
+function studentView(){
+  const mine=S.orders.filter(o=>o.customerId===S.cid);
+  const active=mine.filter(o=>o.status!=='delivered').length;
+  let h=`<section class="hero"><div><p class="eyebrow">Weekly tiffins · Mon to Fri</p><h1>Order this week's tiffins</h1><p class="lede">A veg and a non-veg platter every weekday, $7 each. Pick your main, rice or chapati, and pay upfront. Orders close at 8 PM the night before.</p></div>
+  <div class="seg" role="group" aria-label="Student sections"><button data-act="stab" data-v="menu" aria-pressed="${S.sTab==='menu'}">Menu</button><button data-act="stab" data-v="orders" aria-pressed="${S.sTab==='orders'}">My orders${mine.length?` <span class="mono">${active||mine.length}</span>`:''}</button></div></section>`;
+  if(!S.live)h+=`<div class="banner"><span>Demo mode. Orders you place here stay in this browser tab. Switch to Kitchen at the top right to see them arrive.</span></div>`;
+  if(S.live&&S.loaded.menu&&!S.menu.length)return h+`<div class="empty">The kitchen hasn't published a menu yet.</div>`;
+  return h+(S.sTab==='orders'?myOrders(mine):menuView());
+}
+function otherPlatter(m){return S.menu.find(x=>x.id!==m.id&&x.cat===m.cat&&(x.days||[]).some(d=>(m.days||[]).includes(d))&&x.sides&&x.sides.length)}
+function platterBody(i){return `${i.desc?`<p class="desc">${esc(i.desc)}</p>`:''}${i.choices&&i.choices.length?`<div class="opts"><span class="flabel">Pick one</span>${i.choices.map((c,n)=>`${n?'<span class="or">or</span>':''}<span class="main">${esc(c)}</span>`).join('')}</div>`:''}${i.sides&&i.sides.length?`<p class="inc"><b>Starters:</b> ${i.sides.map(esc).join(' and ')}${i.baseChoice?'. Rice or chapati.':''}</p>`:''}`}
+function vm(veg){return `<span class="vm ${veg?'':'nv'}" role="img" aria-label="${veg?'Vegetarian':'Non-vegetarian'}"></span>`}
+function menuView(){
+  let h='';
+  const deals=dealsToday();
+  if(deals.length){
+    h+=`<section class="deals"><div class="deals-h"><h2>Off the menu today</h2><span>Extra dishes Manna made today. Until they run out.</span></div><div class="deal-row">`+
+    deals.map(s=>{const inCart=S.cart.filter(l=>l.specialId===s.id).reduce((a,l)=>a+l.qty,0);return `<div class="deal"><div class="top-line">${vm(s.veg)}<b>${esc(s.name)}</b><span class="left">${s.qty} left</span></div><div class="meta">Pickup: ${esc(s.pickup)}</div><div class="buy"><span class="price">${money(s.price)}${s.was?`<s>${money(s.was)}</s>`:''}</span><button class="btn pri sm" data-act="grab" data-id="${s.id}" ${inCart>=s.qty?'disabled':''}>${inCart?`Add another (${inCart})`:'Grab it'}</button></div></div>`}).join('')+`</div></section>`;
+  }
+  const days=orderDays();
+  h+=`<div class="days" role="group" aria-label="Delivery day">`+days.map(d=>{const dd=pd(d);const has=S.cart.some(l=>l.date===d&&!l.specialId);return `<button class="day" data-act="day" data-v="${d}" aria-pressed="${d===S.day}"><b>${WDL[dow(d)]}${has?'<span class="dot" aria-label="in cart"></span>':''}</b><span>${MON[dd.getMonth()]} ${dd.getDate()}</span></button>`}).join('')+`</div>`;
+  const c=cutoff(S.day);const open=isOpen(S.day);
+  h+=open?`<p class="cutoff">Delivering ${dlabel(S.day)}. Orders close <span class="clock">${WDL[WD[c.getDay()]]} ${fmtTime(c)}</span> <span class="muted">${rel(c.getTime())}</span></p>`
+         :`<p class="cutoff closed">Orders for ${dlabel(S.day)} closed at ${fmtTime(c)} the night before.</p>`;
+  const items=menuFor(S.day);
+  if(!items.length){const pl=S.plans[mondayOf(S.day)];const ap=pl&&pl.autoPublishAt?new Date(pl.autoPublishAt):null;return h+`<div class="empty">${ap?`Manna's menu for the week of ${weekLabel(mondayOf(S.day))} comes out ${WDL[WD[ap.getDay()]]}, ${MON[ap.getMonth()]} ${ap.getDate()}.`:'The menu for this day isn\'t out yet.'}</div>`}
+  CATS.forEach(([k,label])=>{const list=items.filter(i=>i.cat===k);if(!list.length)return;
+    h+=`<section class="cat"><div class="cat-h"><h2>${label}</h2><span>${list.length}</span></div><div class="grid">`+list.map(i=>{
+      const n=S.cart.filter(l=>l.menuId===i.id&&l.date===S.day).reduce((a,l)=>a+l.qty,0);
+      return `<article class="dish ${i.soldOut?'sold':''}"><div class="dish-h">${vm(i.veg)}<h3>${esc(i.name)}</h3><span class="price">${money(i.price)}</span></div>
+      ${platterBody(i)}
+      <div class="dish-f"><span class="incart">${n?n+' in cart':''}</span>${i.soldOut?`<button class="btn sm" disabled>Sold out</button>`:open?`<button class="btn sm ${n?'':'pri'}" data-act="custom" data-id="${i.id}">${(i.choices&&i.choices.length)||(i.addons&&i.addons.length)||i.spice?'Choose':'Add'}</button>`:`<button class="btn sm" disabled>Closed</button>`}</div></article>`}).join('')+`</div></section>`});
+  return h;
+}
+function lineSub(l){return [l.choice&&(l.choice+(l.base?' with '+l.base:'')),l.spice&&(l.spice[0].toUpperCase()+l.spice.slice(1)+' spice'),l.swapFrom&&('starters from the '+l.swapFrom.toLowerCase()),...(l.addons||[]).filter(a=>a.id!=='swap').map(a=>'+'+a.qty+' '+a.name.replace('Extra ','').toLowerCase()),l.note&&'“'+esc(l.note)+'”'].filter(Boolean).map(x=>x===l.note?x:esc(x)).join(' · ')}
+function track(st){const idx=STATUSES.indexOf(st);return `<div class="track">`+STATUSES.map((s,i)=>`<div class="${i<=idx?'done':''} ${i===idx?'now':''}">${SLABEL[s]}</div>`).join('')+`</div>`}
+function itemLines(o){return o.items.map(l=>`<div class="line"><div>${l.qty} × ${esc(l.name)}${lineSub(l)?`<div class="sub">${lineSub(l)}</div>`:''}</div><span class="mono">${money(l.lineTotal)}</span></div>`).join('')}
+function whereText(o){return o.slot==='deal'?'Pickup: '+(o.address||'Global Hub lobby'):o.where==='hub'?HUB:o.address}
+function myOrders(mine){
+  if(!mine.length)return `<div class="empty">No orders yet. Pick a day on the menu to start.</div>`;
+  mine=[...mine].sort((a,b)=>(b.date+b.createdAt).localeCompare(a.date+a.createdAt));
+  return `<div class="olist">`+mine.map(o=>`<article class="ocard"><div class="ocard-h"><div><span class="mono muted">${esc(o.code)}</span><h3>${dlabel(o.date)} · ${SLOTS[o.slot].t} <span class="muted small">${SLOTS[o.slot].s}</span></h3></div><span class="pill ${o.status}">${SLABEL[o.status]}</span></div>
+  ${o.slot==='deal'?'':track(o.status)}<div class="lines">${itemLines(o)}</div>
+  <div class="ofoot"><span>${esc(whereText(o))}</span><span><span class="pill paid">Paid</span> ${money(o.total)} · ${esc(o.payment&&o.payment.label||'')}</span></div></article>`).join('')+`</div>`;
+}
+
+/* ----- kitchen ----- */
+function kitchenDays(){const t=today();const d=orderDays();const wk=[1,2,3,4,5].includes(pd(t).getDay());return (wk||S.orders.some(o=>o.date===t))?[t,...d]:d}
+function kitchenView(){
+  const sample=S.orders.filter(o=>o.sample).length;
+  let h=`<div class="k-head"><div><p class="eyebrow">Kitchen dashboard</p><h1>Good ${new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening'}, Manna</h1></div>
+  ${sample?`<div class="small muted">${sample} sample orders loaded. ${S.confirmClear?`<button class="btn sm danger" data-act="clearSample">Yes, delete them</button> <button class="btn sm ghost" data-act="cancelClear">Keep</button>`:`<button class="btn sm" data-act="askClear">Clear sample orders</button>`}</div>`:''}</div>`;
+  if(!S.live)h+=`<div class="banner"><span>Demo mode. Changes stay in this browser tab, so you can try everything safely.</span></div>`;
+  if(S.live&&S.loaded.menu&&!S.menu.length)h+=`<div class="banner"><span>No menu yet.</span><button class="btn sm pri" data-act="seedMenu">Load sample menu</button></div>`;
+  const tabs=[['orders','Orders'],['prep','Prep and demand'],['menu','This week\'s menu'],['plan','Next week ✦ AI'],['stock','Inventory ✦ Auto'],['deals','Off-menu items']];
+  h+=`<nav class="tabs">`+tabs.map(([k,l])=>`<button data-act="ktab" data-v="${k}" aria-pressed="${S.kTab===k}">${l}</button>`).join('')+`</nav>`;
+  if(S.kTab==='orders'||S.kTab==='prep'){
+    h+=`<div class="days" role="group" aria-label="Day">`+kitchenDays().map(d=>{const n=S.orders.filter(o=>o.date===d).length;const dd=pd(d);return `<button class="day" data-act="kday" data-v="${d}" aria-pressed="${d===S.kDay}"><b>${d===today()?'Today':WDL[dow(d)]}</b><span>${MON[dd.getMonth()]} ${dd.getDate()} · ${n} order${n===1?'':'s'}</span></button>`}).join('')+`</div>`;
+  }
+  return h+({orders:kOrders,prep:kPrep,menu:kMenu,plan:kPlan,stock:kStock,deals:kDeals}[S.kTab])();
+}
+function kOrders(){
+  const os=S.orders.filter(o=>o.date===S.kDay);
+  const port=os.reduce((a,o)=>a+o.items.reduce((b,l)=>b+l.qty,0),0);
+  const rev=os.reduce((a,o)=>a+o.total,0);
+  const todo=os.filter(o=>o.status!=='delivered').length;
+  let h=`<div class="stats"><div class="stat"><span>Orders</span><b>${os.length}</b></div><div class="stat"><span>Portions</span><b>${port}</b></div><div class="stat"><span>Collected upfront</span><b>${money(rev)}</b></div><div class="stat"><span>Still to deliver</span><b>${todo}</b></div></div>`;
+  const counts={all:os.length};STATUSES.forEach(s=>counts[s]=os.filter(o=>o.status===s).length);
+  h+=`<div class="chips" role="group" aria-label="Filter by status">`+['all',...STATUSES].map(s=>`<button class="chip" data-act="kfilter" data-v="${s}" aria-pressed="${S.kFilter===s}">${s==='all'?'All':SLABEL[s]}<span class="n">${counts[s]}</span></button>`).join('')+`</div>`;
+  if(!os.length)return h+`<div class="empty" style="margin-top:16px">No orders for ${dlabel(S.kDay)} yet.</div>`;
+  ['lunch','dinner','deal'].forEach(slot=>{
+    const all=os.filter(o=>o.slot===slot);if(!all.length)return;
+    const list=all.filter(o=>S.kFilter==='all'||o.status===S.kFilter).sort((a,b)=>STATUSES.indexOf(a.status)-STATUSES.indexOf(b.status)||a.name.localeCompare(b.name));
+    const next=STATUSES.find(s=>s!=='delivered'&&all.some(o=>o.status===s));
+    const nn=next?all.filter(o=>o.status===next).length:0;
+    h+=`<div class="slot-h"><h2>${SLOTS[slot].t} <span class="muted small">${SLOTS[slot].s} · ${all.length} orders</span></h2>${next?`<button class="btn sm dark" data-act="bulk" data-slot="${slot}" data-s="${next}">${NEXT[next]} · all ${nn}</button>`:`<span class="pill delivered">All delivered</span>`}</div>`;
+    if(!list.length){h+=`<p class="muted small">No ${SLABEL[S.kFilter].toLowerCase()} orders in this slot.</p>`;return}
+    h+=list.map(o=>`<div class="krow"><div class="who"><span class="mono small">${esc(o.code)}</span><b>${esc(o.name)}</b><span class="small muted">${esc(o.phone)}</span>${o.sample?' <span class="pill sample">sample</span>':''}</div>
+      <div class="kitems">${o.items.map(l=>`<div><b>${l.qty}×</b> ${esc(l.name)}${lineSub(l)?`<div class="sub">${lineSub(l)}</div>`:''}</div>`).join('')}</div>
+      <div class="small"><div>${o.where==='hub'||o.slot==='deal'?'<b>Pickup</b>':'<b>Deliver to</b>'}</div><div class="muted">${esc(whereText(o))}</div></div>
+      <div class="kact"><div><span class="pill paid">Paid ${money(o.total)}</span></div><span class="pill ${o.status}">${SLABEL[o.status]}</span>${o.status!=='delivered'?`<button class="btn sm" data-act="adv" data-id="${o.id}">${NEXT[o.status]} →</button>`:''}</div></div>`).join('');
+  });
+  return h;
+}
+function kPrep(){
+  const os=S.orders.filter(o=>o.date===S.kDay);
+  const rows={};let chap=0,rice=0;const extras={};const sides={};
+  os.forEach(o=>o.items.forEach(l=>{const k=(l.menuId||l.name)+'|'+(l.choice||'');const r=rows[k]=rows[k]||{name:l.choice||l.name,sub:l.choice?l.name:'',veg:l.veg,total:0,lunch:0,dinner:0,deal:0,rice:0,chapati:0};
+    r.total+=l.qty;r[o.slot]+=l.qty;if(l.base)r[l.base]+=l.qty;chap+=(l.baseChapati||0)*l.qty;rice+=(l.baseRice||0)*l.qty;
+    (l.sides||[]).forEach(sd=>sides[sd]=(sides[sd]||0)+l.qty);
+    (l.addons||[]).forEach(a=>{extras[a.id]=(extras[a.id]||0)+a.qty;if(a.id==='chapati')chap+=a.qty;if(a.id==='rice')rice+=a.qty})}));
+  const list=Object.values(rows).sort((a,b)=>(a.veg===b.veg?0:a.veg?-1:1)||b.total-a.total);
+  let h=`<div class="two"><section class="card"><h2>Prep list · ${dlabel(S.kDay)}</h2><p class="muted small">${S.kDay===today()||!isOpen(S.kDay)?'Orders are closed, so this is final.':'Orders close '+WDL[WD[cutoff(S.kDay).getDay()]]+' '+fmtTime(cutoff(S.kDay))+'. Counts update live until then.'}</p>`;
+  if(!list.length)h+=`<div class="empty">No orders yet.</div>`;
+  else{
+    h+=`<div class="tbl-wrap"><table><thead><tr><th>Main</th><th class="n">Lunch</th><th class="n">Dinner</th><th class="n">Rice / Chap.</th><th class="n">Total</th></tr></thead><tbody>`+list.map(r=>`<tr><td>${vm(r.veg)} ${esc(r.name)}${r.sub?`<div class="small muted">${esc(r.sub)}</div>`:''}</td><td class="n">${r.lunch||'–'}</td><td class="n">${r.dinner||r.deal||'–'}</td><td class="n">${r.rice+r.chapati?r.rice+' / '+r.chapati:'–'}</td><td class="n"><b>${r.total}</b></td></tr>`).join('')+`</tbody></table></div>`;
+    h+=`<div class="sides"><div class="side"><b>${chap}</b><span>Chapatis (${CHAP_PER} per platter + extras)</span></div><div class="side"><b>${rice}</b><span>Rice portions</span></div>${extras.curry?`<div class="side"><b>${extras.curry}</b><span>Extra curry portions</span></div>`:''}</div>`;
+    const sl=Object.entries(sides);
+    if(sl.length)h+=`<p class="flabel" style="margin-top:14px">Starters</p><div class="tbl-wrap"><table><tbody>${sl.map(([n,q])=>`<tr><td>${esc(n)}</td><td class="n"><b>${q}</b></td></tr>`).join('')}</tbody></table></div>`;
+  }
+  h+=`</section>`;
+  const wd=dow(S.kDay);const port=portions(S.kDay);
+  const data=menuFor(S.kDay).map(m=>({m,b:port[m.id]||0,f:fcFor(m,S.kDay)}));
+  const max=Math.max(1,...data.map(d=>Math.max(d.b,d.f||0)));
+  h+=`<section class="card"><h2>Booked vs. usual</h2><p class="muted small">${OPEN.includes(wd)?`Usual = average of the last 4 ${WDF[wd]}s.`:'No regular tiffins on this day.'}</p><div class="bars">`+
+    (data.length?data.map(d=>`<div class="bar"><span>${vm(d.m.veg)} ${esc(d.m.name)}</span><div class="track2"><div class="fill" style="width:${d.b/max*100}%"></div>${d.f!=null?`<div class="fc" style="left:calc(${d.f/max*100}% - 1px)"></div>`:''}</div><span class="v">${d.b} / ${d.f!=null?'~'+d.f:'new'}</span></div>`).join(''):`<p class="muted">Only off-menu items today.</p>`)+
+    `</div><div class="legend"><span><i></i>Booked</span><span><i class="l"></i>Usual</span></div></section></div>`;
+  const days=orderDays();
+  const kinds=[[true,'Veg platters'],[false,'Non-veg platters']];
+  h+=`<section class="card" style="margin-top:16px"><h2>Week ahead: plan your shopping</h2><p class="muted small">Booked so far, with the usual for that weekday underneath. Buy for the usual; cook for what's booked.</p><div class="tbl-wrap"><table class="grid-f"><thead><tr><th>Platter</th>`+days.map(d=>`<th class="n">${WDL[dow(d)]} ${pd(d).getDate()}</th>`).join('')+`</tr></thead><tbody>`+
+    kinds.map(([veg,label])=>`<tr><td>${vm(veg)} ${label}</td>`+days.map(d=>{const ms=menuFor(d).filter(m=>m.veg===veg);if(!ms.length)return `<td class="cell off">·</td>`;const p=portions(d);const b=ms.reduce((a,m)=>a+(p[m.id]||0),0);const fs=ms.map(m=>fcFor(m,d)).filter(x=>x!=null);return `<td class="cell">${b}<small>${fs.length?'~'+fs.reduce((a,x)=>a+x,0):'new'}</small></td>`}).join('')+`</tr>`).join('')+
+    `</tbody></table></div></section>`;
+  return h;
+}
+function kMenu(){
+  const ws=menuWeek();
+  let h=`<div class="slot-h" style="margin-top:0"><p class="muted" style="max-width:62ch">The menu students are ordering from now (${weekLabel(ws)}). Changes show up for students right away. Next week's menu is drafted in the Next week tab.</p><button class="btn pri" data-act="editItem" data-id="">+ Add platter</button></div>`;
+  PDAYS.forEach((d,i)=>{const date=addDays(ws,i);const list=menuFor(date);const fromPlan=list.some(m=>m.fromPlan);/*per-row*/
+    h+=`<section class="card" style="margin-bottom:14px"><h2>${WDF[d]} <span class="muted small">${MON[pd(date).getMonth()]} ${pd(date).getDate()}</span></h2>`+(fromPlan?`<p class="small muted" style="padding-top:6px">From the AI plan. Edit it in the Next week tab.</p>`:'')+(list.length?list.map(m=>mrow(m,!!m.fromPlan)).join(''):`<p class="muted small" style="padding-top:8px">Nothing on the menu.</p>`)+`</section>`});
+  return h;
+}
+function mrow(m,ro){return `<div class="mrow"><div class="nm">${vm(m.veg)}<div><b>${esc(m.name)}</b><small>${esc((m.choices||[]).join(' or ')||m.desc||'')}${m.sides&&m.sides.length?' · starters: '+esc(m.sides.join(', ')):''}</small></div></div>
+    <span class="price">${money(m.price)}</span>
+    ${ro?'':`<button class="switch" data-act="soldOut" data-id="${m.id}" aria-pressed="${!!m.soldOut}"><i></i>Sold out</button>
+    <button class="btn sm" data-act="editItem" data-id="${m.id}">Edit</button>`}</div>`}
+function kDeals(){
+  const t=today();const list=S.specials.filter(s=>s.date===t).sort((a,b)=>b.qty-a.qty);
+  const past=S.specials.filter(s=>s.date<t).length;
+  let h=`<div class="slot-h" style="margin-top:0"><p class="muted" style="max-width:60ch">Cooked something that isn't on the weekly menu? Post it here. It shows at the top of the student menu and can be ordered until it runs out.</p><button class="btn pri" data-act="editDeal">+ Post off-menu item</button></div>`;
+  if(!list.length)return h+`<div class="empty">Nothing off-menu today.</div>`;
+  return h+`<div class="card"><div class="tbl-wrap"><table><thead><tr><th>Item</th><th class="n">Price</th><th class="n">Sold</th><th class="n">Left</th><th>Pickup</th><th></th></tr></thead><tbody>`+list.map(s=>{
+    const sold=S.orders.filter(o=>o.date===t).reduce((a,o)=>a+o.items.filter(l=>l.specialId===s.id).reduce((b,l)=>b+l.qty,0),0);
+    return `<tr><td>${vm(s.veg)} ${esc(s.name)}</td><td class="n">${money(s.price)}</td><td class="n">${sold}</td><td class="n"><b>${s.qty}</b></td><td class="small muted">${esc(s.pickup)}</td><td>${s.qty>0?`<button class="btn sm" data-act="endDeal" data-id="${s.id}">Stop selling</button>`:'<span class="muted small">Sold out</span>'}</td></tr>`}).join('')+`</tbody></table></div></div>`+(past?`<p class="muted small" style="margin-top:8px">${past} past items hidden.</p>`:'');
+}
+
+/* ---------- sheets ---------- */
+function openSheet(kind,ctx,form){S.sheet={kind,ctx,form:form||{}};renderSheet();renderCartBar()}
+function closeSheet(){S.sheet=null;$('#sheet').hidden=true;$('#sheet').innerHTML='';renderCartBar()}
+function renderSheet(){
+  if(!S.sheet)return;const el=$('#sheet');el.hidden=false;
+  const f={custom:shCustom,checkout:shCheckout,done:shDone,item:shItem,deal:shDeal,aiask:shAiAsk,pedit:shPlatter,poedit:shPOEdit,count:shCount,stockset:shStockSet}[S.sheet.kind];
+  const y=el.querySelector('.panel')?.scrollTop||0;
+  el.innerHTML=`<div class="panel" role="dialog" aria-modal="true">${f()}</div>`;
+  el.querySelector('.panel').scrollTop=y;
+}
+function stepper(act,v,extra=''){return `<div class="step"><button data-act="${act}" data-d="-1" ${extra} aria-label="Decrease">−</button><span>${v}</span><button data-act="${act}" data-d="1" ${extra} aria-label="Increase">+</button></div>`}
+function shCustom(){
+  const m=byId(S.sheet.ctx);const f=S.sheet.form;
+  const add=(m.addons||[]).reduce((a,k)=>a+(f.addons[k]||0)*(ADDONS[k]?ADDONS[k].price:0),0)+(f.swap?f.qty*(m.swapFee??0.5):0);
+  const total=f.qty*m.price+add;const e=f.errors||{};
+  const needBase=m.baseChoice&&f.choice&&!noBase(f.choice);
+  return `<div class="panel-h"><div><p class="eyebrow">${dlabel(S.day)}</p><h2>${vm(m.veg)} ${esc(m.name)} · ${money(m.price)}</h2></div><button class="x" data-act="close" aria-label="Close">×</button></div>
+  ${m.desc?`<p class="desc">${esc(m.desc)}</p>`:''}
+  ${m.choices&&m.choices.length?`<div class="field"><span class="flabel">Main</span><div class="opt">${m.choices.map(c=>`<button data-act="cc" data-v="${esc(c)}" aria-pressed="${f.choice===c}">${esc(c)}</button>`).join('')}</div>${e.choice?`<span class="err">${e.choice}</span>`:''}</div>`:''}
+  ${needBase?`<div class="field"><span class="flabel">With</span><div class="opt"><button data-act="cb" data-v="rice" aria-pressed="${f.base==='rice'}">Rice</button><button data-act="cb" data-v="chapati" aria-pressed="${f.base==='chapati'}">Chapati<small>${CHAP_PER} pieces</small></button></div></div>`:''}
+  ${m.sides&&m.sides.length?(()=>{const o=otherPlatter(m);return `<div class="field"><span class="flabel">Starters</span><div class="opt"><button data-act="csw" data-v="0" aria-pressed="${!f.swap}">${m.sides.map(esc).join(' + ')}<small>Included</small></button>${o?`<button data-act="csw" data-v="1" aria-pressed="${!!f.swap}">${o.sides.map(esc).join(' + ')}<small>From the ${esc(o.name.toLowerCase())} · +${money(m.swapFee??0.5)}</small></button>`:''}</div></div>`})():''}
+  <div class="box"><div class="addon"><span class="flabel">Platters</span>${stepper('cq',f.qty)}</div></div>
+  ${m.addons&&m.addons.length?`<div class="box"><span class="flabel">Extras</span>`+m.addons.filter(k=>ADDONS[k]).map(k=>`<div class="addon"><span>${ADDONS[k].name} <span class="muted mono small">+${money(ADDONS[k].price)}</span></span>${stepper('ca',f.addons[k]||0,`data-k="${k}"`)}</div>`).join('')+`</div>`:''}
+  ${m.spice?`<div class="field"><span class="flabel">Spice level</span><div class="opt">${['mild','medium','hot'].map(s=>`<button data-act="cs" data-v="${s}" aria-pressed="${f.spice===s}">${s[0].toUpperCase()+s.slice(1)}</button>`).join('')}</div></div>`:''}
+  <div class="field"><label for="c-note">Note for Manna (optional)</label><textarea id="c-note" data-f="note" placeholder="Less oil, no onions, etc.">${esc(f.note)}</textarea></div>
+  <button class="btn pri" style="justify-content:center;padding:12px" data-act="addLine">Add to ${WDL[dow(S.day)]}'s order · ${money(total)}</button>`;
+}
+function groups(){const g={};S.cart.forEach(l=>{const k=l.specialId?'deal|'+l.date:l.date;(g[k]=g[k]||[]).push(l)});return Object.entries(g).sort((a,b)=>a[0].split('|').pop().localeCompare(b[0].split('|').pop()))}
+function shCheckout(){
+  const f=S.sheet.form;const e=f.errors||{};
+  if(!S.cart.length)return `<div class="panel-h"><h2>Your cart</h2><button class="x" data-act="close" aria-label="Close">×</button></div><div class="empty">Your cart is empty.</div>`;
+  const gs=groups();const deliveryGroups=gs.filter(([k])=>!k.startsWith('deal')).length;
+  const sub=cartTotal();const fee=f.where==='address'?FEE*deliveryGroups:0;
+  let h=`<div class="panel-h"><div><p class="eyebrow">Checkout</p><h2>Review and pay</h2></div><button class="x" data-act="close" aria-label="Close">×</button></div>`;
+  h+=gs.map(([k,ls])=>{const isDeal=k.startsWith('deal');const d=k.split('|').pop();const closed=!isDeal&&!isOpen(d);
+    return `<div class="box"><div class="line"><b>${isDeal?'Off-menu · pickup today':dlabel(d)}</b>${closed?'<span class="err">Orders closed</span>':''}</div>`+ls.map(l=>`<div class="addon"><div><div>${esc(l.name)} <span class="mono small muted">${money(lineTotal(l))}</span></div>${lineSub(l)?`<div class="note">${lineSub(l)}</div>`:''}</div>${stepper('lq',l.qty,`data-k="${l.key}"`)}</div>`).join('')+`</div>`}).join('');
+  h+=`<div class="row2"><div class="field"><label for="k-name">Name</label><input id="k-name" data-f="name" value="${esc(f.name)}" autocomplete="name">${e.name?`<span class="err">${e.name}</span>`:''}</div>
+  <div class="field"><label for="k-phone">Phone</label><input id="k-phone" data-f="phone" value="${esc(f.phone)}" inputmode="tel" autocomplete="tel">${e.phone?`<span class="err">${e.phone}</span>`:''}</div></div>`;
+  if(deliveryGroups){
+    h+=`<div class="field"><span class="flabel">Time</span><div class="opt">${['lunch','dinner'].map(s=>`<button data-act="fs" data-k="slot" data-v="${s}" aria-pressed="${f.slot===s}">${SLOTS[s].t}<small>${SLOTS[s].s}</small></button>`).join('')}</div></div>
+    <div class="field"><span class="flabel">Where</span><div class="opt"><button data-act="fs" data-k="where" data-v="hub" aria-pressed="${f.where==='hub'}">Global Hub<small>Free pickup</small></button><button data-act="fs" data-k="where" data-v="address" aria-pressed="${f.where==='address'}">My address<small>+${money(FEE)} per day</small></button></div></div>
+    ${f.where==='address'?`<div class="field"><label for="k-addr">Delivery address</label><input id="k-addr" data-f="address" value="${esc(f.address)}" placeholder="1720 Maple Ave, Apt 4B, Evanston" autocomplete="street-address">${e.address?`<span class="err">${e.address}</span>`:''}</div>`:''}`;
+  }
+  h+=`<div class="field"><span class="flabel">Payment</span><div class="opt"><button data-act="fs" data-k="pay" data-v="card" aria-pressed="${f.pay==='card'}">Card</button><button data-act="fs" data-k="pay" data-v="venmo" aria-pressed="${f.pay==='venmo'}">Venmo</button></div></div>`;
+  h+=f.pay==='card'?`<div class="field"><label for="k-card">Card number</label><input id="k-card" data-f="card" value="${esc(f.card)}" inputmode="numeric" autocomplete="off">${e.card?`<span class="err">${e.card}</span>`:''}</div><div class="row2"><div class="field"><label for="k-exp">Expiry</label><input id="k-exp" data-f="exp" value="${esc(f.exp)}"></div><div class="field"><label for="k-cvc">CVC</label><input id="k-cvc" data-f="cvc" value="${esc(f.cvc)}" inputmode="numeric"></div></div>`
+    :`<div class="field"><label for="k-venmo">Venmo username</label><input id="k-venmo" data-f="venmo" value="${esc(f.venmo)}" placeholder="@your-name">${e.venmo?`<span class="err">${e.venmo}</span>`:''}</div>`;
+  h+=`<div class="totals"><div class="line"><span>Food</span><b>${money(sub)}</b></div><div class="line"><span>Delivery</span><b>${fee?money(fee):'Free'}</b></div><div class="line grand"><span>Total</span><b>${money(sub+fee)}</b></div></div>
+  ${e.form?`<p class="err">${e.form}</p>`:''}
+  <button class="btn pri" style="justify-content:center;padding:13px;font-size:15px" data-act="pay" ${f.busy?'disabled':''}>${f.busy?'Processing payment…':'Pay '+money(sub+fee)}</button>
+  <p class="note">Prototype payment: no money moves and no card is charged. The test card is filled in for you.</p>`;
+  return h;
+}
+function shDone(){const r=S.sheet.ctx;return `<div class="panel-h"><span></span><button class="x" data-act="close" aria-label="Close">×</button></div><div class="success"><div class="tick" aria-hidden="true">✓</div><h2>Paid ${money(r.total)}</h2><p class="muted">Manna has your order${r.codes.length>1?'s':''}. You'll see status updates in My orders.</p><p class="mono">${r.codes.map(esc).join(' · ')}</p><button class="btn pri" data-act="goOrders">Track my orders</button></div>`}
+function shItem(){
+  const f=S.sheet.form;const isNew=!S.sheet.ctx;const e=f.errors||{};
+  return `<div class="panel-h"><div><p class="eyebrow">Menu</p><h2>${isNew?'Add a platter':'Edit '+esc(f.name)}</h2></div><button class="x" data-act="close" aria-label="Close">×</button></div>
+  <div class="row2"><div class="field"><label for="i-name">Name</label><input id="i-name" data-f="name" value="${esc(f.name)}" placeholder="Veg platter">${e.name?`<span class="err">${e.name}</span>`:''}</div>
+  <div class="field"><label for="i-price">Price ($)</label><input id="i-price" data-f="price" value="${esc(f.price)}" inputmode="decimal">${e.price?`<span class="err">${e.price}</span>`:''}</div></div>
+  <div class="field"><span class="flabel">Type</span><div class="opt"><button data-act="fs" data-k="veg" data-v="1" aria-pressed="${!!f.veg}">${vm(true)} Veg</button><button data-act="fs" data-k="veg" data-v="0" aria-pressed="${!f.veg}">${vm(false)} Non-veg</button></div></div>
+  <div class="field"><label for="i-ch">Mains students choose from (one per line)</label><textarea id="i-ch" data-f="choicesText" rows="3">${esc(f.choicesText)}</textarea><span class="note">Mains with "rice" or "pulao" in the name skip the rice-or-chapati question.</span></div>
+  <div class="field"><label for="i-sd">Starters included with every platter (one per line)</label><textarea id="i-sd" data-f="sidesText" rows="3">${esc(f.sidesText)}</textarea></div>
+  <div class="field"><label for="i-swap">Charge to swap for the other platter's starters ($)</label><input id="i-swap" data-f="swapFee" value="${esc(f.swapFee)}" inputmode="decimal"></div>
+  <button class="switch" data-act="fs" data-k="baseChoice" data-v="${f.baseChoice?0:1}" aria-pressed="false"><span class="pill ${f.baseChoice?'cooking':'received'}">${f.baseChoice?'Students choose rice or chapati':'No rice or chapati choice'}</span> <span class="muted">tap to change</span></button>
+  <div class="field"><label for="i-date">Day</label><select id="i-date" data-f="date">${PDAYS.map((d,i)=>{const x=addDays(menuWeek(),i);return `<option value="${x}" ${f.date===x?'selected':''}>${dlabel(x)}</option>`}).join('')}</select></div>
+  <div class="field"><span class="flabel">Extras students can add</span><div class="opt">${Object.keys(ADDONS).map(k=>`<button data-act="faddon" data-v="${k}" aria-pressed="${f.addons.includes(k)}">${ADDONS[k].name}<small>+${money(ADDONS[k].price)}</small></button>`).join('')}</div></div>
+  <div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap">${isNew?'<span></span>':f.confirmDel?`<span><button class="btn danger" data-act="delItem">Delete platter</button> <button class="btn ghost" data-act="fs" data-k="confirmDel" data-v="0">Cancel</button></span>`:`<button class="btn ghost danger" data-act="fs" data-k="confirmDel" data-v="1">Delete…</button>`}<button class="btn pri" data-act="saveItem">${isNew?'Add to menu':'Save changes'}</button></div>`;
+}
+function shDeal(){
+  const f=S.sheet.form;const e=f.errors||{};
+  return `<div class="panel-h"><div><p class="eyebrow">Off-menu · today</p><h2>Post an off-menu item</h2></div><button class="x" data-act="close" aria-label="Close">×</button></div>
+  <div class="field"><label for="d-name">What's available</label><input id="d-name" data-f="name" value="${esc(f.name)}" placeholder="Creamy pasta (full box)">${e.name?`<span class="err">${e.name}</span>`:''}</div>
+  <div class="field"><span class="flabel">Type</span><div class="opt"><button data-act="fs" data-k="veg" data-v="1" aria-pressed="${!!f.veg}">${vm(true)} Veg</button><button data-act="fs" data-k="veg" data-v="0" aria-pressed="${!f.veg}">${vm(false)} Non-veg</button></div></div>
+  <div class="row2"><div class="field"><label for="d-qty">Portions available</label><input id="d-qty" data-f="qty" value="${esc(f.qty)}" inputmode="numeric">${e.qty?`<span class="err">${e.qty}</span>`:''}</div><div class="field"><label for="d-price">Price ($)</label><input id="d-price" data-f="price" value="${esc(f.price)}" inputmode="decimal">${e.price?`<span class="err">${e.price}</span>`:''}</div></div>
+  <div class="field"><label for="d-was">Usual price ($, optional)</label><input id="d-was" data-f="was" value="${esc(f.was)}" inputmode="decimal"></div>
+  <div class="field"><label for="d-pick">Pickup</label><input id="d-pick" data-f="pickup" value="${esc(f.pickup)}"></div>
+  <button class="btn pri" style="justify-content:center;padding:12px" data-act="saveDeal">Post to students</button>`;
+}
+
+/* ---------- weekly planner ---------- */
+const PDAYS=['mon','tue','wed','thu','fri'];
+const PLAT={veg:'Veg platter',nv:'Non-veg platter'};
+const TARGET={veg:45,nv:55},PRICE=7,BASECOST=0.35;
+const mondayOf=s=>{const d=pd(s);const k=(d.getDay()+6)%7;d.setDate(d.getDate()-k);return ymd(d)};
+const addDays=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return ymd(d)};
+const menuWeek=()=>mondayOf(orderDays()[0]);
+const planWeek=()=>addDays(menuWeek(),7);
+const weekLabel=ws=>{const a=pd(ws),b=pd(addDays(ws,4));return MON[a.getMonth()]+' '+a.getDate()+'–'+(a.getMonth()===b.getMonth()?'':MON[b.getMonth()]+' ')+b.getDate()};
+const planLive=p=>p&&(p.status==='published'||(p.autoPublishAt&&Date.now()>=new Date(p.autoPublishAt).getTime()));
+function planItems(date){const p=S.plans[mondayOf(date)];if(!planLive(p))return[];const day=p.days&&p.days[dow(date)];if(!day)return[];
+  return ['veg','nv'].filter(t=>day[t]).map((t,i)=>({id:t+'_'+date,date,name:PLAT[t],cat:'meals',price:PRICE,veg:t==='veg',choices:day[t].mains,sides:day[t].starters,baseChoice:true,addons:['chapati','rice','curry'],swapFee:0.5,forecast:day[t].forecast,order:i+1,fromPlan:true}))}
+function fcFor(m,date){if(m.forecast!=null)return m.forecast;const wd=dow(date);const h=S.history&&S.history.byDay&&S.history.byDay[wd];if(!h)return null;const a=h[m.id]||h[(m.veg?'veg':'nv')+'_'+wd];return a&&a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):null}
+const DS=()=>(S.dstats&&S.dstats.dishes)||{};
+const WK=()=>(S.weeks&&S.weeks.weeks)||[];
+function currentMenuNames(){const ws=menuWeek();const out=new Set();PDAYS.forEach((d,i)=>menuFor(addDays(ws,i)).forEach(m=>(m.choices||[]).forEach(c=>out.add(c))));return out}
+function baseline(wd,t){const w=WK();if(!w.length)return t==='veg'?16:22;const last=w.slice(-4).map(x=>x.days[wd]&&x.days[wd][t]?x.days[wd][t].platters:0);
+  const avg=last.reduce((a,b)=>a+b,0)/last.length;const tot=x=>PDAYS.reduce((a,d)=>a+(x.days[d]?x.days[d].veg.platters+x.days[d].nv.platters:0),0);
+  let trend=1;if(w.length>=4){const r=(tot(w[w.length-1])+tot(w[w.length-2]))/(tot(w[w.length-3])+tot(w[w.length-4]));trend=Math.min(1.1,Math.max(.95,r))}
+  return avg*trend}
+function lift(n){const d=DS()[n];return d&&d.lift?d.lift:0.95}
+function cost(n,veg,type){const d=DS()[n];return d?d.cost:(type==='starter'?0.6:(veg?1.5:2.5))}
+function forecastPlatter(wd,t,mains,starters){
+  const b=baseline(wd,t);const L=mains.map(lift);const n=Math.max(1,Math.round(b*L.reduce((a,x)=>a+x,0)/Math.max(1,L.length)));
+  const w=L.map(x=>x**3);const tw=w.reduce((a,x)=>a+x,0)||1;const split=w.map(x=>Math.round(n*x/tw));
+  const fc=mains.reduce((a,m,i)=>a+cost(m,t==='veg','main')*w[i]/tw,0)+starters.reduce((a,s)=>a+cost(s,t==='veg','starter'),0)+BASECOST;
+  return{platters:n,split,foodCost:Math.round(fc*100)/100,foodCostPct:Math.round(fc/PRICE*100),usual:Math.round(b)}}
+function weeksSince(n,ws){const d=DS()[n];if(!d||!d.lastServed)return null;return Math.round((pd(ws)-pd(d.lastServed))/6048e5)}
+function tagsFor(n,ws){const d=DS()[n];if(!d||!d.served)return['New'];const t=[];if((d.lift||0)>=1.1)t.push('Favorite');const k=weeksSince(n,ws);if(k!=null&&k>=4)t.push('Back after '+k+' wks');if(d.swapAway!=null&&d.swapAway>=.15)t.push('Often swapped');return t}
+function norm(x){return String(x||'').trim()}
+function validatePlan(days,ws){
+  const probs=[];const seen={};const cur=currentMenuNames();let newCount=0;const ds=DS();
+  PDAYS.forEach(d=>{const day=days&&days[d];if(!day){probs.push(`${WDF[d]} is missing.`);return}
+    ['veg','nv'].forEach(t=>{const p=day[t];if(!p){probs.push(`${WDF[d]} ${PLAT[t].toLowerCase()} is missing.`);return}
+      const mains=(p.mains||[]).map(norm).filter(Boolean),st=(p.starters||[]).map(norm).filter(Boolean);
+      if(mains.length!==2)probs.push(`${WDF[d]} ${PLAT[t].toLowerCase()} needs exactly 2 mains.`);
+      if(st.length!==2)probs.push(`${WDF[d]} ${PLAT[t].toLowerCase()} needs exactly 2 starters.`);
+      mains.forEach(m=>{if(seen[m])probs.push(`${m} appears twice this week.`);seen[m]=1;if(cur.has(m))probs.push(`${m} is on this week's menu already; pick something else.`);
+        if(!ds[m]||!ds[m].served)newCount++;if(ds[m]&&ds[m].type!=='main')probs.push(`${m} is a starter, not a main.`)});
+      if(t==='veg')[...mains,...st].forEach(x=>{if(ds[x]&&ds[x].veg===false)probs.push(`${x} is not vegetarian but is on the veg platter.`)});
+      if(mains.filter(m=>ds[m]&&ds[m].riceDish).length>1)probs.push(`${WDF[d]} ${PLAT[t].toLowerCase()} has two rice dishes; students need a curry option.`);
+    })});
+  if(newCount>2)probs.push(`${newCount} new dishes this week; keep it to 2 or fewer.`);
+  return probs}
+function buildPlan(days,{summary,source,instruction},ws){
+  const out={};let tot=0,rev=0,fcs=0;
+  PDAYS.forEach(d=>{out[d]={};['veg','nv'].forEach(t=>{const p=days[d][t];const mains=p.mains.map(norm),starters=p.starters.map(norm);
+    const f=forecastPlatter(d,t,mains,starters);tot+=f.platters;rev+=f.platters*PRICE;fcs+=f.platters*f.foodCost;
+    out[d][t]={mains,starters,why:norm(p.why),forecast:f.platters,split:f.split,foodCost:f.foodCost,foodCostPct:f.foodCostPct,usual:f.usual,tags:Object.fromEntries(mains.concat(starters).map(n=>[n,tagsFor(n,ws)]))}})});
+  const sat=addDays(ws,-2);
+  return{weekStart:ws,status:'draft',autoPublishAt:sat+'T10:00:00',source,instruction:instruction||'',summary:summary||'',generatedAt:new Date().toISOString(),editedAt:null,
+    days:out,totals:{platters:tot,revenue:rev,foodCostPct:Math.round(fcs/Math.max(1,rev)*100)}}}
+function recomputeTotals(p){let tot=0,rev=0,fcs=0;PDAYS.forEach(d=>['veg','nv'].forEach(t=>{const x=p.days[d][t];tot+=x.forecast;rev+=x.forecast*PRICE;fcs+=x.forecast*x.foodCost}));p.totals={platters:tot,revenue:rev,foodCostPct:Math.round(fcs/Math.max(1,rev)*100)}}
+/* rules-based fallback, no AI */
+function rulesPlan(ws){
+  const ds=DS();const cur=currentMenuNames();const used=new Set();const days={};
+  const mains=t=>Object.entries(ds).filter(([n,d])=>d.type==='main'&&d.veg===(t==='veg')&&!cur.has(n)).map(([n,d])=>({n,d,score:(d.lift||0.95)*(1+Math.min(4,weeksSince(n,ws)||4)*0.02)-(d.cost/PRICE)*0.3})).sort((a,b)=>b.score-a.score);
+  const starters=t=>Object.entries(ds).filter(([n,d])=>d.type==='starter'&&(t==='nv'||d.veg)&&(d.swapAway==null||d.swapAway<.15)).map(([n,d])=>({n,s:(d.swapAway??.08)+(cur.has(n)?.03:0)+d.cost*.02})).sort((a,b)=>a.s-b.s);
+  const sUsed={};
+  PDAYS.forEach((d,i)=>{days[d]={};['veg','nv'].forEach(t=>{const ms=mains(t).filter(x=>!used.has(x.n));
+    const fav=ms[0];let rot=ms.slice(Math.floor(ms.length/3)).find(x=>x.n!==fav.n&&!(x.d.riceDish&&fav.d.riceDish)&&x.d.cuisine!==fav.d.cuisine)||ms[1];
+    used.add(fav.n);used.add(rot.n);
+    const sp=starters(t).sort((a,b)=>(sUsed[a.n]||0)-(sUsed[b.n]||0)||a.s-b.s).slice(0,2);sp.forEach(x=>sUsed[x.n]=(sUsed[x.n]||0)+1);
+    days[d][t]={mains:[fav.n,rot.n],starters:sp.map(x=>x.n),why:`${fav.n} is a proven seller; ${rot.n} rotates in.`}})});
+  return days}
+/* ---------- AI agent (runs on Manna's Claude account via the page) ---------- */
+let sampleFn=null;
+const AGENT_ERR={not_granted:'AI drafting was not allowed in this view. You can still draft with the built-in rules.',sampling_disabled:'Claude is not available for this account. You can still draft with the built-in rules.',tools_unavailable:'This app version cannot run the AI planner. You can still draft with the built-in rules.',rate_limited:'Claude is busy or your usage limit was reached. Try again in a few minutes.',session_expired:'Sign in to Claude again, then retry.',refused:'Claude declined this request. Try a different note.',prompt_too_large:'Too much data to send at once.'};
+function agentLog(text){S.agent.log.push({text,at:Date.now()});renderMain()}
+function agentTools(ws,instruction){
+  return[
+   {name:'get_demand_history',description:'Weekly platter counts per weekday for the last 6 weeks (veg and non-veg), food cost %, bookings so far for the current week, and the baseline forecast per weekday for the week being planned. Call first.',
+    execute(){const w=WK();const cur=menuWeek();const booked={};PDAYS.forEach((d,i)=>{const date=addDays(cur,i);const os=S.orders.filter(o=>o.date===date);booked[d]={veg:0,nv:0};os.forEach(o=>o.items.forEach(l=>{if(l.menuId)booked[d][l.veg?'veg':'nv']+=l.qty}))});
+      agentLog(`Read ${w.length} weeks of order history and this week's ${S.orders.filter(o=>o.date>=cur&&o.date<=addDays(cur,4)).length} bookings`);
+      return{weeks:w.map(x=>({start:x.start,platters:Object.fromEntries(PDAYS.map(d=>[d,{veg:x.days[d].veg.platters,nv:x.days[d].nv.platters}])),foodCostPct:Math.round(x.foodCost/x.revenue*100)})),
+        currentWeek:{start:cur,bookedSoFar:booked},baselineForPlannedWeek:Object.fromEntries(PDAYS.map(d=>[d,{veg:Math.round(baseline(d,'veg')),nv:Math.round(baseline(d,'nv'))}]))}}},
+   {name:'get_dish_stats',description:'Every dish Manna has cooked with performance: for mains, lift (platters sold vs a usual day when on the menu; 1.1 = 10% more), pickShare, cuisine, riceDish; for starters, swapAway (share of students who swapped it for the other platter\'s starters). Also estimated food cost per portion (USD), vegetarian flag, times served and weeks since last served.',
+    execute(){const ds=DS();agentLog(`Checked performance and food cost for ${Object.keys(ds).length} dishes`);
+      return Object.entries(ds).map(([n,d])=>({name:n,type:d.type,veg:d.veg,cost:d.cost,served:d.served,weeksSinceServed:weeksSince(n,ws),...(d.type==='main'?{lift:d.lift??null,pickShare:d.pickShare??null,cuisine:d.cuisine,riceDish:!!d.riceDish}:{swapAway:d.swapAway??null})}))}},
+   {name:'get_recent_menus',description:'The menu currently being ordered (this week) and the previous 2 weeks, by day and platter. Mains on this week\'s menu may not be repeated next week.',
+    execute(){agentLog('Looked at this week\'s menu and the 2 weeks before');const cur=menuWeek();
+      const thisWeek=Object.fromEntries(PDAYS.map((d,i)=>[d,Object.fromEntries(menuFor(addDays(cur,i)).map(m=>[m.veg?'veg':'nv',{mains:m.choices,starters:m.sides}]))]));
+      return{thisWeek,previous:WK().slice(-2).map(x=>({start:x.start,days:Object.fromEntries(PDAYS.map(d=>[d,{veg:{mains:x.days[d].veg.mains,starters:x.days[d].veg.starters},nv:{mains:x.days[d].nv.mains,starters:x.days[d].nv.starters}}]))}))}}},
+   {name:'forecast_platter',description:'Optional. Forecast platters sold and food cost for one platter option before committing. Returns platters, split between the two mains, foodCost per platter (USD) and foodCostPct of the $7 price.',
+    inputSchema:{type:'object',properties:{day:{type:'string',enum:PDAYS},platter:{type:'string',enum:['veg','nv']},mains:{type:'array',items:{type:'string'}},starters:{type:'array',items:{type:'string'}}},required:['day','platter','mains','starters']},
+    execute(i){const d=String(i.day),t=String(i.platter);const f=forecastPlatter(d,t,(i.mains||[]).map(String),(i.starters||[]).map(String));agentLog(`Tested ${WDL[d]||d} ${t==='veg'?'veg':'non-veg'}: ${(i.mains||[]).join(' / ')} → ~${f.platters} platters, ${f.foodCostPct}% food cost`);return f}},
+   {name:'save_menu',description:'Save the full week as a draft for Manna. Validates the rules; returns {ok:true, totals} or {ok:false, problems:[...]} to fix and resend. Each platter needs mains (2), starters (2) and a one-sentence why written for Manna.',
+    inputSchema:{type:'object',properties:{summary:{type:'string',description:'2-3 sentences for Manna on the thinking behind the week'},days:{type:'object',description:'Keys mon..fri; each {veg:{mains,starters,why}, nv:{mains,starters,why}}'}},required:['summary','days']},
+    async execute(i){const days=i.days||{};const probs=validatePlan(days,ws);
+      if(probs.length){agentLog(`Draft had ${probs.length} problem${probs.length>1?'s':''}; revising`);return{ok:false,problems:probs}}
+      const plan=buildPlan(days,{summary:String(i.summary||''),source:'ai-app',instruction},ws);
+      await W.savePlan(plan);S.agent.saved=true;agentLog(`Saved the draft: ~${plan.totals.platters} platters, ${plan.totals.foodCostPct}% food cost`);return{ok:true,totals:plan.totals}}}
+  ]}
+function agentPrompt(ws,instruction){
+  return `You plan next week's menu for Manna's Kitchen, a home kitchen in Evanston selling weekly tiffins to Kellogg MBA students.
+Plan the week of ${weekLabel(ws)} (Monday to Friday).
+
+Format: every weekday has a veg platter and a non-veg platter, $7 each. Each platter has 2 mains (the student picks one, served with rice or 3 chapatis) and 2 starters included with it.
+
+What a good week looks like, in priority order:
+1. Demand. Lean on dishes that sell (lift above 1). Pair a proven favourite with a rotation dish on each platter so every platter has a safe pick.
+2. Variety. Never repeat a main within the week or from this week's menu. Prefer mains not served in the last 2 weeks. Mix cuisines across the week; at most one Indo-Chinese main per day. At most one rice dish per platter.
+3. Food cost. Aim for 45% of the $7 price or less on veg platters and 55% or less on non-veg (a chicken portion alone costs about $2.30). Recent weeks ran 48-53% overall. Balance expensive mains (lamb, mutton, fish, paneer) with cheaper ones and use low-cost starters on non-veg platters. If the week cannot hit these, say so to Manna and suggest a price change.
+4. Starters. Avoid starters with swapAway above 15%. Every dish on the veg platter must be vegetarian. Starters may repeat across weeks; avoid using the same starter twice in one week.
+5. New dishes: at most 2 per week that have no history. Forecasts for them are conservative.
+
+Manna's note for this week: ${instruction?instruction:'none'}
+
+How to work (you have only a few rounds, so call tools in parallel):
+Round 1: call get_demand_history, get_dish_stats and get_recent_menus together.
+Round 2: optionally call forecast_platter for options you are unsure about, all in parallel. Then call save_menu with the whole week. If it returns problems, fix them and call save_menu again.
+Finally, write 2 or 3 short plain sentences to Manna: what you changed from recent weeks, the biggest bet, and anything to watch. No markdown.`}
+async function runAgent(instruction){
+  if(!sampleFn||S.agent.running)return;
+  const ws=planWeek();S.agent={running:true,log:[],text:'',error:'',saved:false,ctl:new AbortController(),startedAt:Date.now()};
+  S.kTab='plan';renderMain();
+  try{
+    const r=await sampleFn(agentPrompt(ws,instruction),{tools:agentTools(ws,instruction),signal:S.agent.ctl.signal,modelTier:'default',onText:({text})=>{S.agent.text=text;const el=document.getElementById('agent-text');if(el)el.textContent=text.slice(-900)}});
+    S.agent.text=r.text;
+    if(!S.agent.saved)S.agent.error='Claude finished without saving a menu. Try again, or draft with the built-in rules.';
+    else{const p=S.plans[ws];const note=r.text.trim().split('\n').filter(Boolean).pop();if(p&&note&&note.length>40&&note.length<900){await W.patchPlan(ws,{summary:p.summary||note,agentNote:note})}}
+  }catch(e){if(e&&e.code!=='cancelled')S.agent.error=AGENT_ERR[e&&e.code]||'Something went wrong while drafting. Try again.';if(e&&e.code==='not_granted'||e&&e.code==='sampling_disabled'||e&&e.code==='tools_unavailable')S.aiOff=true}
+  S.agent.running=false;renderMain();
+  if(S.agent.saved)toast('Next week\'s draft is ready');
+}
+function kPlan(){
+  const ws=planWeek();const p=S.plans[ws];const ag=S.agent;
+  const srcLabel={'claude-weekly':'Drafted by Claude (weekly run)','ai-app':'Drafted by Claude in the app','rules':'Drafted with built-in rules'};
+  let h=`<section class="plan-head"><div><p class="eyebrow">Next week · planned from your order data</p><h2 class="big">Menu for ${weekLabel(ws)}</h2>`;
+  if(p){const live=planLive(p);const ap=new Date(p.autoPublishAt);
+    h+=`<p class="muted small">${srcLabel[p.source]||'Drafted'} · ${fmtWhen(p.generatedAt)}${p.editedAt?` · Edited by Manna ${fmtWhen(p.editedAt)}`:''}</p></div><div class="plan-act">`+
+      (live?`<span class="pill delivered">Live for students</span>`:`<span class="pill cooking">Draft</span><span class="small muted">Goes live automatically ${WDL[WD[ap.getDay()]]}, ${MON[ap.getMonth()]} ${ap.getDate()} at ${fmtTime(ap)}</span><button class="btn pri" data-act="publishPlan">Publish now</button>`)+
+      `</div></section>`;
+  }else h+=`<p class="muted small">No draft yet. Claude drafts next week's menu from your order history; you only review it.</p></div></section>`;
+  // agent panel
+  h+=`<section class="agent ${ag.running?'on':''}"><div class="agent-h"><div><b>AI menu planner</b><p class="small muted">Reads your order history, dish performance and food costs, forecasts demand, then drafts the week.</p></div><div class="agent-btns">`+
+    (ag.running?`<button class="btn" data-act="stopAgent">Stop</button>`:
+      `${S.aiOff||!sampleFn?'':`<button class="btn pri" data-act="aiAsk">${p?'Redraft with AI':'Draft with AI'}</button>`}<button class="btn" data-act="rulesDraft">${p?'Redraft':'Draft'} with rules</button>`)+`</div></div>`;
+  if(!sampleFn&&!ag.running)h+=`<p class="small muted">${S.live?'AI drafting starts once this page can reach Claude. Built-in rules work any time.':'This demo drafts with built-in rules. The Claude-powered planner runs in the hosted version.'}</p>`;
+  if(ag.running||ag.log.length||ag.error){
+    h+=`<ol class="steps">`+ag.log.map(x=>`<li class="done">${esc(x.text)}</li>`).join('')+(ag.running?`<li class="now">${ag.log.length?'Thinking about the menu…':'Starting Claude… (first time asks you to allow it)'}</li>`:'')+`</ol>`;
+    if(ag.running)h+=`<pre id="agent-text" class="agent-text">${esc((ag.text||'').slice(-900))}</pre>`;
+    if(ag.error)h+=`<p class="err">${esc(ag.error)}</p>`;
+  }
+  h+=`</section>`;
+  if(!p)return h;
+  // summary
+  const last=WK().slice(-1)[0];const lastTot=last?PDAYS.reduce((a,d)=>a+last.days[d].veg.platters+last.days[d].nv.platters,0):null;
+  const newN=new Set();PDAYS.forEach(d=>['veg','nv'].forEach(t=>p.days[d][t].mains.forEach(m=>{if((p.days[d][t].tags[m]||[]).includes('New'))newN.add(m)})));
+  h+=`<div class="stats"><div class="stat"><span>Expected platters</span><b>${p.totals.platters}</b>${lastTot?`<em class="${p.totals.platters>=lastTot?'up':'down'}">${p.totals.platters>=lastTot?'+':''}${p.totals.platters-lastTot} vs last week</em>`:''}</div>
+    <div class="stat"><span>Expected revenue</span><b>${money(p.totals.revenue).replace('.00','')}</b></div>
+    <div class="stat"><span>Est. food cost</span><b>${p.totals.foodCostPct}%</b>${last?`<em class="${p.totals.foodCostPct<=Math.round(last.foodCost/last.revenue*100)?'up':'down'}">last week ${Math.round(last.foodCost/last.revenue*100)}%</em>`:''}</div>
+    <div class="stat"><span>New dishes</span><b>${newN.size}</b>${newN.size?`<em>${[...newN].map(esc).join(', ')}</em>`:''}</div></div>`;
+  if(p.summary||p.agentNote)h+=`<section class="card note-card"><p class="flabel">Why this menu</p><p>${esc(p.agentNote||p.summary)}</p>${p.instruction?`<p class="small muted">Your note: “${esc(p.instruction)}”</p>`:''}</section>`;
+  h+=`<div class="plan-days">`+PDAYS.map((d,i)=>{const date=addDays(ws,i);return `<section class="pday"><h3>${WDF[d]} <span class="muted small">${MON[pd(date).getMonth()]} ${pd(date).getDate()}</span></h3><div class="pday-row">`+['veg','nv'].map(t=>{const x=p.days[d][t];
+    return `<div class="pbox"><div class="pbox-h">${vm(t==='veg')}<b>${PLAT[t]}</b><span class="fc-n" title="Forecast platters">~${x.forecast}</span></div>
+      <div class="pmains">${x.mains.map((m,k)=>`<div class="pm"><span>${esc(m)}</span>${(x.tags[m]||[]).map(g=>`<span class="tag ${g==='New'?'new':g==='Favorite'?'fav':''}">${esc(g)}</span>`).join('')}<span class="mono small muted">${x.split&&x.split[k]!=null?'~'+x.split[k]:''}</span></div>`).join('<span class="or">or</span>')}</div>
+      <p class="small"><span class="muted">Starters:</span> ${x.starters.map(esc).join(', ')}</p>
+      ${x.why?`<p class="why">${esc(x.why)}</p>`:''}
+      <div class="pbox-f"><span class="small ${x.foodCostPct>TARGET[t]+8?'bad':x.foodCostPct<=TARGET[t]?'good':'muted'}">Food cost ${x.foodCostPct}% · ${money(x.foodCost)}</span><button class="btn sm" data-act="editPlatter" data-d="${d}" data-t="${t}">Edit</button></div></div>`}).join('')+`</div></section>`}).join('')+`</div>`;
+  return h;
+}
+function fmtWhen(iso){if(!iso)return'';const d=new Date(iso);return WDL[WD[d.getDay()]]+' '+MON[d.getMonth()]+' '+d.getDate()+', '+fmtTime(d)}
+function shAiAsk(){const f=S.sheet.form;return `<div class="panel-h"><div><p class="eyebrow">AI menu planner</p><h2>Draft ${weekLabel(planWeek())}</h2></div><button class="x" data-act="close" aria-label="Close">×</button></div>
+  <p class="desc">Claude reads your last 6 weeks of orders, this week's bookings, and what each dish sells and costs. Then it drafts all 10 platters and checks them against your rules. It takes about a minute and uses your Claude account.</p>
+  <div class="field"><label for="ai-note">Anything Claude should know this week? (optional)</label><textarea id="ai-note" data-f="note" rows="3" placeholder="No fish this week. Midterms on Wednesday, expect more orders. Paneer is expensive right now.">${esc(f.note)}</textarea></div>
+  <button class="btn pri" style="justify-content:center;padding:12px" data-act="aiStart">Start drafting</button>`}
+function shPlatter(){const f=S.sheet.form;const e=f.errors||{};return `<div class="panel-h"><div><p class="eyebrow">${WDF[f.d]} · next week</p><h2>${PLAT[f.t]}</h2></div><button class="x" data-act="close" aria-label="Close">×</button></div>
+  <datalist id="dishes">${Object.entries(DS()).filter(([,d])=>f.t==='nv'||d.veg).map(([n])=>`<option value="${esc(n)}"></option>`).join('')}</datalist>
+  <div class="row2"><div class="field"><label for="pe-m1">Main 1</label><input id="pe-m1" data-f="m1" list="dishes" value="${esc(f.m1)}"></div><div class="field"><label for="pe-m2">Main 2</label><input id="pe-m2" data-f="m2" list="dishes" value="${esc(f.m2)}"></div></div>
+  <div class="row2"><div class="field"><label for="pe-s1">Starter 1</label><input id="pe-s1" data-f="s1" list="dishes" value="${esc(f.s1)}"></div><div class="field"><label for="pe-s2">Starter 2</label><input id="pe-s2" data-f="s2" list="dishes" value="${esc(f.s2)}"></div></div>
+  ${e.form?`<p class="err">${esc(e.form)}</p>`:''}
+  <p class="note">Pick from dishes you've cooked before, or type a new one. The forecast and food cost update when you save.</p>
+  <button class="btn pri" style="justify-content:center;padding:12px" data-act="savePlatter">Save changes</button>`}
+
+/* ---------- inventory & purchasing autopilot ---------- */
+const STI=()=>(S.stock&&S.stock.items)||{};
+const REC=()=>(S.stock&&S.stock.recipes)||{};
+const SET=()=>(S.stock&&S.stock.settings)||{autopilot:true,budget:900,safety:1.15,countedAt:new Date().toISOString()};
+const DONE_ST=['cooking','out','delivered'];
+function fmtQ(q,u){q=Math.round(q);if(u==='pc')return q+' pcs';const big=u==='g'?'kg':'L';return Math.abs(q)>=1000?(q/1000).toFixed(1).replace('.0','')+' '+big:q+' '+(u==='g'?'g':'ml')}
+function addTo(m,r,k){for(const i in r)m[i]=(m[i]||0)+r[i]*k}
+function recipeFor(name,veg,starter){const r=REC()[name];if(r)return r;const k=starter?.55:1;const g={onion:60*k,tomato:60*k,oil:15*k,gg:8*k,spices:5*k};if(veg)g.greens=120*k;else g.chicken=170*k;return g}
+function lineUsage(l,out){
+  const q=l.qty||0;if(!q||!l.menuId)return out; // off-menu items are cooked from leftovers
+  const main=l.choice||l.name;addTo(out,recipeFor(main,l.veg,false),q);
+  const b=REC()._base||{};if(l.base==='rice')addTo(out,b.rice||{rice:90},q);if(l.base==='chapati')addTo(out,b.chapati||{atta:105},q);
+  (l.sides||[]).forEach(s=>addTo(out,recipeFor(s,l.veg,true),q));
+  (l.addons||[]).forEach(a=>{if(a.id==='chapati')addTo(out,b.addon_chapati||{atta:35},a.qty);if(a.id==='rice')addTo(out,b.addon_rice||{rice:90},a.qty);if(a.id==='curry')addTo(out,recipeFor(main,l.veg,false),a.qty*.5)});
+  return out}
+function onHandNow(){
+  const set=SET();const since=set.countedAt||'1970';const sinceDate=since.slice(0,10);const out={};
+  for(const id in STI())out[id]=STI()[id].onHand||0;
+  Object.values(S.purchases).forEach(p=>{if(p.status==='received'&&(p.receivedAt||'')>since)(p.lines||[]).forEach(x=>{const it=STI()[x.id];if(it)out[x.id]+=x.packs*it.packSize})});
+  const used={};S.orders.filter(o=>DONE_ST.includes(o.status)&&o.date>=sinceDate).forEach(o=>o.items.forEach(l=>lineUsage(l,used)));
+  for(const id in used)if(id in out)out[id]-=used[id];
+  return{onHand:out,used}}
+function forecastMenu(date){const m=menuFor(date);if(m.length)return m;const p=S.plans[mondayOf(date)];const day=p&&p.days&&p.days[dow(date)];if(!day)return[];
+  return['veg','nv'].filter(t=>day[t]).map(t=>({id:t+'_'+date,veg:t==='veg',name:PLAT[t],choices:day[t].mains,sides:day[t].starters,forecast:day[t].forecast,split:day[t].split}))}
+function needForDates(dates){
+  const need={},detail={platters:0,booked:0};
+  dates.forEach(date=>{
+    const booked={};S.orders.filter(o=>o.date===date&&!DONE_ST.includes(o.status)).forEach(o=>o.items.forEach(l=>{if(!l.menuId)return;lineUsage(l,need);booked[l.menuId]=(booked[l.menuId]||0)+l.qty;detail.booked+=l.qty}));
+    forecastMenu(date).forEach(m=>{const f=fcFor(m,date)??0;const b=booked[m.id]||0;const rest=Math.max(0,f-b);detail.platters+=Math.max(f,b);if(!rest)return;
+      const mains=m.choices||[];const w=mains.map(x=>lift(x)**3);const tw=w.reduce((a,x)=>a+x,0)||1;
+      mains.forEach((x,i)=>{const n=rest*w[i]/tw;const r=noBase(x);addTo(need,recipeFor(x,m.veg,false),n);if(!r){addTo(need,(REC()._base||{}).rice||{rice:90},n*.45);addTo(need,(REC()._base||{}).chapati||{atta:105},n*.55)}});
+      (m.sides||[]).forEach(s=>addTo(need,recipeFor(s,m.veg,true),rest))})});
+  return{need,detail}}
+function nextDelivery(){const now=new Date();const d=new Date();d.setHours(14,0,0,0);while(d.getDay()!==0||d<=now)d.setDate(d.getDate()+1);d.setHours(14,0,0,0);
+  const send=new Date(d);send.setDate(send.getDate()-1);send.setHours(18,0,0,0);return{deliverOn:ymd(d),deliverAt:d,sendAt:send}}
+function buildPO(){
+  const set=SET();const nd=nextDelivery();const today=ymd(new Date());const {onHand}=onHandNow();
+  const before=[];for(let x=pd(today);ymd(x)<nd.deliverOn;x.setDate(x.getDate()+1)){const s=ymd(x);if(OPEN.includes(dow(s))&&(s>today||(s===today&&new Date().getHours()<11)))before.push(s)}
+  const week=PDAYS.map((d,i)=>addDays(addDays(nd.deliverOn,1),i));
+  const pre=needForDates(before).need;const {need,detail}=needForDates(week);
+  const lines=[];let total=0;
+  for(const id in STI()){const it=STI()[id];const n=need[id]||0;if(!n&&!(pre[id]))continue;
+    const avail=(onHand[id]||0)-(pre[id]||0);const want=n*(set.safety||1.15)-avail;const packs=want>0?Math.ceil(want/it.packSize):0;
+    if(packs>0){const cost=Math.round(packs*it.packPrice*100)/100;total+=cost;lines.push({id,packs,cost,need:Math.round(n),avail:Math.round(avail)})}}
+  total=Math.round(total*100)/100;
+  return{deliverOn:nd.deliverOn,sendAt:ymd(nd.sendAt)+'T18:00:00',weekOf:week[0],lines,total,platters:Math.round(detail.platters),booked:detail.booked,status:total>(set.budget||900)?'needs_approval':'scheduled',auto:true}}
+let autoBusy=false;
+async function autopilot(){
+  if(autoBusy||S.mode!=='kitchen'||!S.stock||!SET().autopilot)return;autoBusy=true;
+  try{
+    if(db){const r=await db.doc('stock/settings').acquire({holder:S.cid,ttlMs:15000}).catch(()=>({acquired:false}));if(!r.acquired)return}
+    const now=new Date();const nowIso=now.toISOString();
+    for(const [id,p] of Object.entries(S.purchases)){
+      if(p.status==='sent'&&now>=new Date(p.deliverOn+'T14:00:00'))await W.patchPO(id,{status:'received',receivedAt:nowIso});}
+    const fresh=buildPO();const id='po_'+fresh.deliverOn;const cur=S.purchases[id];
+    if(!cur||((cur.status==='scheduled'||cur.status==='needs_approval')&&!cur.edited)){
+      const same=cur&&JSON.stringify(cur.lines)===JSON.stringify(fresh.lines)&&cur.status===fresh.status;
+      if(!same)await W.savePO(id,{...fresh,createdAt:cur&&cur.createdAt||nowIso,updatedAt:nowIso});}
+    const p=S.purchases[id];
+    if(p&&p.status==='scheduled'&&now>=new Date(p.sendAt))await W.patchPO(id,{status:'sent',sentAt:nowIso});
+  }catch(e){}finally{autoBusy=false}}
+function kStock(){
+  const set=SET();const nd=nextDelivery();const id='po_'+nd.deliverOn;const po=S.purchases[id];const {onHand,used}=onHandNow();
+  const week=PDAYS.map((d,i)=>addDays(addDays(nd.deliverOn,1),i));const {need}=needForDates(week);
+  const sa=new Date(nd.sendAt);
+  let h=`<section class="plan-head"><div><p class="eyebrow">Inventory · runs on autopilot</p><h2 class="big">Stock and purchasing</h2><p class="muted small">Stock goes down as orders move to Cooking, using each dish's recipe. Each week the autopilot orders what next week's menu needs, plus a ${Math.round(((set.safety||1.15)-1)*100)}% buffer.</p></div>
+  <div class="plan-act"><button class="switch" data-act="toggleAuto" aria-pressed="${!!set.autopilot}" style="gap:8px"><i class="on-sw"></i>${set.autopilot?'Autopilot on':'Autopilot off'}</button><button class="btn sm" data-act="stockSettings">Settings</button></div></section>`;
+  h+=`<div class="banner"><span>Prototype: orders to suppliers are simulated. Nothing is actually bought or charged.</span></div>`;
+  // PO card
+  const bySup={};(po?po.lines:[]).forEach(x=>{const it=STI()[x.id];if(!it)return;(bySup[it.supplier]=bySup[it.supplier]||[]).push({...x,it})});
+  const stl={scheduled:['cooking','Scheduled'],needs_approval:['out','Needs your OK'],sent:['out','Sent to suppliers'],received:['delivered','Received']};
+  h+=`<section class="card po"><div class="agent-h"><div><p class="flabel">Next order · for ${week[0]?weekLabel(week[0]):''}</p><h2>${po?money(po.total):'—'} <span class="muted small">${po?po.lines.length+' items':''}</span></h2>
+    <p class="small muted">${po?(po.status==='scheduled'?`Sends automatically ${WDL[WD[sa.getDay()]]} ${MON[sa.getMonth()]} ${sa.getDate()} at ${fmtTime(sa)}. Delivery ${dlabel(nd.deliverOn)}, 2 PM.`:po.status==='needs_approval'?`Over your ${money(set.budget||900).replace('.00','')} weekly cap, so it waits for you.`:po.status==='sent'?`Sent ${fmtWhen(po.sentAt)}. Delivery ${dlabel(po.deliverOn)}, 2 PM.`:'Received.'):(set.autopilot?'Calculating…':'Autopilot is off.')}
+    ${po&&po.platters?` Covers ~${po.platters} platters (${po.booked} already booked).`:''}${po&&po.edited?' You edited this order, so the autopilot no longer changes it.':''}</p></div>
+    <div class="agent-btns">${po&&po.status==='needs_approval'?`<button class="btn pri" data-act="sendPO" data-id="${id}">Approve and send</button>`:''}${po&&po.status==='scheduled'?`<button class="btn" data-act="sendPO" data-id="${id}">Send now</button>`:''}${po&&(po.status==='scheduled'||po.status==='needs_approval')?`<button class="btn" data-act="editPO" data-id="${id}">Edit</button>`:''}${po&&po.edited?`<button class="btn ghost" data-act="resetPO" data-id="${id}">Let autopilot recalculate</button>`:''}${po&&po.status==='sent'?`<button class="btn" data-act="receivePO" data-id="${id}">Mark received</button>`:''}${!set.autopilot?`<button class="btn pri" data-act="runAuto">Draft order now</button>`:''}</div></div>`;
+  if(po&&po.lines.length)h+=`<div class="sup-grid">`+Object.entries(bySup).map(([s,ls])=>`<div class="sup"><p class="flabel">${esc(s)} · ${money(ls.reduce((a,x)=>a+x.cost,0))}</p><div class="tbl-wrap"><table><tbody>`+ls.map(x=>`<tr><td>${esc(x.it.name)}<div class="small muted">Need ${fmtQ(x.need,x.it.unit)} next week · have ${fmtQ(Math.max(0,x.avail),x.it.unit)}</div></td><td class="n">${x.packs} × ${esc(x.it.packLabel)}</td><td class="n">${money(x.cost)}</td></tr>`).join('')+`</tbody></table></div></div>`).join('')+`</div>`;
+  else if(po)h+=`<p class="muted" style="margin-top:10px">Nothing to order. Stock covers next week.</p>`;
+  h+=`</section>`;
+  // alerts
+  const rows=Object.entries(STI()).map(([id,it])=>{const oh=onHand[id]||0,n=need[id]||0;const after=po&&po.status!=='received'?oh+((po.lines.find(x=>x.id===id)||{}).packs||0)*it.packSize:oh;
+    const st=n&&oh<n*.25?'out':n&&oh<n?'low':'ok';return{id,it,oh,n,after,st,used:used[id]||0}});
+  const short=rows.filter(r=>r.st!=='ok'&&r.n>0);
+  if(short.length)h+=`<div class="banner warn"><span><b>${short.length} items</b> won't cover next week without this order: ${short.slice(0,6).map(r=>esc(r.it.name)).join(', ')}${short.length>6?'…':''}. They're in the order above.</span></div>`;
+  // stock table
+  const cats=[...new Set(rows.map(r=>r.it.category))];
+  h+=`<section class="card"><div class="agent-h"><div><h2>In stock</h2><p class="small muted">Last counted ${fmtWhen(set.countedAt)}. A quick count every few weeks corrects drift from waste and spills.</p></div><button class="btn" data-act="countStock">Update stock count</button></div>
+  <div class="tbl-wrap"><table class="stock"><thead><tr><th>Item</th><th class="n">On hand</th><th class="n">Needed next week</th><th class="n">After delivery</th><th>Status</th></tr></thead><tbody>`+
+  cats.map(c=>`<tr class="cat-row"><td colspan="5">${esc(c)}</td></tr>`+rows.filter(r=>r.it.category===c).map(r=>{const cover=r.n?Math.min(1,r.oh/r.n):1;
+    return `<tr><td>${esc(r.it.name)}<div class="meter"><i style="width:${Math.max(2,cover*100)}%" class="${r.st}"></i></div></td><td class="n">${fmtQ(Math.max(0,r.oh),r.it.unit)}</td><td class="n">${r.n?fmtQ(r.n,r.it.unit):'–'}</td><td class="n">${fmtQ(Math.max(0,r.after),r.it.unit)}</td><td>${r.st==='ok'?'<span class="pill delivered">OK</span>':r.after>=r.n?`<span class="pill cooking">${r.st==='low'?'Low':'Very low'} · on order</span>`:'<span class="pill danger">Short</span>'}</td></tr>`}).join('')).join('')+`</tbody></table></div></section>`;
+  const past=Object.entries(S.purchases).filter(([k])=>k!==id).sort((a,b)=>b[1].deliverOn.localeCompare(a[1].deliverOn));
+  if(past.length)h+=`<section class="card" style="margin-top:14px"><h2>Past orders</h2><div class="tbl-wrap"><table><tbody>`+past.map(([k,p])=>`<tr><td>Delivered ${dlabel(p.deliverOn)}<div class="small muted">${p.lines.length} items${p.auto?' · placed by autopilot':''}</div></td><td class="n">${money(p.total)}</td><td><span class="pill ${stl[p.status]?stl[p.status][0]:''}">${stl[p.status]?stl[p.status][1]:p.status}</span></td></tr>`).join('')+`</tbody></table></div></section>`;
+  return h}
+function shPOEdit(){const f=S.sheet.form;const ids=Object.keys(STI()).sort((a,b)=>STI()[a].supplier.localeCompare(STI()[b].supplier)||STI()[a].name.localeCompare(STI()[b].name));
+  const total=ids.reduce((a,id)=>a+(f.packs[id]||0)*STI()[id].packPrice,0);
+  return `<div class="panel-h"><div><p class="eyebrow">Next order</p><h2>Edit quantities</h2></div><button class="x" data-act="close" aria-label="Close">×</button></div>
+  <p class="note">Once you edit, the autopilot stops changing this order. Items at 0 are left out.</p>
+  <div class="box">`+ids.map(id=>{const it=STI()[id];return `<div class="addon"><span>${esc(it.name)}<span class="note"> · ${esc(it.packLabel)} · ${money(it.packPrice)}</span></span>${stepper('poq',f.packs[id]||0,`data-k="${id}"`)}</div>`}).join('')+`</div>
+  <div class="totals"><div class="line grand"><span>Total</span><b>${money(total)}</b></div></div>
+  <button class="btn pri" style="justify-content:center;padding:12px" data-act="savePOEdit">Save order</button>`}
+function shCount(){const f=S.sheet.form;return `<div class="panel-h"><div><p class="eyebrow">Stock count</p><h2>What's on the shelf now?</h2></div><button class="x" data-act="close" aria-label="Close">×</button></div>
+  <p class="note">Enter what you actually have. Leave a field as it is if you didn't count it. Amounts in kg, L or pieces.</p>
+  <div class="box">`+Object.entries(STI()).map(([id,it])=>`<div class="addon"><label for="sc-${id}">${esc(it.name)}</label><span style="display:flex;align-items:center;gap:6px"><input id="sc-${id}" data-f="c_${id}" value="${esc(f['c_'+id])}" inputmode="decimal" style="width:90px;font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);text-align:right"><span class="small muted" style="width:26px">${it.unit==='g'?'kg':it.unit==='ml'?'L':'pcs'}</span></span></div>`).join('')+`</div>
+  <button class="btn pri" style="justify-content:center;padding:12px" data-act="saveCount">Save count</button>`}
+function shStockSet(){const f=S.sheet.form;return `<div class="panel-h"><div><p class="eyebrow">Inventory</p><h2>Autopilot settings</h2></div><button class="x" data-act="close" aria-label="Close">×</button></div>
+  <div class="field"><label for="ss-b">Weekly spending cap ($)</label><input id="ss-b" data-f="budget" value="${esc(f.budget)}" inputmode="decimal"><span class="note">Orders under the cap go out on their own. Anything over it waits for your OK.</span></div>
+  <div class="field"><span class="flabel">Safety buffer</span><div class="opt">${[1.1,1.15,1.25].map(v=>`<button data-act="fs" data-k="safety" data-v="${v}" aria-pressed="${String(f.safety)===String(v)}">${Math.round((v-1)*100)}%</button>`).join('')}</div></div>
+  <p class="note">Orders send Saturdays at 6 PM for Sunday 2 PM delivery, after most of Monday's orders are in.</p>
+  <button class="btn pri" style="justify-content:center;padding:12px" data-act="saveStockSet">Save</button>`}
+
+/* ---------- actions ---------- */
+function blankItem(){return{date:menuWeek(),id:'m_'+rid(),name:'Veg platter',cat:'meals',price:7,veg:true,desc:'',choices:[],sides:[],swapFee:0.5,baseChoice:true,days:[],addons:['chapati','rice','curry'],spice:false,soldOut:false,order:99}}
+const A={
+  mode(t){S.mode=t.dataset.v;if(S.mode==='kitchen')setTimeout(autopilot,1500);try{history.replaceState(null,'',S.mode==='kitchen'?'#kitchen':'#')}catch(e){}renderAll();window.scrollTo(0,0)},
+  stab(t){S.sTab=t.dataset.v;renderMain()},
+  day(t){S.day=t.dataset.v;renderMain()},
+  custom(t){const m=byId(t.dataset.id);const c=m.choices&&m.choices.length===1?m.choices[0]:'';openSheet('custom',m.id,{qty:1,addons:{},spice:m.spice?'medium':'',note:'',choice:c,base:'chapati'})},
+  cc(t){S.sheet.form.choice=t.dataset.v;S.sheet.form.errors={};renderSheet()},
+  cb(t){S.sheet.form.base=t.dataset.v;renderSheet()},
+  csw(t){S.sheet.form.swap=t.dataset.v==='1';renderSheet()},
+  cq(t){const f=S.sheet.form;f.qty=Math.max(1,Math.min(20,f.qty+ +t.dataset.d));renderSheet()},
+  ca(t){const f=S.sheet.form;const k=t.dataset.k;f.addons[k]=Math.max(0,Math.min(20,(f.addons[k]||0)+ +t.dataset.d));renderSheet()},
+  cs(t){S.sheet.form.spice=t.dataset.v;renderSheet()},
+  addLine(){const m=byId(S.sheet.ctx);const f=S.sheet.form;
+    if(m.choices&&m.choices.length&&!f.choice){f.errors={choice:'Pick a main to continue.'};renderSheet();return}
+    const base=m.baseChoice&&!noBase(f.choice)?f.base:'';
+    const addons=Object.entries(f.addons).filter(([,q])=>q>0).map(([id,qty])=>({id,name:ADDONS[id].name,qty,price:ADDONS[id].price}));
+    const o=f.swap?otherPlatter(m):null;
+    if(o)addons.push({id:'swap',name:'Starter swap',qty:f.qty,price:m.swapFee??0.5});
+    S.cart.push({key:rid(),date:S.day,menuId:m.id,name:m.name,veg:m.veg,unit:m.price,qty:f.qty,choice:f.choice||'',base,sides:o?o.sides:(m.sides||[]),swapFrom:o?o.name:'',addons,spice:f.spice,note:f.note.trim(),baseChapati:base==='chapati'?CHAP_PER:(m.chapatis||0),baseRice:base==='rice'?1:(m.rice||0)});
+    saveCart();closeSheet();renderMain();toast(`Added ${f.choice||m.name} for ${WDL[dow(S.day)]}`)},
+  grab(t){const s=S.specials.find(x=>x.id===t.dataset.id);const ex=S.cart.find(l=>l.specialId===s.id);
+    if(ex)ex.qty=Math.min(s.qty,ex.qty+1);else S.cart.push({key:rid(),date:today(),specialId:s.id,name:s.name,veg:s.veg,unit:s.price,qty:1,addons:[],choice:'',base:'',sides:[],spice:'',note:'',baseChapati:0,baseRice:0,pickup:s.pickup});
+    saveCart();renderMain();renderCartBar();toast('Added '+s.name)},
+  checkout(){openSheet('checkout',null,{name:me.name||'',phone:me.phone||'',slot:me.slot||'lunch',where:me.where||'hub',address:me.address||'',pay:'card',card:'4242 4242 4242 4242',exp:'12/28',cvc:'123',venmo:me.venmo||'',errors:{}})},
+  lq(t){const l=S.cart.find(x=>x.key===t.dataset.k);if(!l)return;l.qty+= +t.dataset.d;
+    if(l.specialId){const s=S.specials.find(x=>x.id===l.specialId);if(s&&l.qty>s.qty)l.qty=s.qty}
+    if(l.qty<=0)S.cart=S.cart.filter(x=>x!==l);saveCart();renderSheet();renderMain()},
+  fs(t){const f=S.sheet.form;let v=t.dataset.v;if(['veg','spice','confirmDel','baseChoice'].includes(t.dataset.k))v=v==='1';f[t.dataset.k]=v;renderSheet()},
+  async pay(){
+    const f=S.sheet.form;const e={};const gs=groups();const hasDelivery=gs.some(([k])=>!k.startsWith('deal'));
+    if(!f.name.trim())e.name='Enter your name.';
+    if((f.phone.match(/\d/g)||[]).length<7)e.phone='Enter a phone number Manna can call.';
+    if(hasDelivery&&f.where==='address'&&f.address.trim().length<6)e.address='Enter a street address.';
+    if(f.pay==='card'&&(f.card.replace(/\D/g,'').length<15))e.card='Card number looks incomplete.';
+    if(f.pay==='venmo'&&f.venmo.trim().length<2)e.venmo='Enter your Venmo username.';
+    const closed=gs.filter(([k])=>!k.startsWith('deal')&&!isOpen(k)).map(([k])=>dlabel(k));
+    if(closed.length)e.form='Orders are closed for '+closed.join(', ')+'. Remove those items to continue.';
+    for(const l of S.cart.filter(l=>l.specialId)){const s=S.specials.find(x=>x.id===l.specialId);if(!s||s.qty<l.qty)e.form=`Only ${s?s.qty:0} left of ${l.name}. Lower the quantity to continue.`}
+    f.errors=e;if(Object.keys(e).length){renderSheet();return}
+    f.busy=true;renderSheet();
+    Object.assign(me,{name:f.name.trim(),phone:f.phone.trim(),slot:f.slot,where:f.where,address:f.address.trim(),venmo:f.venmo.trim()});store('mk_me',me);
+    await new Promise(r=>setTimeout(r,900));
+    const now=new Date().toISOString();const codes=[];let grand=0;
+    const label=f.pay==='card'?'Visa •'+f.card.replace(/\D/g,'').slice(-4):'Venmo '+(f.venmo.trim().startsWith('@')?'':'@')+f.venmo.trim();
+    try{
+      for(const [k,ls] of gs){const isDeal=k.startsWith('deal');const date=k.split('|').pop();
+        const items=ls.map(l=>{const{key,pickup,...rest}=l;return{...rest,lineTotal:lineTotal(l)}});
+        const sub=items.reduce((a,l)=>a+l.lineTotal,0);const fee=!isDeal&&f.where==='address'?FEE:0;
+        const code='MK-'+(1000+Math.floor(Math.random()*9000));codes.push(code);grand+=sub+fee;
+        await W.addOrder({code,customerId:S.cid,name:me.name,phone:me.phone,date,slot:isDeal?'deal':f.slot,where:isDeal?'hub':f.where,address:isDeal?(ls[0].pickup||''):(f.where==='address'?me.address:''),
+          items,subtotal:sub,fee,total:sub+fee,payment:{status:'paid',method:f.pay,label,ref:'pay_'+rid(),paidAt:now},status:'received',statusAt:{received:now},createdAt:now});
+        for(const l of ls.filter(l=>l.specialId)){const s=S.specials.find(x=>x.id===l.specialId);if(s)await W.patchSpecial(s.id,{qty:Math.max(0,s.qty-l.qty)})}
+      }
+    }catch(err){f.busy=false;f.errors={form:'Payment went through but the order could not be saved. Try again.'};renderSheet();return}
+    S.cart=[];saveCart();openSheet('done',{codes,total:grand});renderMain();
+  },
+  goOrders(){closeSheet();S.sTab='orders';renderMain();window.scrollTo(0,0)},
+  close(){closeSheet()},
+  /* kitchen */
+  ktab(t){S.kTab=t.dataset.v;renderMain()},
+  kday(t){S.kDay=t.dataset.v;renderMain()},
+  kfilter(t){S.kFilter=t.dataset.v;renderMain()},
+  adv(t){const o=S.orders.find(x=>x.id===t.dataset.id);const n=STATUSES[STATUSES.indexOf(o.status)+1];if(!n)return;safe(()=>W.patchOrder(o.id,{status:n,statusAt:{[n]:new Date().toISOString()}}),`${o.code}: ${SLABEL[n]}`)},
+  bulk(t){const s=t.dataset.s;const n=STATUSES[STATUSES.indexOf(s)+1];const list=S.orders.filter(o=>o.date===S.kDay&&o.slot===t.dataset.slot&&o.status===s);
+    safe(async()=>{for(const o of list)await W.patchOrder(o.id,{status:n,statusAt:{[n]:new Date().toISOString()}})},`${list.length} orders: ${SLABEL[n]}`)},
+  askClear(){S.confirmClear=true;renderMain()},cancelClear(){S.confirmClear=false;renderMain()},
+  clearSample(){S.confirmClear=false;const list=S.orders.filter(o=>o.sample);safe(async()=>{for(const o of list)await W.delOrder(o.id)},'Sample orders deleted')},
+  seedMenu(){safe(async()=>{for(const m of SEED.menu)await W.saveItem(clone(m))},'Sample menu loaded')},
+  toggleDay(t){const m=clone(byId(t.dataset.id));const d=t.dataset.v;m.days=(m.days||[]).includes(d)?m.days.filter(x=>x!==d):[...(m.days||[]),d];safe(()=>W.saveItem(m))},
+  soldOut(t){const m=clone(byId(t.dataset.id));m.soldOut=!m.soldOut;safe(()=>W.saveItem(m),m.name+(m.soldOut?' marked sold out':' back on sale'))},
+  editItem(t){const m=t.dataset.id?clone(byId(t.dataset.id)):blankItem();openSheet('item',t.dataset.id||null,{...m,price:String(m.price),choicesText:(m.choices||[]).join('\n'),sidesText:(m.sides||[]).join('\n'),swapFee:String(m.swapFee??0.5),errors:{}})},
+  fday(t){const f=S.sheet.form;const d=t.dataset.v;f.days=f.days.includes(d)?f.days.filter(x=>x!==d):[...f.days,d];renderSheet()},
+  faddon(t){const f=S.sheet.form;const k=t.dataset.v;f.addons=f.addons.includes(k)?f.addons.filter(x=>x!==k):[...f.addons,k];renderSheet()},
+  saveItem(){const f=S.sheet.form;const e={};const price=parseFloat(f.price);
+    if(!f.name.trim())e.name='Give the dish a name.';if(!(price>0))e.price='Enter a price above $0.';
+    f.errors=e;if(Object.keys(e).length){renderSheet();return}
+    const lines=t=>String(t||'').split('\n').map(x=>x.trim()).filter(Boolean);
+    const it={id:f.id,name:f.name.trim(),cat:f.cat||'meals',price:Math.round(price*100)/100,veg:!!f.veg,desc:(f.desc||'').trim(),choices:lines(f.choicesText),sides:lines(f.sidesText),swapFee:Math.max(0,parseFloat(f.swapFee)||0),baseChoice:!!f.baseChoice,date:f.date||menuWeek(),days:[],addons:f.addons,spice:!!f.spice,soldOut:!!f.soldOut,order:f.order??99};
+    closeSheet();safe(()=>W.saveItem(it),it.name+' saved')},
+  delItem(){const id=S.sheet.form.id;const n=S.sheet.form.name;closeSheet();safe(()=>W.delItem(id),n+' removed from the menu')},
+  editDeal(){openSheet('deal',null,{name:'',veg:false,qty:'5',price:'',was:'',pickup:'Global Hub lobby, 6:00–7:00 PM',errors:{}})},
+  saveDeal(){const f=S.sheet.form;const e={};const q=parseInt(f.qty),p=parseFloat(f.price);
+    if(!f.name.trim())e.name='Say what is available.';if(!(q>0))e.qty='At least 1.';if(!(p>0))e.price='Enter a price.';
+    f.errors=e;if(Object.keys(e).length){renderSheet();return}
+    const sp={id:'sp_'+rid(),name:f.name.trim(),veg:!!f.veg,qty:q,price:Math.round(p*100)/100,was:parseFloat(f.was)>0?parseFloat(f.was):null,pickup:f.pickup.trim()||'Global Hub lobby',date:today(),createdAt:new Date().toISOString()};
+    closeSheet();safe(()=>W.saveSpecial(sp),'Posted. Students can see it now.')},
+  aiAsk(){openSheet('aiask',null,{note:''})},
+  aiStart(){const n=(S.sheet.form.note||'').trim();closeSheet();runAgent(n)},
+  stopAgent(){S.agent.ctl&&S.agent.ctl.abort()},
+  rulesDraft(){const ws=planWeek();const days=rulesPlan(ws);const plan=buildPlan(days,{summary:'Drafted with the built-in rules: each platter pairs the best-selling main you have not served in the last two weeks with a rotation dish, and uses the starters students swap away least.',source:'rules'},ws);S.agent={running:false,log:[],text:'',error:''};safe(()=>W.savePlan(plan),'Draft ready')},
+  publishPlan(){const ws=planWeek();safe(()=>W.patchPlan(ws,{status:'published',publishedAt:new Date().toISOString()}),'Next week\'s menu is live for students')},
+  editPlatter(t){const p=S.plans[planWeek()];const x=p.days[t.dataset.d][t.dataset.v||t.dataset.t];openSheet('pedit',null,{d:t.dataset.d,t:t.dataset.t,m1:x.mains[0]||'',m2:x.mains[1]||'',s1:x.starters[0]||'',s2:x.starters[1]||'',errors:{}})},
+  savePlatter(){const f=S.sheet.form;const ws=planWeek();const p=clone(S.plans[ws]);const mains=[f.m1,f.m2].map(norm),st=[f.s1,f.s2].map(norm);
+    if(mains.some(x=>!x)||st.some(x=>!x)){f.errors={form:'Fill in both mains and both starters.'};renderSheet();return}
+    const ds=DS();if(f.t==='veg'){const bad=[...mains,...st].filter(x=>ds[x]&&ds[x].veg===false);if(bad.length){f.errors={form:bad.join(', ')+' is not vegetarian.'};renderSheet();return}}
+    const fc=forecastPlatter(f.d,f.t,mains,st);const old=p.days[f.d][f.t];
+    p.days[f.d][f.t]={...old,mains,starters:st,forecast:fc.platters,split:fc.split,foodCost:fc.foodCost,foodCostPct:fc.foodCostPct,usual:fc.usual,why:(old.mains.join()===mains.join()&&old.starters.join()===st.join())?old.why:'Changed by Manna.',tags:Object.fromEntries(mains.concat(st).map(n=>[n,tagsFor(n,ws)]))};
+    recomputeTotals(p);p.editedAt=new Date().toISOString();closeSheet();safe(()=>W.savePlan(p),'Saved. Forecast updated.')},
+  toggleAuto(){const v=!SET().autopilot;safe(async()=>{await W.patchStock('settings',{autopilot:v});if(v)autopilot()},v?'Autopilot on':'Autopilot off. Nothing will be ordered automatically.')},
+  runAuto(){const f=buildPO();safe(()=>W.savePO('po_'+f.deliverOn,{...f,createdAt:new Date().toISOString()}),'Order drafted')},
+  sendPO(t){safe(()=>W.patchPO(t.dataset.id,{status:'sent',sentAt:new Date().toISOString(),approvedByManna:true}),'Order sent to suppliers (simulated)')},
+  receivePO(t){safe(()=>W.patchPO(t.dataset.id,{status:'received',receivedAt:new Date().toISOString()}),'Marked received. Stock updated.')},
+  resetPO(t){const f=buildPO();safe(()=>W.savePO(t.dataset.id,{...f,createdAt:new Date().toISOString(),edited:false}),'Autopilot recalculated the order')},
+  editPO(t){const po=S.purchases[t.dataset.id];openSheet('poedit',t.dataset.id,{packs:Object.fromEntries(po.lines.map(x=>[x.id,x.packs]))})},
+  poq(t){const f=S.sheet.form;const k=t.dataset.k;f.packs[k]=Math.max(0,Math.min(50,(f.packs[k]||0)+ +t.dataset.d));renderSheet()},
+  savePOEdit(){const id=S.sheet.ctx;const f=S.sheet.form;const po=S.purchases[id];const set=SET();
+    const lines=Object.entries(f.packs).filter(([,n])=>n>0).map(([k,n])=>{const old=po.lines.find(x=>x.id===k)||{};return{id:k,packs:n,cost:Math.round(n*STI()[k].packPrice*100)/100,need:old.need||0,avail:old.avail||0}});
+    const total=Math.round(lines.reduce((a,x)=>a+x.cost,0)*100)/100;closeSheet();
+    safe(()=>W.savePO(id,{...po,lines,total,edited:true,status:total>(set.budget||900)?'needs_approval':'scheduled',updatedAt:new Date().toISOString()}),'Order saved')},
+  countStock(){const {onHand}=onHandNow();openSheet('count',null,Object.fromEntries(Object.entries(STI()).map(([id,it])=>['c_'+id,String(it.unit==='pc'?Math.max(0,Math.round(onHand[id])):Math.max(0,Math.round(onHand[id]/100)/10))])))},
+  saveCount(){const f=S.sheet.form;const upd={};for(const [id,it] of Object.entries(STI())){const v=parseFloat(f['c_'+id]);if(!isNaN(v)&&v>=0)upd[id]={onHand:it.unit==='pc'?Math.round(v):Math.round(v*1000)}}
+    closeSheet();safe(async()=>{await W.patchStock('items',{items:upd});await W.patchStock('settings',{countedAt:new Date().toISOString()})},'Stock count saved')},
+  stockSettings(){const s=SET();openSheet('stockset',null,{budget:String(s.budget||900),safety:String(s.safety||1.15)})},
+  saveStockSet(){const f=S.sheet.form;const b=parseFloat(f.budget);closeSheet();safe(()=>W.patchStock('settings',{budget:b>0?b:900,safety:parseFloat(f.safety)||1.15}),'Settings saved')},
+  endDeal(t){safe(()=>W.patchSpecial(t.dataset.id,{qty:0}),'Taken off sale')},
+};
+document.addEventListener('click',e=>{
+  if(e.target.id==='sheet'){closeSheet();return}
+  const t=e.target.closest('[data-act]');if(!t||t.disabled)return;const fn=A[t.dataset.act];if(fn){e.preventDefault();fn(t,e)}
+});
+document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset.f;if(k&&S.sheet)S.sheet.form[k]=e.target.value});
+document.addEventListener('change',e=>{const k=e.target.dataset&&e.target.dataset.f;if(k&&S.sheet)S.sheet.form[k]=e.target.value});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.sheet)closeSheet()});
+window.addEventListener('hashchange',()=>{S.mode=location.hash==='#kitchen'?'kitchen':'student';renderAll()});
+
+/* ---------- boot ---------- */
+async function boot(){
+  S.cid=store('mk_cid');if(!S.cid){S.cid='c_'+rid();store('mk_cid',S.cid)}
+  renderAll();
+  setInterval(()=>{if(!S.sheet)renderMain();autopilot()},60000);
+  setTimeout(autopilot,2500);
+  const c=window.claude;if(!c||!c.use)return;
+  let d=null;try{d=await c.use('db')}catch(e){}
+  if(!d)return;
+  db=d;S.live=true;
+  try{const u=await c.use('user');if(u){const id=await u.id();if(id)S.cid=id}}catch(e){}
+  S.menu=[];S.orders=[];S.specials=[];S.history=null;S.plans={};S.stock=null;S.purchases={};S.dstats=null;S.weeks=null;renderAll();
+  c.use('sample').then(f=>{if(f){sampleFn=f;renderMain()}}).catch(()=>{});
+  const onErr=e=>toast('Lost connection to the kitchen. Reload to reconnect.');
+  const sub=k=>db.collection(k).onSnapshot(s=>{S[k]=s.docs.map(x=>({id:x.id,...x.data()}));S.loaded[k]=true;renderMain();renderCartBar()},onErr);
+  sub('menu');sub('orders');sub('specials');
+  const stk={};const stDone=()=>{if(stk.items&&stk.recipes&&stk.settings){S.stock={items:stk.items.items||{},recipes:stk.recipes.recipes||{},settings:stk.settings};renderMain()}};
+  ['items','recipes','settings'].forEach(k=>db.doc('stock/'+k).onSnapshot(s=>{stk[k]=s.exists?s.data():null;stDone()},onErr));
+  db.collection('purchases').onSnapshot(s=>{S.purchases=Object.fromEntries(s.docs.map(x=>[x.id,x.data()]));renderMain()},onErr);
+  setTimeout(autopilot,6000);
+  db.doc('stats/dishes').onSnapshot(s=>{S.dstats=s.exists?s.data():null;renderMain()},onErr);
+  db.doc('stats/weeks').onSnapshot(s=>{S.weeks=s.exists?s.data():null;renderMain()},onErr);
+  db.collection('plans').onSnapshot(s=>{S.plans=Object.fromEntries(s.docs.map(x=>[x.id,x.data()]));renderMain()},onErr);
+  db.doc('stats/history').onSnapshot(s=>{S.history=s.exists?s.data():null;renderMain()},onErr);
+}
+boot();
+</script>
+
+</body>
+</html>
