@@ -23,7 +23,8 @@ Use the **Student / Kitchen** switch at the top right to move between the two si
 ## About this demo
 
 - One self-contained `index.html`, no build step.
-- Everything runs in your browser. Orders and edits stay in that tab and reset on reload.
+- Data lives in a shared Supabase (Postgres) database, so orders, menus and stock persist and sync live across devices. On first load the database is filled with sample data.
+- The demo database is open: anyone with the link can read and change it. Don't enter real personal details.
 - All menus, orders, dish performance, costs and stock levels are sample data.
 - Payments and supplier orders are simulated. No money moves.
 - In this GitHub version, the menu planner uses built-in rules. The Claude-powered planner and the shared live database run in the Claude-hosted version.
