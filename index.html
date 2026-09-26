@@ -373,7 +373,7 @@ function portions(date){const r={};S.orders.filter(o=>o.date===date).forEach(o=>
 /* ---------- render ---------- */
 function renderAll(){renderTop();renderMain();renderCartBar()}
 function renderTop(){
-  $('#top').innerHTML=`<div class="brand"><div class="logo" aria-hidden="true">M</div><div><b>Manna's Kitchen</b><span>Home-style food for Kellogg · powered by DesiBox</span></div></div>
+  $('#top').innerHTML=`<div class="brand"><div class="logo" aria-hidden="true">D</div><div><b>DesiBox</b><span>Home-style food for Kellogg</span></div></div>
   <div class="top-r"><span class="live ${S.live?'on':''}" title="${S.live?'Orders sync live between students and the kitchen':'Demo: changes stay in this browser tab'}"><i></i>${S.live?'Live':'Demo'}</span>
   <div class="seg" role="group" aria-label="View"><button data-act="mode" data-v="student" aria-pressed="${S.mode==='student'}">Student</button><button data-act="mode" data-v="kitchen" aria-pressed="${S.mode==='kitchen'}">Kitchen</button></div></div>`;
 }
@@ -391,7 +391,7 @@ function renderCartBar(){
 function studentView(){
   const mine=S.orders.filter(o=>o.customerId===S.cid);
   const active=mine.filter(o=>o.status!=='delivered').length;
-  let h=`<section class="hero"><div><p class="eyebrow">Weekly tiffins · Mon to Fri</p><h1>Order this week's tiffins</h1><p class="lede">A veg and a non-veg platter every weekday, $7 each. Pick your main, rice or chapati, and pay upfront. Orders close at 8 PM the night before.</p></div>
+  let h=`<section class="hero"><div><p class="eyebrow">Weekly tiffins from Manna's Kitchen · Mon to Fri</p><h1>Order this week's tiffins</h1><p class="lede">A veg and a non-veg platter every weekday, $7 each. Pick your main, rice or chapati, and pay upfront. Orders close at 8 PM the night before.</p></div>
   <div class="seg" role="group" aria-label="Student sections"><button data-act="stab" data-v="menu" aria-pressed="${S.sTab==='menu'}">Menu</button><button data-act="stab" data-v="orders" aria-pressed="${S.sTab==='orders'}">My orders${mine.length?` <span class="mono">${active||mine.length}</span>`:''}</button></div></section>`;
   if(!S.live)h+=`<div class="banner"><span>Demo mode. Orders you place here stay in this browser tab. Switch to Kitchen at the top right to see them arrive.</span></div>`;
   if(S.live&&S.loaded.menu&&!S.menu.length)return h+`<div class="empty">The kitchen hasn't published a menu yet.</div>`;
@@ -442,7 +442,7 @@ function myOrders(mine){
 function kitchenDays(){const t=today();const d=orderDays();const wk=[1,2,3,4,5].includes(pd(t).getDay());return (wk||S.orders.some(o=>o.date===t))?[t,...d]:d}
 function kitchenView(){
   const sample=S.orders.filter(o=>o.sample).length;
-  let h=`<div class="k-head"><div><p class="eyebrow">Kitchen dashboard</p><h1>Good ${new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening'}, Manna</h1></div>
+  let h=`<div class="k-head"><div><p class="eyebrow">Kitchen dashboard · Manna's Kitchen</p><h1>Good ${new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening'}, Manna</h1></div>
   ${sample?`<div class="small muted">${sample} sample orders loaded. ${S.confirmClear?`<button class="btn sm danger" data-act="clearSample">Yes, delete them</button> <button class="btn sm ghost" data-act="cancelClear">Keep</button>`:`<button class="btn sm" data-act="askClear">Clear sample orders</button>`}</div>`:''}</div>`;
   if(!S.live)h+=`<div class="banner"><span>Demo mode. Changes stay in this browser tab, so you can try everything safely.</span></div>`;
   if(S.live&&S.loaded.menu&&!S.menu.length)h+=`<div class="banner"><span>No menu yet.</span><button class="btn sm pri" data-act="seedMenu">Load sample menu</button></div>`;
