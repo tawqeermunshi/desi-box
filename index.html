@@ -446,7 +446,7 @@ function kitchenView(){
   ${sample?`<div class="small muted">${sample} sample orders loaded. ${S.confirmClear?`<button class="btn sm danger" data-act="clearSample">Yes, delete them</button> <button class="btn sm ghost" data-act="cancelClear">Keep</button>`:`<button class="btn sm" data-act="askClear">Clear sample orders</button>`}</div>`:''}</div>`;
   if(!S.live)h+=`<div class="banner"><span>Demo mode. Changes stay in this browser tab, so you can try everything safely.</span></div>`;
   if(S.live&&S.loaded.menu&&!S.menu.length)h+=`<div class="banner"><span>No menu yet.</span><button class="btn sm pri" data-act="seedMenu">Load sample menu</button></div>`;
-  const tabs=[['orders','Orders'],['prep','Prep and demand'],['menu','This week\'s menu'],['plan','Next week ✦ AI'],['stock','Inventory ✦ Auto'],['feedback','Feedback'],['deals','Off-menu items']];
+  const tabs=[['orders','Orders'],['prep','Prep and demand'],['menu','This week\'s menu'],['plan','Next week\'s menu'],['stock','Inventory ✦ Auto'],['feedback','Feedback'],['deals','Off-menu items']];
   h+=`<nav class="tabs">`+tabs.map(([k,l])=>`<button data-act="ktab" data-v="${k}" aria-pressed="${S.kTab===k}">${l}</button>`).join('')+`</nav>`;
   if(S.kTab==='orders'||S.kTab==='prep'){
     h+=`<div class="days" role="group" aria-label="Day">`+kitchenDays().map(d=>{const n=S.orders.filter(o=>o.date===d).length;const dd=pd(d);return `<button class="day" data-act="kday" data-v="${d}" aria-pressed="${d===S.kDay}"><b>${d===today()?'Today':WDL[dow(d)]}</b><span>${MON[dd.getMonth()]} ${dd.getDate()} · ${n} order${n===1?'':'s'}</span></button>`}).join('')+`</div>`;
@@ -510,7 +510,7 @@ function kMenu(){
   const ws=menuWeek();
   let h=`<div class="slot-h" style="margin-top:0"><p class="muted" style="max-width:62ch">The menu students are ordering from now (${weekLabel(ws)}). Changes show up for students right away. Next week's menu is drafted in the Next week tab.</p><button class="btn pri" data-act="editItem" data-id="">+ Add platter</button></div>`;
   PDAYS.forEach((d,i)=>{const date=addDays(ws,i);const list=menuFor(date);const fromPlan=list.some(m=>m.fromPlan);/*per-row*/
-    h+=`<section class="card" style="margin-bottom:14px"><h2>${WDF[d]} <span class="muted small">${MON[pd(date).getMonth()]} ${pd(date).getDate()}</span></h2>`+(fromPlan?`<p class="small muted" style="padding-top:6px">From the AI plan. Edit it in the Next week tab.</p>`:'')+(list.length?list.map(m=>mrow(m,!!m.fromPlan)).join(''):`<p class="muted small" style="padding-top:8px">Nothing on the menu.</p>`)+`</section>`});
+    h+=`<section class="card" style="margin-bottom:14px"><h2>${WDF[d]} <span class="muted small">${MON[pd(date).getMonth()]} ${pd(date).getDate()}</span></h2>`+(fromPlan?`<p class="small muted" style="padding-top:6px">From next week\'s plan. Edit it in the Next week\'s menu tab.</p>`:'')+(list.length?list.map(m=>mrow(m,!!m.fromPlan)).join(''):`<p class="muted small" style="padding-top:8px">Nothing on the menu.</p>`)+`</section>`});
   return h;
 }
 function mrow(m,ro){return `<div class="mrow"><div class="nm">${vm(m.veg)}<div><b>${esc(m.name)}</b><small>${esc((m.choices||[]).join(' or ')||m.desc||'')}${m.sides&&m.sides.length?' · starters: '+esc(m.sides.join(', ')):''}</small></div></div>
@@ -673,7 +673,7 @@ function rulesPlan(ws){
   return days}
 /* ---------- AI agent (runs on Manna's Claude account via the page) ---------- */
 let sampleFn=null;
-const AGENT_ERR={not_granted:'AI drafting was not allowed in this view. You can still draft with the built-in rules.',sampling_disabled:'Claude is not available for this account. You can still draft with the built-in rules.',tools_unavailable:'This app version cannot run the AI planner. You can still draft with the built-in rules.',rate_limited:'Claude is busy or your usage limit was reached. Try again in a few minutes.',session_expired:'Sign in to Claude again, then retry.',refused:'Claude declined this request. Try a different note.',prompt_too_large:'Too much data to send at once.'};
+const AGENT_ERR={not_granted:'Full drafting was not allowed in this view. You can still use Quick draft.',sampling_disabled:'Full drafting is not available for this account. You can still use Quick draft.',tools_unavailable:'This app version cannot run the full menu planner. You can still use Quick draft.',rate_limited:'Claude is busy or your usage limit was reached. Try again in a few minutes.',session_expired:'Sign in to Claude again, then retry.',refused:'Claude declined this request. Try a different note.',prompt_too_large:'Too much data to send at once.'};
 function agentLog(text){S.agent.log.push({text,at:Date.now()});renderMain()}
 function agentTools(ws,instruction){
   return[
@@ -727,7 +727,7 @@ async function runAgent(instruction){
   try{
     const r=await sampleFn(agentPrompt(ws,instruction),{tools:agentTools(ws,instruction),signal:S.agent.ctl.signal,modelTier:'default',onText:({text})=>{S.agent.text=text;const el=document.getElementById('agent-text');if(el)el.textContent=text.slice(-900)}});
     S.agent.text=r.text;
-    if(!S.agent.saved)S.agent.error='Claude finished without saving a menu. Try again, or draft with the built-in rules.';
+    if(!S.agent.saved)S.agent.error='The planner finished without saving a menu. Try again, or use Quick draft.';
     else{const p=S.plans[ws];const note=r.text.trim().split('\n').filter(Boolean).pop();if(p&&note&&note.length>40&&note.length<900){await W.patchPlan(ws,{summary:p.summary||note,agentNote:note})}}
   }catch(e){if(e&&e.code!=='cancelled')S.agent.error=AGENT_ERR[e&&e.code]||'Something went wrong while drafting. Try again.';if(e&&e.code==='not_granted'||e&&e.code==='sampling_disabled'||e&&e.code==='tools_unavailable')S.aiOff=true}
   S.agent.running=false;renderMain();
@@ -735,7 +735,7 @@ async function runAgent(instruction){
 }
 function kPlan(){
   const ws=planWeek();const p=S.plans[ws];const ag=S.agent;
-  const srcLabel={'claude-weekly':'Drafted by Claude (weekly run)','ai-app':'Drafted by Claude in the app','rules':'Drafted with built-in rules'};
+  const srcLabel={'claude-weekly':'Drafted automatically (weekly run)','ai-app':'Drafted in the app','rules':'Drafted with Quick draft'};
   let h=`<section class="plan-head"><div><p class="eyebrow">Next week · planned from your order data</p><h2 class="big">Menu for ${weekLabel(ws)}</h2>`;
   if(p){const live=planLive(p);const ap=new Date(p.autoPublishAt);
     h+=`<p class="muted small">${srcLabel[p.source]||'Drafted'} · ${fmtWhen(p.generatedAt)}${p.editedAt?` · Edited by Manna ${fmtWhen(p.editedAt)}`:''}</p></div><div class="plan-act">`+
@@ -743,10 +743,10 @@ function kPlan(){
       `</div></section>`;
   }else h+=`<p class="muted small">No draft yet. Claude drafts next week's menu from your order history; you only review it.</p></div></section>`;
   // agent panel
-  h+=`<section class="agent ${ag.running?'on':''}"><div class="agent-h"><div><b>AI menu planner</b><p class="small muted">Reads your order history, dish performance and food costs, forecasts demand, then drafts the week.</p></div><div class="agent-btns">`+
+  h+=`<section class="agent ${ag.running?'on':''}"><div class="agent-h"><div><b>Menu planner</b><p class="small muted">Reads your order history, dish performance and food costs, forecasts demand, then drafts the week.</p></div><div class="agent-btns">`+
     (ag.running?`<button class="btn" data-act="stopAgent">Stop</button>`:
-      `${S.aiOff||!sampleFn?'':`<button class="btn pri" data-act="aiAsk">${p?'Redraft with AI':'Draft with AI'}</button>`}<button class="btn" data-act="rulesDraft">${p?'Redraft':'Draft'} with rules</button>`)+`</div></div>`;
-  if(!sampleFn&&!ag.running)h+=`<p class="small muted">${S.live?'This version drafts with built-in rules. The Claude-powered planner runs in the Claude-hosted version.':'This version drafts with built-in rules. The Claude-powered planner runs in the Claude-hosted version.'}</p>`;
+      `${S.aiOff||!sampleFn?'':`<button class="btn pri" data-act="aiAsk">${p?'Redraft next week':'Draft next week'}</button>`}<button class="btn" data-act="rulesDraft">${p?'Quick redraft':'Quick draft'}</button>`)+`</div></div>`;
+  if(!sampleFn&&!ag.running)h+=`<p class="small muted">${S.live?'This version uses Quick draft. Full drafting runs in the Claude-hosted version.':'This version uses Quick draft. Full drafting runs in the Claude-hosted version.'}</p>`;
   if(ag.running||ag.log.length||ag.error){
     h+=`<ol class="steps">`+ag.log.map(x=>`<li class="done">${esc(x.text)}</li>`).join('')+(ag.running?`<li class="now">${ag.log.length?'Thinking about the menu…':'Starting Claude… (first time asks you to allow it)'}</li>`:'')+`</ol>`;
     if(ag.running)h+=`<pre id="agent-text" class="agent-text">${esc((ag.text||'').slice(-900))}</pre>`;
@@ -771,7 +771,7 @@ function kPlan(){
   return h;
 }
 function fmtWhen(iso){if(!iso)return'';const d=new Date(iso);return WDL[WD[d.getDay()]]+' '+MON[d.getMonth()]+' '+d.getDate()+', '+fmtTime(d)}
-function shAiAsk(){const f=S.sheet.form;return `<div class="panel-h"><div><p class="eyebrow">AI menu planner</p><h2>Draft ${weekLabel(planWeek())}</h2></div><button class="x" data-act="close" aria-label="Close">×</button></div>
+function shAiAsk(){const f=S.sheet.form;return `<div class="panel-h"><div><p class="eyebrow">Menu planner</p><h2>Draft ${weekLabel(planWeek())}</h2></div><button class="x" data-act="close" aria-label="Close">×</button></div>
   <p class="desc">Claude reads your last 6 weeks of orders, this week's bookings, and what each dish sells and costs. Then it drafts all 10 platters and checks them against your rules. It takes about a minute and uses your Claude account.</p>
   <div class="field"><label for="ai-note">Anything Claude should know this week? (optional)</label><textarea id="ai-note" data-f="note" rows="3" placeholder="No fish this week. Midterms on Wednesday, expect more orders. Paneer is expensive right now.">${esc(f.note)}</textarea></div>
   <button class="btn pri" style="justify-content:center;padding:12px" data-act="aiStart">Start drafting</button>`}
@@ -1025,7 +1025,7 @@ const A={
   aiAsk(){openSheet('aiask',null,{note:''})},
   aiStart(){const n=(S.sheet.form.note||'').trim();closeSheet();runAgent(n)},
   stopAgent(){S.agent.ctl&&S.agent.ctl.abort()},
-  rulesDraft(){const ws=planWeek();const days=rulesPlan(ws);const plan=buildPlan(days,{summary:'Drafted with the built-in rules: each platter pairs the best-selling main you have not served in the last two weeks with a rotation dish, and uses the starters students swap away least.',source:'rules'},ws);S.agent={running:false,log:[],text:'',error:''};safe(()=>W.savePlan(plan),'Draft ready')},
+  rulesDraft(){const ws=planWeek();const days=rulesPlan(ws);const plan=buildPlan(days,{summary:'Quick draft: each platter pairs the best-selling main you have not served in the last two weeks with a rotation dish, and uses the starters students swap away least.',source:'rules'},ws);S.agent={running:false,log:[],text:'',error:''};safe(()=>W.savePlan(plan),'Draft ready')},
   publishPlan(){const ws=planWeek();safe(()=>W.patchPlan(ws,{status:'published',publishedAt:new Date().toISOString()}),'Next week\'s menu is live for students')},
   editPlatter(t){const p=S.plans[planWeek()];const x=p.days[t.dataset.d][t.dataset.v||t.dataset.t];openSheet('pedit',null,{d:t.dataset.d,t:t.dataset.t,m1:x.mains[0]||'',m2:x.mains[1]||'',s1:x.starters[0]||'',s2:x.starters[1]||'',errors:{}})},
   savePlatter(){const f=S.sheet.form;const ws=planWeek();const p=clone(S.plans[ws]);const mains=[f.m1,f.m2].map(norm),st=[f.s1,f.s2].map(norm);
